@@ -9,7 +9,7 @@ import Lawyer from './pages/Lawyer'
 
 const App = () => {
   return (
-    <div className='w-full h-full absolute bg-white'>
+    <div className='overflow-x-hidden w-full h-full absolute'>
       <Header/>
       <Routes>
         <Route path='/' element={<Home/>} />
