@@ -16,9 +16,6 @@
     font-family: Monstserrat;
 }
 
-a.active NavLink{
-    display: block;
-}
 
 @media (max-width:639px) {
     a.active{
