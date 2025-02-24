@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { assets } from '../assets/assets';
-import {NavLink, Link} from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,11 +11,12 @@ const Header = () => {
 
   return (
     <div>
-      <header className="bg-[#612A22] fixed top-0 left-0 w-full z-50 shadow-md text-lg">
-        <nav className="container mx-auto px-2 py-3 flex items-center justify-between">
+      <header className="bg-[#612A22] fixed top-0 left-0 w-full z-50 shadow-md font-medium">
+        <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="text-white font-bold">
-            <Link to={'/'}>
-              <img src={assets.logo} alt="Logo" className="w-14" />
+            <Link to={'/'} className='flex items-center space-x-2'>
+              {/* <img src={assets.logo} alt="Logo" className="w-14" /> */}
+              <p className='text-2xl'>JUSTIBOT</p>
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
@@ -41,17 +42,12 @@ const Header = () => {
                 </NavLink>
               </li>
             </ul>
-            <Link to='/login' className='flex justify-between ml-4 px-4 py-2 bg-[#B9AB99] text-black rounded-full transition duration-300 ease-in-out hover:bg-gray-100 hover:scale-90'>
-                <img src={assets.user_icon} className='w-4 mr-2'/>
-                <p>Login / Signup</p>
+            <Link to='/login' className='flex justify-between ml-4 px-3 py-1.5 bg-[#FFFFFF] text-black rounded-full transition duration-300 ease-in-out hover:bg-gray-300 hover:scale-90'>
+              <img src={assets.user_icon} className='w-4 mr-2' alt="User Icon" />
+              <p>Login / Signup</p>
             </Link>
-            
           </div>
           <div className="md:hidden flex items-center">
-           <Link to='/login' className='flex justify-between ml-4 px-4 py-2 bg-[#B9AB99] text-black rounded-full hover:bg-gray-100 hover:scale-90'>
-                <img src={assets.user_icon} className='w-4 mr-2'/>
-                <p>Login / Signup</p>
-            </Link>
             <button onClick={toggleMenu} className="outline-none ml-6 mr-3">
               <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
@@ -63,12 +59,65 @@ const Header = () => {
             </button>
           </div>
         </nav>
-        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden bg-[#612A22] p-5 rounded-lg text-center`}> 
+        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden bg-[#020617] p-5 rounded-lg text-center z-50`}>
           <ul className="space-y-4">
-            <li><a href="/" className="block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300">Home</a></li>
-            <li><a href="/chatbot" className="block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300">Chatbot</a></li>
-            <li><a href="/document" className="block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300">Document</a></li>
-            <li><a href="lawyer" className="block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300">Lawyer</a></li>
+            <li>
+              <NavLink
+                to="/"
+                onClick={toggleMenu}
+                className={({ isActive }) =>
+                  `block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300 
+                  ${isActive ? 'bg-[#B9AB99] rounded-lg' : ''}`
+                }
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/chatbot"
+                onClick={toggleMenu}
+                className={({ isActive }) =>
+                  `block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300 
+                  ${isActive ? 'bg-[#B9AB99] rounded-lg' : ''}`
+                }
+              >
+                Chatbot
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/document"
+                onClick={toggleMenu}
+                className={({ isActive }) =>
+                  `block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300 
+                  ${isActive ? 'bg-[#B9AB99] rounded-lg' : ''}`
+                }
+              >
+                Document
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/lawyer"
+                onClick={toggleMenu}
+                className={({ isActive }) =>
+                  `block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300 
+                  ${isActive ? 'bg-[#B9AB99] rounded-lg' : ''}`
+                }
+              >
+                Lawyer
+              </NavLink>
+            </li>
+            <li>
+              <Link
+                to='/login'
+                onClick={toggleMenu}
+                className='block px-4 py-2 text-white transition duration-300 ease-in-out hover:text-gray-300'
+              >
+                Login / Signup
+              </Link>
+            </li>
           </ul>
         </div>
       </header>
