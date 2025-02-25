@@ -26,13 +26,13 @@ const Hero = () => {
       style={{
         backgroundImage,
       }}
-      className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-50 px-4 py-24 text-gray-900"
+      className="relative grid min-h-screen place-content-center overflow-hidden bg-background px-4 py-24 text-gray-900"
     >
       <div className="relative z-10 flex flex-col items-center">
         <h1 className="max-w-3xl bg-gradient-to-br from-black to-gray-700 bg-clip-text text-center text-2xl font-medium leading-tight text-transparent sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight lg:text-6xl lg:leading-tight">
           Justice On Your Screen
         </h1>
-        <p className="my-6 max-w-xl text-center text-sm leading-relaxed sm:text-base sm:leading-relaxed md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
+        <p className="my-6 max-w-xl text-center text-sm leading-relaxed sm:text-base sm:leading-relaxed md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed text-textPrimary">
           An AI-powered chatbot designed to provide fast, accurate, and easily accessible legal consultations. Get legal information, document guidance, and initial legal assistance anytime, anywhere.
         </p>
         <Link to="/chatbot">
@@ -47,7 +47,7 @@ const Hero = () => {
             whileTap={{
               scale: 0.985,
             }}
-            className="group relative flex w-fit items-center gap-1.5 rounded-full bg-gray-900/10 px-4 py-2 text-gray-900 transition-colors hover:bg-gray-900/50"
+            className="group relative flex w-fit items-center gap-1.5 rounded-full bg-secondary text-onPrimary px-4 py-2 transition-colors hover:bg-secondary/80"
           >
             Get Started
             <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
