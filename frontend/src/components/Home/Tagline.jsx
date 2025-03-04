@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion"
-import { FiArrowRight } from "react-icons/fi"
-import { Link } from 'react-router-dom'
+
 
 const GRADIENT_COLORS = ["#D9CEC5", "#E0D6CC", "#E8DFD6", "#F0E8E0"]
 

@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button } from "flowbite-react"
 import { Link } from 'react-router-dom'
-import { assets } from '../assets/assets'
+import { assets } from '../../assets/assets'
 
 const Features = () => {
   return (
     <div className="flex flex-col items-center mx-auto py-60 bg-onPrimary">
       <h2 className="text-3xl font-bold mb-10 text-onSurface">Features</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14">
         <div className="max-w-xs py-5 px-10 bg-surface shadow-lg">
           <img src={assets.feature_chatbot} alt="chatbot" className='w-[45px] mb-4' />
           <h5 className="text-lg font-bold tracking-tight text-onSurface mb-2">
