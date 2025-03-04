@@ -77,3 +77,6 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+a.footer{
+  color: black;
+}

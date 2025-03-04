@@ -66,7 +66,7 @@ const Header = () => {
                 to="/"
                 onClick={toggleMenu}
                 className={({ isActive }) =>
-                  `block px-4 py-2 text-onPrimary transition duration-300 ease-in-out hover:text-gray-300 
+                  `block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300 
                   ${isActive ? 'bg-primary rounded-lg' : ''}`
                 }
               >
@@ -78,7 +78,7 @@ const Header = () => {
                 to="/chatbot"
                 onClick={toggleMenu}
                 className={({ isActive }) =>
-                  `block px-4 py-2 text-onPrimary transition duration-300 ease-in-out hover:text-gray-300 
+                  `block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300 
                   ${isActive ? 'bg-primary rounded-lg' : ''}`
                 }
               >
@@ -90,7 +90,7 @@ const Header = () => {
                 to="/document"
                 onClick={toggleMenu}
                 className={({ isActive }) =>
-                  `block px-4 py-2 text-onPrimary transition duration-300 ease-in-out hover:text-gray-300 
+                  `block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300 
                   ${isActive ? 'bg-primary rounded-lg' : ''}`
                 }
               >
@@ -102,7 +102,7 @@ const Header = () => {
                 to="/lawyer"
                 onClick={toggleMenu}
                 className={({ isActive }) =>
-                  `block px-4 py-2 text-onPrimary transition duration-300 ease-in-out hover:text-gray-300 
+                  `block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300 
                   ${isActive ? 'bg-primary rounded-lg' : ''}`
                 }
               >
@@ -113,7 +113,7 @@ const Header = () => {
               <Link
                 to='/login'
                 onClick={toggleMenu}
-                className='block px-4 py-2 text-onPrimary transition duration-300 ease-in-out hover:text-gray-300'
+                className='block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300'
               >
                 Login / Signup
               </Link>
