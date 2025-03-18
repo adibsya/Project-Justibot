@@ -9,6 +9,16 @@ import tagline from "./tagline.png";
 import logo_black from "./logo_justibot_black.png";
 import home_aboutus from "./home_aboutus.svg";
 import home_faq from "./home_faq.svg";
+import direktori_dokumen from "./direktori_dokumen.svg";
+import public1 from "./man.png";
+import public2 from "./woman.png";
+import section2 from "./section2.png";
+import verifikasi from "./verif.png";
+import praktis from "./praktis.png";
+import aman from "./aman.png";
+import kebutuhan from "./kebutuhan.png";
+import lawyer from "./lawyerman.png";
+import actor from "./actor.png";
 
 export const assets = {
   logo,
@@ -22,4 +32,14 @@ export const assets = {
   logo_black,
   home_aboutus,
   home_faq,
+  direktori_dokumen,
+  public1,
+  public2,
+  section2,
+  verifikasi,
+  praktis,
+  aman,
+  kebutuhan,
+  lawyer,
+  actor,
 };
