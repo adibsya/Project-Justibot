@@ -6,6 +6,8 @@ import Chatbot from "./pages/Chatbot";
 import Lawyer from "./pages/Lawyer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import About from "./components/About";
+import Blog from "./pages/Blog";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/document" element={<Document />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/lawyer" element={<Lawyer />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
       <Footer />
     </div>

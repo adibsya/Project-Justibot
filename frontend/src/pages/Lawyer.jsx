@@ -6,7 +6,7 @@ import LawyersList from "../components/Lawyer/LawyersList";
 
 const Lawyer = () => {
   return (
-    <div className="min-h-screen bg-onPrimary h-full">
+    <div className="min-h-screen bg-onPrimary">
       <LawyerDir />
       <Iklan />
       <BenefitCard />

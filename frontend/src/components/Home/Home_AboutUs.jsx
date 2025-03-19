@@ -1,7 +1,9 @@
 import React from "react";
 import { assets } from "../../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const Home_AboutUs = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-onPrimary py-10 md:py-16 relative overflow-hidden">
       {/* Half rounded box with secondary color */}
@@ -25,7 +27,10 @@ const Home_AboutUs = () => {
               legal procedures, or connections to qualified attorneys, Justibot
               is here to simplify your legal journey.
             </p>
-            <button className="flex items-center hover:text-onSurface/90 text-onSurface py-2">
+            <button
+              className="flex items-center hover:text-onSurface/90 text-onSurface py-2"
+              onClick={() => navigate(`../about`)}
+            >
               Learn More
               <svg
                 className="ml-2 h-5 w-5"

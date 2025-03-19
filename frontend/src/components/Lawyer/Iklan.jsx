@@ -4,7 +4,7 @@ import { assets } from "../../assets/assets";
 
 const Iklan = () => {
   return (
-    <div className="bg-secondary relative w-full min-h-[600px] md:min-h-[800px] lg:min-h-[600px] pb-4 overflow-hidden">
+    <div className="bg-secondary relative w-full min-h-[600px] md:min-h-[800px] lg:min-h-[600px] pb-4 overflow-hidden text-onSurface">
       <img
         src={assets.section2}
         alt="Iklan"
