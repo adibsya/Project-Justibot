@@ -19,6 +19,46 @@ const Header = () => {
               <p className="text-2xl">JUSTIBOT</p>
             </Link>
           </div>
+
+          {/* Hamburger Menu Button for Mobile */}
+          <button
+            className="md:hidden text-onPrimary focus:outline-none"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            )}
+          </button>
+
           <div className="hidden md:flex items-center space-x-8">
             <ul className="flex items-center space-x-8 text-onPrimary">
               <li>
@@ -53,6 +93,14 @@ const Header = () => {
                   <p>Lawyer</p>
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/blog"
+                  className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  <p>Blog</p>
+                </NavLink>
+              </li>
             </ul>
             <Link
               to="/login"
@@ -65,25 +113,6 @@ const Header = () => {
               />
               <p>Login / Signup</p>
             </Link>
-          </div>
-          <div className="md:hidden flex items-center">
-            <button onClick={toggleMenu} className="outline-none ml-6 mr-3">
-              <svg
-                className="w-6 h-6 text-onPrimary"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMenuOpen ? (
-                  <path d="M6 18L18 6M6 6l12 12"></path>
-                ) : (
-                  <path d="M4 6h16M4 12h16M4 18h16"></path>
-                )}
-              </svg>
-            </button>
           </div>
         </nav>
         <div
@@ -136,6 +165,18 @@ const Header = () => {
                 }
               >
                 Lawyer
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/blog"
+                onClick={toggleMenu}
+                className={({ isActive }) =>
+                  `block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300 
+                  ${isActive ? "bg-primary rounded-lg" : ""}`
+                }
+              >
+                Blog
               </NavLink>
             </li>
             <li>
