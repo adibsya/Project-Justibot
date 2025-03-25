@@ -9,9 +9,9 @@ const articles = [
     id: 1,
     title:
       "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-    date: "19 Februari 2025",
+    date: "20 Februari 2025",
     image: assets.articles1,
-    link: "/artikel ",
+    link: "/article/1",
   },
   {
     id: 2,

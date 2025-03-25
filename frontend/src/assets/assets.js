@@ -21,6 +21,7 @@ import actor from "./actor.png";
 import item_listdoc from "./item-listdoc.png";
 import bg_aboutus from "./bg-aboutus.png";
 import articles1 from "./articles1.png";
+import berita_articles1 from "./berita.png";
 
 export const assets = {
   logo,
@@ -46,4 +47,5 @@ export const assets = {
   item_listdoc,
   bg_aboutus,
   articles1,
+  berita_articles1,
 };

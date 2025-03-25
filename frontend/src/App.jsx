@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import About from "./components/About";
 import Blog from "./pages/Blog";
+import Artikel from "./components/Blog/Artikel";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/lawyer" element={<Lawyer />} />
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/article/1" element={<Artikel />} />
       </Routes>
       <Footer />
     </div>
