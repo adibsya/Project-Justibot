@@ -11,7 +11,7 @@ const articles = [
       "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
     date: "19 Februari 2025",
     image: assets.articles1,
-    link: "/artikel ",
+    link: "/artikel",
   },
   {
     id: 2,

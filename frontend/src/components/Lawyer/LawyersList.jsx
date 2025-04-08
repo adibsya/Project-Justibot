@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const lawyersData = [
   {
     id: 1,
-    name: "Ahmad Adib Syaifulloh, S.T.",
+    name: "Nur Rohma Widiya Ningsih, S.T.",
     specialty: "Kriminal / Kejahatan Pidana",
     university: "Universitas Katolik Indonesia",
     experience: "4 Tahun",
+    link: "/lawyer-profile/1",
   },
   {
     id: 2,
@@ -15,6 +17,7 @@ const lawyersData = [
     specialty: "Hukum Perdata",
     university: "Universitas Gadjah Mada",
     experience: "6 Tahun",
+    link: "/lawyer-profile/2",
   },
   {
     id: 3,
@@ -22,6 +25,7 @@ const lawyersData = [
     specialty: "Hukum Ketenagakerjaan",
     university: "Universitas Indonesia",
     experience: "5 Tahun",
+    link: "/lawyer-profile/3",
   },
   {
     id: 4,
@@ -124,9 +128,17 @@ const LawyersList = () => {
             <p className="text-gray-600">
               <strong>Pengalaman:</strong> {lawyer.experience}
             </p>
-            <button className="mt-4 text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]">
-              Cek Profil
-            </button>
+            {lawyer.link ? (
+              <Link to={lawyer.link}>
+                <button className="mt-4 text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]">
+                  Cek Profil
+                </button>
+              </Link>
+            ) : (
+              <button className="mt-4 text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02] opacity-50 cursor-not-allowed">
+                Cek Profil
+              </button>
+            )}
           </div>
         ))}
       </motion.div>

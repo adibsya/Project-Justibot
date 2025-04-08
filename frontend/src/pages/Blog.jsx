@@ -4,8 +4,9 @@ import RecommendArticles from "../components/Blog/RecommendArticles";
 
 const Blog = () => {
   return (
-    <div>
+    <div className="bg-onPrimary">
       <NewBlog />
+      <RecommendArticles />
     </div>
   );
 };

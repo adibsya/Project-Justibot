@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Header";
+import assets from "../../assets/assets";
 
 const Artikel = () => {
+
   return (
-    <div className="bg-gray-100 min-h-screen pt-24">
-      <Navbar />
-      
+    <div className="bg-gray-100 min-h-screen pt-24 text-onSurface">
       <div className="w-full mx-auto px-12 py-12 flex flex-col lg:flex-row gap-8">
         {/* Konten Utama */}
         <div className="lg:w-2/3 bg-white p-8 shadow-md rounded-lg">
@@ -22,9 +21,9 @@ const Artikel = () => {
           
           {/* Gambar Artikel */}
           <img
-            src="/images/berita.png"
+            src={assets.berita}
             alt="Efisiensi Anggaran 2025"
-            className="max-w-[700px] w-full mx-auto rounded-lg"
+            className="max-w-[700px] w-full mx-auto rounded-lg p-10"
           />
           
           <p className="text-gray-700 leading-relaxed text-lg">
@@ -49,7 +48,7 @@ const Artikel = () => {
         </div>
 
         {/* Sidebar Rekomendasi */}
-        <aside className="lg:w-1/3 bg-white p-6 shadow-md rounded-lg">
+        <aside id="recommendArticles" className="lg:w-1/3 bg-white p-6 shadow-md rounded-lg">
           <h2 className="text-xl font-semibold mb-4">Rekomendasi untuk Anda</h2>
           <ul className="space-y-4">
             {[...Array(4)].map((_, index) => (
@@ -64,7 +63,12 @@ const Artikel = () => {
               </li>
             ))}
           </ul>
-          <p className="text-blue-600 text-sm mt-4 cursor-pointer hover:underline">Lihat Selengkapnya →</p>
+          <Link 
+            to="/blog?scrollTo=recommendations" 
+            className="text-blue-600 text-sm mt-4 cursor-pointer hover:underline inline-block"
+          >
+            Lihat Selengkapnya →
+          </Link>
         </aside>
       </div>
     </div>

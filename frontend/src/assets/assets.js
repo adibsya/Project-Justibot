@@ -21,6 +21,11 @@ import actor from "./actor.png";
 import item_listdoc from "./item-listdoc.png";
 import bg_aboutus from "./bg-aboutus.png";
 import articles1 from "./articles1.png";
+import bg from './background_register.png';
+import forgot1 from './forgot1.png';
+import forgot2 from './forgot2.png';
+import berita from './berita.png';
+import profile from './profile.png';
 
 export const assets = {
   logo,
@@ -46,4 +51,11 @@ export const assets = {
   item_listdoc,
   bg_aboutus,
   articles1,
+  bg,
+  forgot1,
+  forgot2,
+  berita,
+  profile,
 };
+
+export default assets;
