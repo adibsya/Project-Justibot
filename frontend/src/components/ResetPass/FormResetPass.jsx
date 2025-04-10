@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import assets from "../../assets/assets";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const FormResetPass = () => {
@@ -9,18 +9,13 @@ const FormResetPass = () => {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [token, setToken] = useState("");
+  const { token } = useParams("");
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const resetToken = params.get("token");
-    if (resetToken) {
-      setToken(resetToken);
-    } else {
-      setError("Token tidak valid.");
+    if (!token) {
+      setError("Token tidak valid atau telah kedaluwarsa.");
     }
-  }, [location]);
+  }, [token]);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();

@@ -14,6 +14,8 @@ import ForgotPass from "./pages/ForgotPassword";
 import ResetPass from "./pages/ResetPassword";
 import Artikel from "./components/Blog/Artikel";
 import Profile from "./components/Lawyer/Profile";
+import VerifySuccess from "./pages/VerifySuccess";
+import VerifyFailed from "./pages/VerifyFailed";
 
 const App = () => {
   return (
@@ -29,9 +31,11 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPass />} />
-        <Route path="/reset-password" element={<ResetPass />} />
-        <Route path="/artikel" element={<Artikel />} />
+        <Route path="/reset-password/:token" element={<ResetPass />} />
+        <Route path="/artikel/:id" element={<Artikel />} />
         <Route path="/lawyer-profile/1" element={<Profile />} />
+        <Route path="/verify-success" element={<VerifySuccess />} />
+        <Route path="/verify-failed" element={<VerifyFailed />} />
       </Routes>
       <Footer />
     </div>

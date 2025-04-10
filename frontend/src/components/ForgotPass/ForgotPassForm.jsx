@@ -24,7 +24,7 @@ const ForgotPassForm = () => {
 
   const handleOkClick = () => {
     setIsModalOpen(false);
-    navigate("/reset-password");
+    navigate("/reset-password/:token");
   };
 
   return (

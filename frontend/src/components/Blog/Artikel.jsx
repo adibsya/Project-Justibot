@@ -1,8 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import assets from "../../assets/assets";
 
 const Artikel = () => {
+
+  const { id } = useParams(); // Mengambil ID artikel dari URL
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/articles/${id}`);
+        if (!response.ok) {
+          throw new Error("Artikel tidak ditemukan");
+        }
+        const data = await response.json();
+        setArticle(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticle();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="bg-white flex items-center justify-center h-screen">
+        <div className="loader">Loading...</div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="bg-white flex items-center justify-center h-screen">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen pt-24 text-onSurface">
@@ -12,38 +51,22 @@ const Artikel = () => {
           {/* Breadcrumbs */}
           <p className="text-sm text-gray-500 mb-4">
             <Link to="/blog" className="text-blue-600 hover:underline">Blog</Link> &gt; 
-            <span className="text-gray-700"> Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?</span>
+            <span className="text-gray-700"> {article.title}</span>
           </p>
           
           <h1 className="text-3xl font-bold mb-6">
-            Efisiensi yang Dilakukan untuk Kesejahteraan Rakyat Berujung Korupsi?
+            {article.title}
           </h1>
           
           {/* Gambar Artikel */}
           <img
-            src={assets.berita}
-            alt="Efisiensi Anggaran 2025"
+            src={article.image_url}
+            alt="{article.title}"
             className="max-w-[700px] w-full mx-auto rounded-lg p-10"
           />
           
-          <p className="text-gray-700 leading-relaxed text-lg">
-            Dalam upaya meningkatkan kesejahteraan masyarakat, pemerintah sering kali melakukan efisiensi anggaran.
-            Namun, apakah efisiensi ini benar-benar bermanfaat atau justru membuka celah bagi tindakan korupsi?
-          </p>
-          <p className="text-gray-700 leading-relaxed text-lg mt-4">
-            Sejarah menunjukkan bahwa kebijakan efisiensi anggaran sering kali dijadikan alasan untuk mengurangi biaya,
-            namun di sisi lain, transparansi dalam penggunaan anggaran sering kali diabaikan. Hal ini menyebabkan munculnya
-            berbagai praktik penyimpangan keuangan.
-          </p>
-          <p className="text-gray-700 leading-relaxed text-lg mt-4">
-            Kasus-kasus besar dalam beberapa dekade terakhir menunjukkan bahwa banyak pejabat yang memanfaatkan kebijakan ini
-            untuk kepentingan pribadi. Salah satu contoh yang paling mencolok adalah ketika anggaran untuk sektor pendidikan dan
-            kesehatan dipangkas, tetapi alokasi dana untuk proyek-proyek yang tidak transparan justru meningkat.
-          </p>
-          <p className="text-gray-700 leading-relaxed text-lg mt-4">
-            Dalam menghadapi permasalahan ini, dibutuhkan mekanisme pengawasan yang lebih ketat serta keterlibatan masyarakat
-            dalam mengawasi penggunaan dana publik. Tanpa transparansi yang baik, kebijakan efisiensi justru dapat menjadi bumerang
-            yang merugikan masyarakat secara luas.
+          <p className="text-gray-700 leading-relaxed text-lg" style={{ whiteSpace : "pre-line" }}>
+            {article.content}
           </p>
         </div>
 

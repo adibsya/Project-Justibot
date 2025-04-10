@@ -34,7 +34,7 @@ const RegisterForm = () => {
         password: formData.password
       });
   
-      alert('Registrasi Berhasil! Anda diarahkan ke halaman login.');
+      alert('Registrasi Berhasil! Silakan cek email untuk verifikasi.');
       navigate('/login');
   
     } catch (error) {

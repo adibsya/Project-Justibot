@@ -21,4 +21,19 @@ const sendVerificationEmail = async (to, link) => {
     await transporter.sendMail(mailOptions);
 };
 
-module.exports = sendVerificationEmail;
+const sendResetPasswordEmail = async (to, link) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to,
+        subject: "Reset Password",
+        html: `<p>Klik link berikut untuk reset password Anda:</p>
+               <a href="${link}">Reset Password</a>`
+    };
+
+    await transporter.sendMail(mailOptions);
+};
+
+module.exports = {
+    sendVerificationEmail,
+    sendResetPasswordEmail
+};

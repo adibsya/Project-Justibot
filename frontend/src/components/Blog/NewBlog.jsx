@@ -1,50 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 
-const articles = [
-  {
-    id: 1,
-    title:
-      "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-    date: "19 Februari 2025",
-    image: assets.articles1,
-    link: "/artikel",
-  },
-  {
-    id: 2,
-    title:
-      "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-    date: "19 Februari 2025",
-    image: assets.articles1,
-  },
-  {
-    id: 3,
-    title:
-      "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-    date: "19 Februari 2025",
-    image: assets.articles1,
-  },
-  {
-    id: 4,
-    title:
-      "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-    date: "19 Februari 2025",
-    image: assets.articles1,
-  },
-  {
-    id: 5,
-    title:
-      "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-    date: "19 Februari 2025",
-    image: assets.articles1,
-  },
-];
-
 const NewBlog = () => {
   const navigate = useNavigate();
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/articles"); // Mengambil data dari backend
+        const data = await response.json();
+        setArticles(data); // Simpan data artikel di state
+      } catch (err) {
+        setError('Gagal mengambil artikel');
+        console.error(err);
+      } finally {
+        setLoading(false); // Set loading ke false setelah data diambil
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white flex items-center justify-center h-screen">
+        <div className="loader">Loading...</div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="bg-white flex items-center justify-center h-screen">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-10xl mx-auto px-4 py-40 grid grid-cols-1 lg:grid-cols-3 gap-10 bg-onPrimary text-onSurface">
@@ -54,8 +50,8 @@ const NewBlog = () => {
           Temukan berita terbaru terkait informasi hukum yang ada di Indonesia
         </p>
         <div className="space-y-4 border-r pr-5 mt-20">
-          {articles.map((article) => (
-            <Link to={article.link} key={article.id} className="block">
+          {articles.slice(3, 7).map((article) => (
+            <Link to={`/artikel/${article.id}`} key={article.id} className="block">
               <motion.div
                 className="p-4 bg-gray-100 rounded-xl cursor-pointer hover:bg-gray-200"
                 whileHover={{ scale: 1.02 }}
@@ -72,16 +68,16 @@ const NewBlog = () => {
         </div>
       </div>
 
-      <div className="col-span-2 flex flex-col space-y-6 mt-44">
+      <div className="col-span-2 flex flex-col space-y-6 mt-56">
         {articles.slice(0, 2).map((article) => (
-          <Link to={article.link} key={article.id} className="block">
+          <Link to={`/artikel/${article.id}`} key={article.id} className="block">
             <motion.div
               className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
               <img
-                src={article.image}
+                src={article.image_url}
                 alt={article.title}
                 className="w-full h-64 object-cover"
               />
