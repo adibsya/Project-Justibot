@@ -26,6 +26,7 @@ import forgot1 from './forgot1.png';
 import forgot2 from './forgot2.png';
 import berita from './berita.png';
 import profile from './profile.png';
+import logo_dokumen from './logo_dokumen.png';
 
 export const assets = {
   logo,
@@ -56,6 +57,7 @@ export const assets = {
   forgot2,
   berita,
   profile,
+  logo_dokumen,
 };
 
 export default assets;

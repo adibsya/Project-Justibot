@@ -1,27 +1,34 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Document from "./pages/Document";
-import Chatbot from "./pages/Chatbot";
-import Lawyer from "./pages/Lawyer";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+
+// Layouts
+import UserLayout from "./layouts/UserLayout";
+import AdminLayout from "./layouts/AdminLayout";
+
+// User Pages
+import Home from "./pages/User/Home";
+import Document from "./pages/User/Document";
+import Chatbot from "./pages/User/Chatbot";
+import Lawyer from "./pages/User/Lawyer";
 import About from "./components/About";
-import Blog from "./pages/Blog";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPass from "./pages/ForgotPassword";
-import ResetPass from "./pages/ResetPassword";
-import Artikel from "./components/Blog/Artikel";
-import Profile from "./components/Lawyer/Profile";
-import VerifySuccess from "./pages/VerifySuccess";
-import VerifyFailed from "./pages/VerifyFailed";
+import Blog from "./pages/User/Blog";
+import Login from "./pages/User/Login";
+import Register from "./pages/User/Register";
+import ForgotPass from "./pages/User/ForgotPassword";
+import ResetPass from "./pages/User/ResetPassword";
+import Artikel from "./components/User/Blog/Artikel";
+import Profile from "./components/User/Lawyer/Profile";
+import VerifySuccess from "./pages/User/VerifySuccess";
+import VerifyFailed from "./pages/User/VerifyFailed";
+
+// Admin Pages
+import DashboardAdmin from "./pages/Admin/Dashboard";
 
 const App = () => {
   return (
-    <div className="w-full h-full absoulute">
-      <Header />
-      <Routes>
+    <Routes>
+      {/* User Layout */}
+      <Route element={<UserLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/document" element={<Document />} />
         <Route path="/chatbot" element={<Chatbot />} />
@@ -36,9 +43,13 @@ const App = () => {
         <Route path="/lawyer-profile/1" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
-      </Routes>
-      <Footer />
-    </div>
+      </Route>
+
+      {/* Admin Layout */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="dashboard" element={<DashboardAdmin />} />
+      </Route>
+    </Routes>
   );
 };
 
