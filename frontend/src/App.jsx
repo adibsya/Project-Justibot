@@ -23,6 +23,9 @@ import VerifyFailed from "./pages/User/VerifyFailed";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/Dashboard";
+import Articles from "./components/Admin/Articles/Articles";
+import ChatbotAdmin from "./components/Admin/Chatbot/Chatbot";
+import EditLawyers from "./components/Admin/Lawyers/Lawyers";
 
 const App = () => {
   return (
@@ -48,6 +51,9 @@ const App = () => {
       {/* Admin Layout */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<DashboardAdmin />} />
+        <Route path="articles" element={<Articles />} />
+        <Route path="lawyers" element={<EditLawyers />} />
+        <Route path="chatbot-analysis" element={<ChatbotAdmin />} />
       </Route>
     </Routes>
   );

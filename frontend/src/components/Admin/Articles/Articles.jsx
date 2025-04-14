@@ -2,8 +2,10 @@ import React from 'react'
 
 const Articles = () => {
   return (
-    <div>
-      
+    <div className='min-h-screen bg-surface text-onSurface'>
+      <div>
+
+      </div>
     </div>
   )
 }

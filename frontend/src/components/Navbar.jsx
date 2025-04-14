@@ -4,7 +4,7 @@ import { FaBars, FaEnvelope, FaUser } from 'react-icons/fa';
 const Navbar = ({ toggleSidebar }) => {
   return (
     <div className="flex items-center justify-between p-4 bg-white shadow-md">
-      <button onClick={toggleSidebar} className="text-2xl">
+      <button onClick={toggleSidebar} className="text-2xl text-onSurface">
         <FaBars />
       </button>
       <div className="flex items-center space-x-4 ">
