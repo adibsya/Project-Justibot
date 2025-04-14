@@ -14,12 +14,12 @@ const RecommendArticles = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    if (searchParams.get('scrollTo') === 'recommendations') {
+    if (searchParams.get("scrollTo") === "recommendations") {
       setTimeout(() => {
-        const recommendSection = document.querySelector('#recommendations');
+        const recommendSection = document.querySelector("#recommendations");
         if (recommendSection) {
           const topOffset = recommendSection.offsetTop - 100;
-          window.scrollTo({ top: topOffset, behavior: 'smooth' });
+          window.scrollTo({ top: topOffset, behavior: "smooth" });
         }
       }, 100);
     }
@@ -27,7 +27,9 @@ const RecommendArticles = () => {
 
   const fetchArticles = async (page) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/articles/recommendations?page=${page}&limit=6`);
+      const response = await fetch(
+        `http://localhost:3000/api/articles/recommendations?page=${page}&limit=6`,
+      );
       const data = await response.json();
       setArticles(data.articles);
       setTotalPages(data.totalPages);
@@ -49,7 +51,11 @@ const RecommendArticles = () => {
     if (currentPage > 3) pages.push("««"); // First page
     if (currentPage > 3) pages.push("...");
 
-    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+    for (
+      let i = Math.max(1, currentPage - 2);
+      i <= Math.min(totalPages, currentPage + 2);
+      i++
+    ) {
       pages.push(i);
     }
 
@@ -82,7 +88,9 @@ const RecommendArticles = () => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <div className="w-[200px] h-24 bg-gray-300 rounded-lg">
-              {article.image_url && <img src={article.image_url} alt={article.title} />}
+              {article.image_url && (
+                <img src={article.image_url} alt={article.title} />
+              )}
             </div>
             <div>
               <h3 className="text-onSurface text-lg font-semibold leading-tight hover:underline cursor-pointer">

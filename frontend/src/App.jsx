@@ -23,9 +23,9 @@ import VerifyFailed from "./pages/User/VerifyFailed";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/Dashboard";
-import Articles from "./components/Admin/Articles/Articles";
-import ChatbotAdmin from "./components/Admin/Chatbot/Chatbot";
-import EditLawyers from "./components/Admin/Lawyers/Lawyers";
+import Articles from "./components/Admin/Articles/DataArticles";
+import ChatbotAdmin from "./components/Admin/Chatbot/ChatbotAnalysis";
+import DataLawyers from "./components/Admin/Lawyers/DataLawyers";
 
 const App = () => {
   return (
@@ -52,7 +52,7 @@ const App = () => {
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<DashboardAdmin />} />
         <Route path="articles" element={<Articles />} />
-        <Route path="lawyers" element={<EditLawyers />} />
+        <Route path="lawyers" element={<DataLawyers />} />
         <Route path="chatbot-analysis" element={<ChatbotAdmin />} />
       </Route>
     </Routes>
