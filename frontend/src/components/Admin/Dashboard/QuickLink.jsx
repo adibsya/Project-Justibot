@@ -1,24 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import assets from '../../../assets/assets';
 
 const QuickLink = () => {
   return (
-    <div className="bg-white p-4 rounded-xl border border-gray-300 w-64">
-      <h2 className="font-bold mb-3">Quick Links</h2>
-      <div className="bg-gray-300 h-20 rounded mb-3"></div>
-      <div className="bg-gray-300 h-20 rounded mb-3"></div>
-      <div className="bg-gray-300 h-20 rounded mb-3"></div>
-
-      <h2 className="font-bold mt-6 mb-3">Documentation</h2>
-      <div className="bg-gray-300 h-24 rounded flex items-center px-4 gap-3">
-        <div className="flex flex-col items-center justify-center">
-          <img src={assets.logo_dokumen} alt="file icon" className="w-10 h-8 mb-1" />
-        </div>
-        <p className="text-sm leading-tight">
-          Click untuk melihat<br />
-          dokumentasi penggunaan
-        </p>
+    <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200 w-full max-w-xs">
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-[#122E40]">Documentation</h2>
       </div>
+
+      <Link to="/admin/documentation" className="block group">
+        <div className="bg-[#F9F8F5] hover:bg-[#E5DED5] transition-all duration-200 p-4 rounded-xl flex items-center gap-4 border border-gray-100 shadow-sm group-hover:shadow-md">
+          <div className="w-12 h-12 bg-[#A69C7A]/10 rounded-full flex items-center justify-center">
+            <img src={assets.logo_dokumen} alt="file icon" className="w-6 h-6" />
+          </div>
+          <div className="text-sm text-[#122E40]">
+            <p className="font-medium leading-snug">Klik untuk melihat<br /> dokumentasi admin</p>
+          </div>
+        </div>
+      </Link>
     </div>
   );
 };
