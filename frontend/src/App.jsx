@@ -20,6 +20,7 @@ import Artikel from "./components/User/Blog/Artikel";
 import Profile from "./components/User/Lawyer/Profile";
 import VerifySuccess from "./pages/User/VerifySuccess";
 import VerifyFailed from "./pages/User/VerifyFailed";
+import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/Dashboard";
@@ -46,6 +47,10 @@ const App = () => {
         <Route path="/lawyer-profile/1" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
+        <Route
+          path="/perjanjian-kerja-sama"
+          element={<PerjanjianKerjaSama />}
+        />
       </Route>
 
       {/* Admin Layout */}
