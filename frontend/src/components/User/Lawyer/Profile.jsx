@@ -63,9 +63,6 @@ const Profile = () => {
           <p className="text-gray-700 text-lg mt-2">Trading, Finance</p>
         </div>
       </div>
-      <button className="mt-6 px-6 py-3 bg-gray-600 text-white text-lg rounded shadow-md hover:bg-gray-700">
-        <Link to="/artikel">Baca Artikel</Link>
-      </button>
     </div>
   );
 };

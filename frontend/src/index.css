@@ -1,9 +1,47 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
+@import 'react-quill/dist/quill.snow.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pingOnce {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-bounceIn {
+  animation: bounceIn 0.5s ease;
+}
+
+.animate-pingOnce {
+  animation: pingOnce 0.5s ease;
+}
 
 .montserrat-reguler {
   font-family: "Montserrat", serif;
