@@ -33,7 +33,6 @@ import EditLawyer from "./components/Admin/Lawyers/EditLawyer";
 import FormTambahArtikel from "./components/Admin/Articles/FormTambahArtikel";
 import FormEditArtikel from "./components/Admin/Articles/FormEditArtikel";
 
-
 const App = () => {
   return (
     <Routes>

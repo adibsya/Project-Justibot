@@ -13,6 +13,9 @@ import {
   Spacing,
 } from "docx"; // For DOCX: npm install docx
 import { jsPDF } from "jspdf"; // For PDF: npm install jspdf
+import { Buffer } from "buffer";
+
+window.Buffer = Buffer; // Polyfill Buffer for browser
 
 const PerjanjianKerjaSama = () => {
   const [formData, setFormData] = useState({
@@ -310,7 +313,7 @@ const PerjanjianKerjaSama = () => {
             {/* Step 1: Input Form */}
             <Step>
               <div className="bg-primary p-6">
-                <h3 className="text-xl font-bold mb-4">
+                <h3 className="text-xl font-bold mb-4 text-onSurface">
                   Form Input Perjanjian Kerja Sama
                 </h3>
                 <div className="grid gap-6">
