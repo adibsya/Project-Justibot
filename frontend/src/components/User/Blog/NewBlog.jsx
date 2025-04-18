@@ -43,7 +43,7 @@ const NewBlog = () => {
   }
 
   return (
-    <div className="w-full max-w-10xl mx-auto px-4 py-40 grid grid-cols-1 lg:grid-cols-3 gap-10 bg-onPrimary text-onSurface">
+    <div className="w-full max-w-10xl mx-auto px-16 py-40 grid grid-cols-1 lg:grid-cols-3 gap-10 bg-onPrimary text-onSurface">
       <div className="col-span-1">
         <motion.h2
           className="text-5xl font-bold"

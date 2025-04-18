@@ -23,19 +23,20 @@ import VerifyFailed from "./pages/User/VerifyFailed";
 import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
 
 // Admin Pages
-import DashboardAdmin from "./pages/Admin/Dashboard";
-import AdminDocumentation from "./components/Admin/Dashboard/Documentation";
-import Articles from "./components/Admin/Articles/DataArticles";
-import ChatbotAdmin from "./components/Admin/Chatbot/ChatbotAnalysis";
-import DataLawyers from "./components/Admin/Lawyers/DataLawyers";
-import FormTambahLawyer from "./components/Admin/Lawyers/FormTambahLawyer";
-import EditLawyer from "./components/Admin/Lawyers/EditLawyer";
-import FormTambahArtikel from "./components/Admin/Articles/FormTambahArtikel";
-import FormEditArtikel from "./components/Admin/Articles/FormEditArtikel";
+import DashboardAdmin from "./pages/Admin/DashboardData";
+import AdminDocumentation from "./pages/Admin/AdminDocumentation";
+import Articles from "./pages/Admin/ArticlesData";
+import ChatbotAdmin from "./pages/Admin/ChatbotData";
+import DataLawyers from "./pages/Admin/LawyersData";
+import FormTambahLawyer from "./pages/Admin/AddLawyers";
+import EditLawyers from "./pages/Admin/EditLawyers";
+import FormTambahArtikel from "./pages/Admin/AddArticles";
+import FormEditArtikel from "./pages/Admin/EditArticles";
 
 const App = () => {
   return (
     <Routes>
+      {/* User Routes */}
       <Route element={<UserLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/document" element={<Document />} />
@@ -48,22 +49,20 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPass />} />
         <Route path="/reset-password/:token" element={<ResetPass />} />
         <Route path="/artikel/:id" element={<Artikel />} />
-        <Route path="/lawyer-profile/1" element={<Profile />} />
+        <Route path="/lawyer/:id" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
-        <Route
-          path="/perjanjian-kerja-sama"
-          element={<PerjanjianKerjaSama />}
-        />
+        <Route path="/perjanjian-kerja-sama" element={<PerjanjianKerjaSama />} />
       </Route>
 
+      {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<DashboardAdmin />} />
         <Route path="documentation" element={<AdminDocumentation />} />
         <Route path="articles" element={<Articles />} />
         <Route path="lawyers" element={<DataLawyers />} />
         <Route path="lawyers/tambah" element={<FormTambahLawyer />} />
-        <Route path="lawyers/edit/:id" element={<EditLawyer />} />
+        <Route path="lawyers/edit/:id" element={<EditLawyers />} />
         <Route path="articles/tambah" element={<FormTambahArtikel />} />
         <Route path="/admin/articles/edit/:id" element={<FormEditArtikel />} />
         <Route path="chatbot-analysis" element={<ChatbotAdmin />} />
