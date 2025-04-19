@@ -16,7 +16,7 @@ const Document = () => {
       id: 1,
       title: "Surat Perjanjian Kerjasama",
       description: "Dokumen resmi yang mengatur kesepakatan antara dua pihak.",
-      link: "/form/perjanjian-kerjasama",
+      link: "/perjanjian-kerja-sama",
     },
     {
       id: 2,

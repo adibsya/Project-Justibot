@@ -58,4 +58,83 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Tambah artikel
+router.post('/', async (req, res) => {
+  const { title, content, author, image_url } = req.body;
+  try {
+    const result = await pool.query(
+      'INSERT INTO articles (title, content, author, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
+      [title, content, author, image_url]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Gagal menambahkan artikel' });
+  }
+});
+
+// Perbarui artikel
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, content, author, image_url } = req.body;
+  const fieldsToUpdate = [];
+  const values = [];
+  let fieldIndex = 1;
+
+  if (title) {
+    fieldsToUpdate.push(`title = $${fieldIndex++}`);
+    values.push(title);
+  }
+  if (content) {
+    fieldsToUpdate.push(`content = $${fieldIndex++}`);
+    values.push(content);
+  }
+  if (author) {
+    fieldsToUpdate.push(`author = $${fieldIndex++}`);
+    values.push(author);
+  }
+  if (image_url) {
+    fieldsToUpdate.push(`image_url = $${fieldIndex++}`);
+    values.push(image_url);
+  }
+
+  if (fieldsToUpdate.length === 0) {
+    return res.status(400).json({ error: 'Tidak ada data yang diperbarui' });
+  }
+
+  const query = `
+    UPDATE articles 
+    SET ${fieldsToUpdate.join(', ')} 
+    WHERE id = $${fieldIndex} 
+    RETURNING *`;
+  
+  values.push(id);
+
+  try {
+    const result = await pool.query(query, values);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Artikel tidak ditemukan' });
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Gagal memperbarui artikel' });
+  }
+});
+
+// Hapus artikel
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM articles WHERE id = $1 RETURNING *', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Artikel tidak ditemukan' });
+    }
+    res.json({ message: 'Artikel berhasil dihapus' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Gagal menghapus artikel' });
+  }
+});
+
 module.exports = router;

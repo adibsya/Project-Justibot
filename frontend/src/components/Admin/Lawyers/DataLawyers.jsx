@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LawyerRow from './LawyerRow';
+import { CheckCircle } from 'lucide-react';
 import Pagination from './Pagination';
-import { CheckCircle } from 'lucide-react'; // Ganti dengan import CheckCircle dari lucide-react
-
-const dummyLawyers = [
-  {
-    id: 'P0001',
-    name: 'Daffa Ammar',
-    email: 'daffa@mail.com',
-    specialization: 'Hukum Perdata',
-    experience: '5 Tahun',
-    status: 'Aktif',
-  },
-];
 
 const DataLawyers = () => {
   const [search, setSearch] = useState('');
-  const [lawyers, setLawyers] = useState(dummyLawyers);
-  const [showSuccess, setShowSuccess] = useState(false); // Menyimpan status pop-up sukses
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Menyimpan status modal konfirmasi
-  const [lawyerToDelete, setLawyerToDelete] = useState(null); // Menyimpan ID pengacara yang akan dihapus
+  const [lawyers, setLawyers] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [lawyerToDelete, setLawyerToDelete] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchLawyers();
+  }, []);
+
+  const fetchLawyers = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/lawyers');
+      const data = await res.json();
+      setLawyers(data);
+    } catch (err) {
+      console.error('Gagal mengambil data pengacara:', err);
+    }
+  };
 
   const handleAddLawyer = () => {
     navigate('/admin/lawyers/tambah');
@@ -32,37 +34,46 @@ const DataLawyers = () => {
   };
 
   const handleDeleteLawyer = (id) => {
-    setLawyerToDelete(id); // Simpan ID pengacara yang akan dihapus
-    setIsDeleteModalOpen(true); // Tampilkan modal konfirmasi hapus
+    setLawyerToDelete(id);
+    setIsDeleteModalOpen(true);
   };
 
-  const confirmDelete = () => {
-    setLawyers(lawyers.filter((lawyer) => lawyer.id !== lawyerToDelete));
-    setIsDeleteModalOpen(false);
-    setShowSuccess(true); // Menampilkan pop-up sukses
-    setTimeout(() => {
-      setShowSuccess(false); // Menyembunyikan pop-up setelah 2,5 detik
-      navigate('/admin/lawyers'); // Kembali ke halaman DataLawyers setelah penghapusan
-    }, 2500);
+  const confirmDelete = async () => {
+    try {
+      await fetch(`http://localhost:3000/api/lawyers/${lawyerToDelete}`, {
+        method: 'DELETE',
+      });
+      fetchLawyers(); // Refresh data setelah delete
+      setIsDeleteModalOpen(false);
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate('/admin/lawyers');
+      }, 2500);
+    } catch (err) {
+      console.error('Gagal menghapus pengacara:', err);
+    }
   };
 
   const cancelDelete = () => {
-    setIsDeleteModalOpen(false); // Menutup modal jika tidak jadi menghapus
+    setIsDeleteModalOpen(false);
   };
+
+  const filteredLawyers = lawyers.filter((lawyer) =>
+    lawyer.nama.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="p-6">
-      {/* Pop-up Sukses */}
       {showSuccess && (
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg border border-green-500 flex flex-col items-center animate-bounceIn">
-            <CheckCircle className="text-green-600 w-12 h-12 mb-2 animate-pingOnce" /> {/* Ganti FaCheckCircle dengan CheckCircle */}
+            <CheckCircle className="text-green-600 w-12 h-12 mb-2 animate-pingOnce" />
             <p className="text-green-700 text-lg font-semibold">Data berhasil dihapus!</p>
           </div>
         </div>
       )}
 
-      {/* Modal Konfirmasi Hapus */}
       {isDeleteModalOpen && (
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg border border-red-500 flex flex-col items-center">
@@ -88,7 +99,7 @@ const DataLawyers = () => {
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search nama pengacara"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-full w-80 focus:outline-none"
@@ -102,28 +113,72 @@ const DataLawyers = () => {
       </div>
 
       <div className="bg-[#F2F2F2] p-4 rounded-xl overflow-x-auto">
-        <table className="w-full text-left">
+        <table className="w-full text-center">
           <thead>
-            <tr className="text-sm text-gray-600">
+            <tr className="text-sm text-gray-600 text-center">
               <th className="py-2">No</th>
-              <th>ID Pengacara</th>
-              <th>Nama Pengacara</th>
-              <th>Email</th>
-              <th>Spesialisasi</th>
-              <th>Pengalaman</th>
-              <th>Status</th>
+              <th className="px-6">Foto</th>
+              <th className='w-44'>Nama</th>
+              <th className='w-32'>Lokasi</th>
+              <th className='w-36'>Spesialisasi</th>
+              <th className='w-24'>Pengalaman</th>
+              <th>Universitas</th>
+              <th>Deskripsi</th>
+              <th>Industri</th>
+              <th className='w-16'>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {lawyers.map((lawyer, index) => (
-              <LawyerRow
-                key={index}
-                index={index + 1}
-                lawyer={lawyer}
-                onEdit={() => handleEditLawyer(lawyer.id)}
-                onDelete={() => handleDeleteLawyer(lawyer.id)}
-              />
+            {filteredLawyers.map((lawyer, index) => (
+              <tr key={lawyer.id} className="border-t text-sm">
+                <td className="py-2">{index + 1}</td>
+                <td>
+                  <img
+                    src={lawyer.foto_profil}
+                    alt="Profil"
+                    className="w-10 h-10 ml-4 rounded-full object-cover"
+                  />
+                </td>
+                <td>{lawyer.nama}</td>
+                <td>{lawyer.lokasi}</td>
+                <td>{lawyer.spesialisasi}</td>
+                <td>{lawyer.pengalaman_tahun} Tahun</td>
+                <td>{lawyer.asal_univ}</td>
+                <td>
+                  <ul className="list-disc pl-4">
+                    {lawyer.deskripsi?.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </td>
+                <td>{lawyer.industri}</td>
+                <td>
+                  <span
+                    className={`font-semibold ${
+                      lawyer.tersedia ? 'text-green-600' : 'text-red-500'
+                    }`}
+                  >
+                    {lawyer.tersedia ? 'Aktif' : 'Tidak Aktif'}
+                  </span>
+                </td>
+                <td>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditLawyer(lawyer.id)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteLawyer(lawyer.id)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>

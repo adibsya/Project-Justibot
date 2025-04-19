@@ -1,31 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 
 const Articles = () => {
   const navigate = useNavigate();
-  const [articles, setArticles] = useState([
-    {
-      id: 1,
-      title:
-        "Efisiensi yang dilakukan untuk kesejahteraan rakyat berujung korupsi?",
-      date: "19 Februari 2025",
-    },
-    {
-      id: 2,
-      title: "Artikel kedua sebagai contoh",
-      date: "20 Februari 2025",
-    },
-    {
-      id: 3,
-      title: "Artikel ketiga sebagai contoh",
-      date: "21 Februari 2025",
-    },
-  ]);
-
+  const [articles, setArticles] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
+
+  // Ambil data artikel dari API saat komponen dimuat
+  useEffect(() => {
+    fetch("http://localhost:3000/api/articles")
+      .then((res) => res.json())
+      .then((data) => setArticles(data))
+      .catch((error) => console.error("Gagal mengambil data artikel:", error));
+  }, []);
 
   const handleDelete = (id) => {
     setArticleToDelete(id);
@@ -33,13 +23,24 @@ const Articles = () => {
   };
 
   const confirmDelete = () => {
-    setArticles(articles.filter((article) => article.id !== articleToDelete));
+    fetch(`http://localhost:3000/api/articles/${articleToDelete}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          setArticles(articles.filter((article) => article.id !== articleToDelete));
+          setShowSuccess(true);
+          setTimeout(() => {
+            setShowSuccess(false);
+            navigate("/admin/articles");
+          }, 2500);
+        } else {
+          console.error("Gagal menghapus data");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+
     setIsDeleteModalOpen(false);
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      navigate("/admin/articles");
-    }, 2500);
   };
 
   const cancelDelete = () => {
@@ -99,59 +100,44 @@ const Articles = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {articles.map((article) => (
-          <div
-            key={article.id}
-            className="p-4 border rounded-xl shadow-sm bg-white flex flex-col justify-between"
-          >
-            <div>
-              <div className="h-24 bg-gray-300 rounded mb-4"></div>
-              <h3 className="font-bold text-lg">{article.title}</h3>
-              <p className="text-sm text-gray-500">{article.date}</p>
-            </div>
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => handleEdit(article.id)}
-                className="p-2 bg-secondary text-white rounded hover:bg-red-900"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.862 3.487a2.25 2.25 0 113.182 3.182L7.5 19.213l-4.5 1.5 1.5-4.5L16.862 3.487z"
-                  />
-                </svg>
-              </button>
-              <button
-                onClick={() => handleDelete(article.id)}
-                className="p-2 bg-secondary text-white rounded hover:bg-red-900"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m-4 5v6m-4-6v6m8-6v6M5 6h14l-1 14H6L5 6z"
-                  />
-                </svg>
-              </button>
-            </div>
+  {articles.map((article) => (
+    <div
+      key={article.id}
+      className="p-4 border rounded-xl shadow-sm bg-white flex flex-col justify-between"
+    >
+      <div>
+        {article.image_url ? (
+          <img
+            src={article.image_url}
+            alt={article.title}
+            className="h-40 w-full object-cover rounded mb-4"
+          />
+        ) : (
+          <div className="h-40 bg-gray-300 rounded mb-4 flex items-center justify-center text-gray-500">
+            Tidak ada gambar
           </div>
-        ))}
+        )}
+        <h3 className="font-bold text-lg">{article.title}</h3>
+        <p className="text-sm text-gray-500">{article.date}</p>
       </div>
+      <div className="flex justify-end gap-2 mt-4">
+        <button
+          onClick={() => handleEdit(article.id)}
+          className="p-2 bg-secondary text-white rounded hover:bg-red-900"
+        >
+          ✏️
+        </button>
+        <button
+          onClick={() => handleDelete(article.id)}
+          className="p-2 bg-secondary text-white rounded hover:bg-red-900"
+        >
+          🗑️
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 };
