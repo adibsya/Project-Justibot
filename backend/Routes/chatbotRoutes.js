@@ -2,20 +2,17 @@ const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 
-// Debug environment variables
 console.log("GROQ_API_KEY loaded:", !!process.env.GROQ_API_KEY);
 
-// In Node.js backend, we don't use VITE_ prefix for environment variables
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-// Add a simple test route
-router.get("/test", (req, res) => {
-  res.json({
-    message: "Chatbot routes working!",
-    apiKeyConfigured: !!GROQ_API_KEY,
-  });
-});
+// router.get("/test", (req, res) => {
+//   res.json({
+//     message: "Chatbot routes working!",
+//     apiKeyConfigured: !!GROQ_API_KEY,
+//   });
+// });
 
 router.post("/", async (req, res) => {
   const { message } = req.body;

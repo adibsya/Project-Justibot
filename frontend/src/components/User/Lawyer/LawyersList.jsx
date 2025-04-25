@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const LawyersList = () => {
   const [lawyersData, setLawyersData] = useState([]);
@@ -11,9 +12,8 @@ const LawyersList = () => {
   useEffect(() => {
     const fetchLawyers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/lawyers");
-        const data = await response.json();
-        setLawyersData(data);
+        const response = await axios.get("/api/lawyers");
+        setLawyersData(response.data);
       } catch (err) {
         setError("Gagal mengambil data pengacara");
         console.error(err);

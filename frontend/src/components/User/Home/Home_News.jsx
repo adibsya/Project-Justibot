@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Home_News = () => {
   const [articles, setArticles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
 
-  // Fetch 5 artikel terbaru
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/articles/recommendations?page=1&limit=5");
-        const data = await response.json();
-        setArticles(data.articles || []);
+        const response = await axios.get("/api/articles/recommendations?page=1&limit=5");
+        setArticles(response.data.articles || []);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }

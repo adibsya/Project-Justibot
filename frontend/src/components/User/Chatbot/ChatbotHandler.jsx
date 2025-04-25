@@ -79,7 +79,7 @@ const ChatbotHandler = () => {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background/95 flex flex-col items-center">
-      <div className="w-full max-w-4xl px-4 md:px-8 flex flex-col py-4 md:py-8 text-textPrimary">
+      <div className="w-full mt-12 max-w-4xl px-4 md:px-8 flex flex-col py-4 md:py-8 text-textPrimary">
         <h1 className="text-2xl md:text-3xl font-bold mb-2 text-secondary text-center">
           Find the Answer, Solve the Problem
         </h1>

@@ -14,7 +14,7 @@ const ForgotPassForm = () => {
     setError(null);
     
     try {
-      const response = await axios.post("http://localhost:3000/api/forgot-password", { email });
+      const response = await axios.post("/api/forgot-password", { email });
       console.log(response.data);
       setIsModalOpen(true);
     } catch (err) {

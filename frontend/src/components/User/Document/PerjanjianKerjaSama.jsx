@@ -284,10 +284,8 @@ const PerjanjianKerjaSama = () => {
           Formulir Perjanjian Kerja Sama
         </h2>
         <p className="text-center text-lg px-20 text-onPrimary">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
-          eveniet, blanditiis dolore praesentium, natus laborum nisi et velit
-          commodi vitae, corrupti quia? Cum suscipit commodi enim atque amet nam
-          sunt.
+          Harap isi formulir dengan data yang sebenar-benarnya dan valid untuk
+          mendukung kelancaran proses verifikasi dan komunikasi selanjutnya.
         </p>
       </div>
 

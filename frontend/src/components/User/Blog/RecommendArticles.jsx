@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link, Links } from "react-router-dom";
+import axios from "axios";
 
 const RecommendArticles = () => {
   const [articles, setArticles] = useState([]);
@@ -27,28 +28,25 @@ const RecommendArticles = () => {
 
   const fetchArticles = async (page) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/articles/recommendations?page=${page}&limit=6`,
+      const response = await axios.get(
+        `/api/articles/recommendations?page=${page}&limit=6`
       );
-      const data = await response.json();
-      setArticles(data.articles);
-      setTotalPages(data.totalPages);
+      setArticles(response.data.articles);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching articles:", error);
     }
   };
 
-  // Fungsi untuk mengganti halaman
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
-  // Fungsi untuk membuat tampilan nomor halaman dengan ellipsis
   const getPaginationItems = () => {
     const pages = [];
-    if (currentPage > 3) pages.push("««"); // First page
+    if (currentPage > 3) pages.push("««");
     if (currentPage > 3) pages.push("...");
 
     for (
@@ -60,7 +58,7 @@ const RecommendArticles = () => {
     }
 
     if (currentPage < totalPages - 2) pages.push("...");
-    if (currentPage < totalPages - 2) pages.push("»»"); // Last page
+    if (currentPage < totalPages - 2) pages.push("»»");
 
     return pages;
   };
@@ -79,6 +77,10 @@ const RecommendArticles = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {articles.map((article, index) => (
+          <Link
+          to={`/artikel/${article.id}`}
+          key={article.id}
+          >
           <motion.div
             key={index}
             className="flex items-center space-x-4"
@@ -99,6 +101,7 @@ const RecommendArticles = () => {
               <p className="text-sm text-gray-500 mt-1">{article.date}</p>
             </div>
           </motion.div>
+          </Link>
         ))}
       </div>
 

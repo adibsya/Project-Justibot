@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { assets } from "../../../assets/assets";
+import axios from "axios";
 
 const Artikel = () => {
 
@@ -9,24 +9,24 @@ const Artikel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/articles/${id}`);
-        if (!response.ok) {
-          throw new Error("Artikel tidak ditemukan");
-        }
-        const data = await response.json();
-        setArticle(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchArticle = async () => {
+    try {
+      const response = await axios.get(`/api/articles/${id}`);
+      setArticle(response.data);
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setError("Artikel tidak ditemukan");
+      } else {
+        setError("Terjadi kesalahan saat mengambil artikel");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchArticle();
-  }, [id]);
+  fetchArticle();
+}, [id]);
 
   if (loading) {
     return (

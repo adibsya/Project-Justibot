@@ -2,6 +2,7 @@ import { MapPin, GraduationCap, Briefcase } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { assets } from "../../../assets/assets";
+import axios from "axios";
 
 const Profile = () => {
   const { id } = useParams();
@@ -12,14 +13,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchLawyer = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/lawyers/${id}`);
-        if (!response.ok) {
-          throw new Error("Pengacara tidak ditemukan");
-        }
-        const data = await response.json();
-        setLawyer(data);
+        const response = await axios.get(`/api/lawyers/${id}`);
+        setLawyer(response.data);
       } catch (err) {
-        setError(err.message);
+        setError("Pengacara tidak ditemukan");
+        console.error(err);
       } finally {
         setLoading(false);
       }

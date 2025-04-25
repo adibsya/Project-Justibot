@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { assets } from "../../../assets/assets";
+import axios from "axios";
 
 const NewBlog = () => {
   const navigate = useNavigate();
@@ -13,14 +13,13 @@ const NewBlog = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/articles"); // Mengambil data dari backend
-        const data = await response.json();
-        setArticles(data); // Simpan data artikel di state
+        const response = await axios.get("/api/articles");
+        setArticles(response.data);
       } catch (err) {
         setError("Gagal mengambil artikel");
         console.error(err);
       } finally {
-        setLoading(false); // Set loading ke false setelah data diambil
+        setLoading(false);
       }
     };
 
