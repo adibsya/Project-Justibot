@@ -8,6 +8,98 @@ const ChatbotHandler = () => {
   const [isLoading, setIsLoading] = useState(false); // Add loading state
   const chatContainerRef = useRef(null);
 
+  // Fungsi untuk memformat teks respons chatbot
+  const renderFormattedText = (text) => {
+    if (!text) return "";
+
+    // Helper function to format text with bold and italic
+    const formatText = (text) => {
+      // First, split by bold markers
+      const boldParts = text.split(/\*\*(.*?)\*\*/);
+
+      return boldParts.map((part, index) => {
+        // Every odd index is bold text
+        if (index % 2 === 1) {
+          return <strong key={index}>{part}</strong>;
+        }
+
+        // Process italic for non-bold parts
+        const italicParts = part.split(/\*(.*?)\*/);
+
+        if (italicParts.length === 1) {
+          return part;
+        }
+
+        return italicParts.map((italicPart, iIndex) => {
+          // Every odd index is italic text
+          if (iIndex % 2 === 1) {
+            return <em key={`${index}-${iIndex}`}>{italicPart}</em>;
+          }
+          return italicPart;
+        });
+      });
+    };
+
+    // Memisahkan teks menjadi paragraf
+    const paragraphs = text.split("\n\n");
+
+    return (
+      <div className="whitespace-pre-line">
+        {paragraphs.map((paragraph, index) => {
+          // Format headings
+          if (paragraph.startsWith("###")) {
+            return (
+              <h3 key={index} className="text-lg font-bold mt-3 mb-2">
+                {paragraph.replace(/^###\s*/, "")}
+              </h3>
+            );
+          }
+
+          if (paragraph.startsWith("##")) {
+            return (
+              <h2 key={index} className="text-xl font-bold mt-4 mb-2">
+                {paragraph.replace(/^##\s*/, "")}
+              </h2>
+            );
+          }
+
+          if (paragraph.startsWith("#")) {
+            return (
+              <h1 key={index} className="text-2xl font-bold mt-4 mb-3">
+                {paragraph.replace(/^#\s*/, "")}
+              </h1>
+            );
+          }
+
+          // Format lists
+          if (paragraph.includes("\n- ") || paragraph.includes("\n* ")) {
+            const listItems = paragraph.split(/\n[*-]\s/).filter(Boolean);
+            const title = listItems[0];
+            const items = listItems.slice(1);
+
+            return (
+              <div key={index} className="mb-3">
+                <p className="mb-1">{formatText(title)}</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  {items.map((item, i) => (
+                    <li key={i}>{formatText(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+
+          // Default paragraph formatting
+          return (
+            <p key={index} className="mb-3">
+              {formatText(paragraph)}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
   const handleSendMessage = async () => {
     if (message.trim()) {
       const userMessage = { text: message, sender: "user" };
@@ -158,8 +250,11 @@ const ChatbotHandler = () => {
                         <div className="w-2 h-2 rounded-full bg-current animate-bounce delay-75"></div>
                         <div className="w-2 h-2 rounded-full bg-current animate-bounce delay-150"></div>
                       </div>
-                    ) : (
+                    ) : // Apply custom formatting for bot messages
+                    msg.sender === "user" ? (
                       msg.text
+                    ) : (
+                      renderFormattedText(msg.text)
                     )}
                   </div>
                   {msg.sender === "user" && (

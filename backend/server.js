@@ -12,7 +12,6 @@ require("dotenv").config();
 // Log environment variables at startup (redact sensitive info)
 console.log("Environment check on startup:");
 console.log("- NODE_ENV:", process.env.NODE_ENV);
-console.log("- GROQ_API_KEY configured:", !!process.env.GROQ_API_KEY);
 
 // Middleware
 app.use(cors());

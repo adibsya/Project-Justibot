@@ -2,17 +2,16 @@ const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 
-console.log("GROQ_API_KEY loaded:", !!process.env.GROQ_API_KEY);
+// Tetap menggunakan nama yang sama untuk konsistensi
+console.log(
+  "JUSTIBOT_DEEPSEEK_R1_API_KEY loaded:",
+  !!process.env.JUSTIBOT_DEEPSEEK_R1_API_KEY
+);
 
-const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
-
-// router.get("/test", (req, res) => {
-//   res.json({
-//     message: "Chatbot routes working!",
-//     apiKeyConfigured: !!GROQ_API_KEY,
-//   });
-// });
+// Ubah URL ke OpenRouter
+const JUSTIBOT_DEEPSEEK_R1_API_URL =
+  "https://openrouter.ai/api/v1/chat/completions";
+const JUSTIBOT_DEEPSEEK_R1_API_KEY = process.env.JUSTIBOT_DEEPSEEK_R1_API_KEY;
 
 router.post("/", async (req, res) => {
   const { message } = req.body;
@@ -22,17 +21,17 @@ router.post("/", async (req, res) => {
   }
 
   // Log request for debugging
-  console.log("Received message:", message);
+  console.log("JUSTIBOT_DEEPSEEK_R1 received message:", message);
 
   try {
-    if (!GROQ_API_KEY) {
-      throw new Error("GROQ_API_KEY is not configured");
+    if (!JUSTIBOT_DEEPSEEK_R1_API_KEY) {
+      throw new Error("JUSTIBOT_DEEPSEEK_R1_API_KEY is not configured");
     }
 
     const response = await axios.post(
-      GROQ_API_URL,
+      JUSTIBOT_DEEPSEEK_R1_API_URL,
       {
-        model: "llama-3.3-70b-versatile",
+        model: "deepseek/deepseek-r1:free", // Format model untuk OpenRouter
         messages: [
           {
             role: "system",
@@ -41,25 +40,29 @@ router.post("/", async (req, res) => {
           },
           { role: "user", content: message },
         ],
+        max_tokens: 2000,
+        temperature: 0.7,
       },
       {
         headers: {
-          Authorization: `Bearer ${GROQ_API_KEY}`,
+          Authorization: `Bearer ${JUSTIBOT_DEEPSEEK_R1_API_KEY}`,
+          "HTTP-Referer": "https://justibot.id", // Ganti dengan domain Anda
+          "X-Title": "JUSTIBOT_DEEPSEEK_R1",
           "Content-Type": "application/json",
         },
       }
     );
 
     const botResponse = response.data.choices[0].message.content;
-    console.log("GROQ API response received successfully");
+    console.log("JUSTIBOT_DEEPSEEK_R1 response received successfully");
     res.json({ response: botResponse });
   } catch (error) {
     console.error(
-      "Groq API Error:",
+      "JUSTIBOT_DEEPSEEK_R1 Error:",
       error.response?.data || error.message || error
     );
     res.status(500).json({
-      error: "Terjadi kesalahan saat menghubungi Groq",
+      error: "Terjadi kesalahan saat menghubungi JUSTIBOT_DEEPSEEK_R1",
       detail: error.response?.data || error.message,
     });
   }
