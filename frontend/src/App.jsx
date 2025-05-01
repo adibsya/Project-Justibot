@@ -52,7 +52,10 @@ const App = () => {
         <Route path="/lawyer/:id" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
-        <Route path="/perjanjian-kerja-sama" element={<PerjanjianKerjaSama />} />
+        <Route
+          path="/perjanjian-kerja-sama"
+          element={<PerjanjianKerjaSama />}
+        />
       </Route>
 
       {/* Admin Routes */}
@@ -65,7 +68,7 @@ const App = () => {
         <Route path="lawyers/edit/:id" element={<EditLawyers />} />
         <Route path="articles/tambah" element={<FormTambahArtikel />} />
         <Route path="/admin/articles/edit/:id" element={<FormEditArtikel />} />
-        <Route path="chatbot-analysis" element={<ChatbotAdmin />} />
+        <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
       </Route>
     </Routes>
   );
