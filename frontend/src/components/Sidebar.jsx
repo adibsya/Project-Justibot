@@ -56,6 +56,19 @@ const Sidebar = ({ isOpen }) => {
           </li>
         </Link>
 
+        <Link to="/admin/TambahAdmin">
+          <li
+            className={`p-3 rounded mb-2 ${
+              location.pathname === "/admin/articles"
+                ? "bg-[#612A22] text-white"
+                : "bg-white text-[#612A22]"
+            } hover:bg-[#77443a] hover:text-white cursor-pointer`}
+            onClick={() => handleClick("addAdmin")}
+          >
+            Tambah Admin
+          </li>
+        </Link>
+
         <Link to="/admin/StatistikChatbot">
           <li
             className={`p-3 rounded mb-2 ${

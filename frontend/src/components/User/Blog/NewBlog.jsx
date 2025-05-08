@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { assets } from "../../../assets/assets";
 import axios from "axios";
 
 const NewBlog = () => {
@@ -33,6 +34,7 @@ const NewBlog = () => {
       </div>
     );
   }
+
   if (error) {
     return (
       <div className="bg-white flex items-center justify-center h-screen">
@@ -41,40 +43,79 @@ const NewBlog = () => {
     );
   }
 
+  const mainArticles = articles.slice(0, 2);
+  const summaryArticles = articles.slice(3, 7);
+
   return (
-    <div className="w-full max-w-10xl mx-auto px-16 py-40 grid grid-cols-1 lg:grid-cols-3 gap-10 bg-onPrimary text-onSurface">
-      <div className="col-span-1">
-        <motion.h2
-          className="text-5xl font-bold"
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          Blog Terbaru
-        </motion.h2>
-        <motion.p 
-        className="text-gray-500 text-xl mt-2 mb-5"
-        initial={{ opacity: 0, x: -100 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: false, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          Temukan berita terbaru terkait informasi hukum yang ada di Indonesia
-        </motion.p>
-        <div className="space-y-4 border-r pr-5 mt-20">
-          {articles.slice(3, 7).map((article) => (
-            <Link
-              to={`/artikel/${article.id}`}
-              key={article.id}
-              className="block"
-            >
+    <div className="w-full max-w-7xl mx-auto px-6 py-24 bg-onPrimary text-onSurface">
+      <div
+        className="rounded-2xl p-10 mb-12 bg-cover bg-center bg-no-repeat relative"
+        style={{
+          backgroundImage: `url(${assets.bg_blog})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-50 rounded-2xl" />
+        <div className="relative z-10">
+          <motion.h2
+            className="text-5xl font-bold mb-4 text-white"
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            Blog Terbaru
+          </motion.h2>
+          <motion.p
+            className="text-xl text-white"
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            Temukan berita terbaru terkait informasi hukum yang ada di Indonesia
+          </motion.p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* Artikel Utama */}
+        <div className="lg:col-span-2 space-y-6">
+          {mainArticles.map((article) => (
+            <Link to={`/artikel/${article.id}`} key={article.id} className="block">
               <motion.div
-                className="p-4 bg-gray-100 rounded-xl cursor-pointer hover:bg-gray-200"
+                className="relative overflow-hidden rounded-2xl shadow-xl cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <img
+                  src={article.image_url}
+                  alt={article.title}
+                  className="w-full h-72 object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-6 py-4">
+                  <h3 className="text-3xl lg:text-4xl font-bold text-white line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-white mt-2">{article.date}</p>
+                  <span className="mt-4 px-6 py-2 bg-primary text-white rounded-full hover:bg-opacity-90 transition-all">
+                    Baca Artikel
+                  </span>
+                </div>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Artikel Ringkasan */}
+        <div className="space-y-4">
+          {summaryArticles.map((article) => (
+            <Link to={`/artikel/${article.id}`} key={article.id} className="block">
+              <motion.div
+                className="p-4 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all cursor-pointer"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="text-lg font-semibold">{article.title}</h3>
+                <h4 className="text-xl font-semibold line-clamp-2">{article.title}</h4>
                 <p className="text-sm text-gray-500 mt-1">{article.date}</p>
                 <div className="mt-2 text-sm text-primary font-medium">
                   Baca selengkapnya &rarr;
@@ -83,37 +124,6 @@ const NewBlog = () => {
             </Link>
           ))}
         </div>
-      </div>
-
-      <div className="col-span-2 flex flex-col space-y-6 mt-56">
-        {articles.slice(0, 2).map((article) => (
-          <Link
-            to={`/artikel/${article.id}`}
-            key={article.id}
-            className="block"
-          >
-            <motion.div
-              className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
-              <img
-                src={article.image_url}
-                alt={article.title}
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center p-5">
-                <h3 className="text-white text-2xl font-bold text-center">
-                  {article.title}
-                </h3>
-                <p className="text-white mt-2">{article.date}</p>
-                <span className="mt-3 px-4 py-2 bg-primary text-white rounded-full hover:bg-opacity-90 transition-all">
-                  Baca Artikel
-                </span>
-              </div>
-            </motion.div>
-          </Link>
-        ))}
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ import FormTambahLawyer from "./pages/Admin/AddLawyers";
 import EditLawyers from "./pages/Admin/EditLawyers";
 import FormTambahArtikel from "./pages/Admin/AddArticles";
 import FormEditArtikel from "./pages/Admin/EditArticles";
+import TambahAdmin from "./pages/Admin/AddAdmin";
 
 const App = () => {
   return (
@@ -69,6 +70,7 @@ const App = () => {
         <Route path="articles/tambah" element={<FormTambahArtikel />} />
         <Route path="/admin/articles/edit/:id" element={<FormEditArtikel />} />
         <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
+        <Route path="TambahAdmin" element={<TambahAdmin />} />
       </Route>
     </Routes>
   );
