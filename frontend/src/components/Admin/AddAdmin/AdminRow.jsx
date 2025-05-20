@@ -8,7 +8,6 @@ const AdminRow = ({ index, admin, onEdit, onDelete }) => {
       <td>{admin.id}</td>
       <td>{admin.name}</td>
       <td>{admin.email}</td>
-      <td>{admin.role}</td>
       <td>
         <div className="flex gap-2">
           <button className="text-blue-500" onClick={onEdit}>
