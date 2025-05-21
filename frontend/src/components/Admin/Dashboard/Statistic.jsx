@@ -16,7 +16,7 @@ const Statistic = () => {
       .then(res => setArticlesCount(res.data.length))
       .catch(err => console.error('Gagal ambil articles:', err));
 
-    setNotificationsCount(34); // ganti ini kalau kamu punya endpoint
+    setNotificationsCount(34); // endpoint dalam proses
   }, []);
 
   const cards = [
