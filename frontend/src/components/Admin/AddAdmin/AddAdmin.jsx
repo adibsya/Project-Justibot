@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const addAdmin = () => {
+const AddAdmin = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -11,27 +11,38 @@ const addAdmin = () => {
   });
   const navigate = useNavigate();
 
-  // Handler untuk tambah admin
-  const handleTambahAdmin = async () => {
+  // Update the handleTambahAdmin function to include validation
+  const handleTambahAdmin = () => {
     try {
-      // Simulasi API POST request
-      const response = await fetch("http://localhost:3000/api/admins", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-          navigate("/tambahadmin/"); // Redirect ke halaman daftar admin
-        }, 2500);
-      } else {
-        alert("Gagal menambahkan admin. Silakan coba lagi.");
+      // Validate form data
+      if (!formData.name || !formData.email || !formData.password) {
+        alert("Semua field harus diisi!");
+        return;
       }
+
+      // Generate a unique ID
+      const newAdmin = {
+        id: `admin${Date.now()}`, // Generate unique ID using timestamp
+        ...formData,
+      };
+
+      // Get existing local admins from localStorage
+      const existingAdmins = JSON.parse(
+        localStorage.getItem("localAdmins") || "[]",
+      );
+
+      // Add new admin to the list
+      const updatedAdmins = [...existingAdmins, newAdmin];
+
+      // Save back to localStorage
+      localStorage.setItem("localAdmins", JSON.stringify(updatedAdmins));
+
+      // Show success message
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/admin/dataadmin"); // Make sure this matches your route exactly
+      }, 2500);
     } catch (error) {
       console.error("Error saat menambahkan admin:", error);
       alert("Terjadi kesalahan. Silakan coba lagi.");
@@ -120,4 +131,4 @@ const addAdmin = () => {
   );
 };
 
-export default addAdmin;
+export default AddAdmin;
