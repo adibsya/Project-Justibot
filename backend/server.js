@@ -6,6 +6,8 @@ const authRoutes = require("./Routes/authRoutes");
 const articlesRoutes = require("./Routes/articlesRoutes");
 const lawyerRoutes = require("./Routes/lawyerRoutes");
 const chatbotRoutes = require("./Routes/chatbotRoutes");
+const adminRoutes = require("./Routes/adminRoutes");  
+const articlesFeedbackRoutes = require("./Routes/articlesFeedbackRoutes");
 
 require("dotenv").config();
 
@@ -28,6 +30,8 @@ app.use("/api", authRoutes);
 app.use("/api/articles", articlesRoutes);
 app.use("/api/lawyers", lawyerRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/articles-feedback", articlesFeedbackRoutes);
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 

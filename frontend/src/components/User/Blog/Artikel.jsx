@@ -56,8 +56,8 @@ const Artikel = () => {
         <div className="lg:w-2/3 bg-white p-8 shadow-md rounded-lg">
           {/* Breadcrumbs */}
           <p className="text-sm text-gray-500 mb-4">
-            <Link to="/blog" className="text-blue-600 hover:underline">
-              Blog
+            <Link to="/artikel" className="text-blue-600 hover:underline">
+              Artikel
             </Link>{" "}
             &gt; <span className="text-gray-700"> {article.title}</span>
           </p>
@@ -73,6 +73,9 @@ const Artikel = () => {
             style={{ whiteSpace: "pre-line" }}
           >
             {article.content}
+          </p>
+          <p className="text-sm text-gray-500 mt-4">
+            Created by Justibot
           </p>
         </div>
 
@@ -107,7 +110,7 @@ const Artikel = () => {
             ))}
           </ul>
           <Link
-            to="/blog?scrollTo=recommendations"
+            to="/artikel"
             className="text-blue-600 text-sm mt-4 cursor-pointer hover:underline inline-block"
           >
             Lihat Selengkapnya →

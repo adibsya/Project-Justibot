@@ -63,7 +63,7 @@ const NewBlog = () => {
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            Blog Terbaru
+            Artikel Terbaru
           </motion.h2>
           <motion.p
             className="text-xl text-white"
@@ -72,7 +72,7 @@ const NewBlog = () => {
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Temukan berita terbaru terkait informasi hukum yang ada di Indonesia
+            Temukan artikel terbaru terkait informasi hukum yang ada di Indonesia
           </motion.p>
         </div>
       </div>

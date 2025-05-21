@@ -1,5 +1,6 @@
 import { MapPin, GraduationCap, Briefcase } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { assets } from "../../../assets/assets";
 import axios from "axios";
@@ -45,7 +46,6 @@ const Profile = () => {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center pt-24 pb-16 text-onSurface">
       <div className="max-w-5xl w-full mx-auto p-12 bg-white shadow-lg rounded-lg mt-6 space-y-10">
-        
         {/* Bagian Profile */}
         <div className="flex flex-col items-center text-center space-y-6">
           {/* Gambar Profil */}
@@ -62,22 +62,43 @@ const Profile = () => {
               <MapPin size={20} /> {lawyer.lokasi || "Tidak tersedia"}
             </div>
             <div className="flex items-center justify-center text-gray-600 text-lg gap-2">
-              <Briefcase size={20} /> {lawyer.pengalaman_tahun || 0} tahun pengalaman
+              <Briefcase size={20} /> {lawyer.pengalaman_tahun || 0} tahun
+              pengalaman
             </div>
             <div className="flex items-center justify-center text-gray-600 text-lg gap-2">
               <GraduationCap size={20} /> {lawyer.asal_univ || "Tidak tersedia"}
             </div>
 
-            {/* Tombol Konsultasi */}
-            <button className="mt-6 px-6 py-3 bg-gray-500 text-white text-lg rounded shadow-md hover:bg-gray-600">
-              Konsultasi
-            </button>
+            <div className="flex gap-8 justify-center">
+              {lawyer.nomor_wa && (
+                <a
+                  href={`https://wa.me/${lawyer.nomor_wa}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 text-secondary hover:text-primary transition duration-300"
+                >
+                  <FaWhatsapp size={40} />
+                </a>
+              )}
+              {lawyer.instagram && (
+                <a
+                  href={`https://instagram.com/${lawyer.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 text-secondary hover:text-primary transition duration-300"
+                >
+                  <FaInstagram size={40} />
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Bagian Keahlian */}
         <div className="border-t pt-6">
-          <h2 className="text-3xl font-semibold">Expertise and Specialization</h2>
+          <h2 className="text-3xl font-semibold">
+          Keahlian dan Spesialisasi
+          </h2>
           <p className="text-gray-700 text-lg mt-2">
             {lawyer.spesialisasi || "Tidak tersedia"}
           </p>
@@ -85,7 +106,7 @@ const Profile = () => {
 
         {/* Bagian About */}
         <div className="border-t pt-6">
-          <h2 className="text-3xl font-semibold">About Lawyer</h2>
+          <h2 className="text-3xl font-semibold">Tentang Pengacara</h2>
           {Array.isArray(lawyer.deskripsi) && lawyer.deskripsi.length > 0 ? (
             <ul className="list-disc pl-6 text-gray-700 text-lg space-y-2 mt-2">
               {lawyer.deskripsi.map((point, index) => (
@@ -99,7 +120,7 @@ const Profile = () => {
 
         {/* Bagian Industri */}
         <div className="border-t pt-6">
-          <h2 className="text-3xl font-semibold">Industries</h2>
+          <h2 className="text-3xl font-semibold">Bidang Industri</h2>
           <p className="text-gray-700 text-lg mt-2">
             {lawyer.industri || "Tidak tersedia"}
           </p>

@@ -5,8 +5,18 @@ const router = express.Router();
 
 // Daftar artikel
 router.get('/', async (req, res) => {
+  const { category } = req.query;
   try {
-    const result = await pool.query('SELECT * FROM articles ORDER BY created_at DESC');
+    let query = 'SELECT * FROM articles';
+    let values = [];
+
+    if (category) {
+      query += ' WHERE category = $1';
+      values.push(category);
+    }
+
+    query += ' ORDER BY created_at DESC';
+    const result = await pool.query(query, values);
     res.json(result.rows);
   } catch (error) {
     console.error(error);

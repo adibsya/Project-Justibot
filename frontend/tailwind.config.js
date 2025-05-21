@@ -21,4 +21,4 @@ export const theme = {
     },
   },
 };
-export const plugins = [require('flowbite/plugin'), require('daisyui')];
+export const plugins = [require('flowbite/plugin'), require('daisyui'), require('@tailwindcss/line-clamp')];

@@ -10,7 +10,7 @@ import Home from "./pages/User/Home";
 import Document from "./pages/User/Document";
 import Chatbot from "./pages/User/Chatbot";
 import Lawyer from "./pages/User/Lawyer";
-import About from "./components/About";
+import AboutUs from "./pages/User/AboutUs";
 import Blog from "./pages/User/Blog";
 import Login from "./pages/User/Login";
 import Register from "./pages/User/Register";
@@ -21,6 +21,9 @@ import Profile from "./components/User/Lawyer/Profile";
 import VerifySuccess from "./pages/User/VerifySuccess";
 import VerifyFailed from "./pages/User/VerifyFailed";
 import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
+import ArtikelEdukasiPage from "./pages/User/ArtikelEdukasiPage";
+import ArtikelIlmiahPage from "./pages/User/ArtikelIlmiahPage";
+import ArtikelOpiniPage from "./pages/User/ArtikelOpiniPage";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/DashboardData";
@@ -43,8 +46,8 @@ const App = () => {
         <Route path="/document" element={<Document />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/lawyer" element={<Lawyer />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/blog" element={<Blog />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/artikel" element={<Blog />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPass />} />
@@ -53,10 +56,10 @@ const App = () => {
         <Route path="/lawyer/:id" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
-        <Route
-          path="/perjanjian-kerja-sama"
-          element={<PerjanjianKerjaSama />}
-        />
+        <Route path="/perjanjian-kerja-sama" element={<PerjanjianKerjaSama />} />
+        <Route path="/artikel/artikel-edukasi" element={<ArtikelEdukasiPage />} />
+        <Route path="/artikel/artikel-ilmiah" element={<ArtikelIlmiahPage />} />
+        <Route path="/artikel/artikel-opini" element={<ArtikelOpiniPage />} />
       </Route>
 
       {/* Admin Routes */}

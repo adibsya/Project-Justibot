@@ -40,7 +40,7 @@ const LawyersList = () => {
   return (
     <div className="w-full">
       <h1 className="text-center text-5xl font-bold pt-20 text-onSurface">
-        Pengacara Lainnya
+        Daftar Pengacara
       </h1>
 
       {lawyersData.length === 0 ? (

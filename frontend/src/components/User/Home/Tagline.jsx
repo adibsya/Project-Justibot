@@ -8,7 +8,7 @@ import {
 import { assets } from "../../../assets/assets";
 
 const GRADIENT_COLORS = ["#D9CEC5", "#E0D6CC", "#E8DFD6", "#F0E8E0"];
-const ROTATING_WORDS = ["Fast", "Accurate", "Accessible"];
+const ROTATING_WORDS = ["Cepat", "Akurat", "Mudah Diakses"];
 
 const Tagline = () => {
   const color = useMotionValue(GRADIENT_COLORS[0]);
@@ -81,8 +81,8 @@ const Tagline = () => {
           className="md:w-1/2 md:pr-8 mb-8 md:mb-0"
           variants={itemVariants}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-onSurface">
-            Pursuit Your Justice
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-onSurface">
+          Perjuangkan Keadilanmu
             <div className="h-[1.2em] mt-2 overflow-hidden relative">
               <span
                 className={`inline-block transition-all duration-500 ${
@@ -96,9 +96,9 @@ const Tagline = () => {
             </div>
           </h2>
           <p className="text-lg md:text-lg text-textPrimary mb-6">
-            We believe that everyone deserves access to justice. Our platform
-            provides the tools and resources you need to understand your legal
-            rights.
+            Kami percaya bahwa setiap orang berhak mendapatkan akses terhadap
+            keadilan. Platform kami menyediakan alat dan sumber daya yang Anda
+            perlukan untuk memahami hak-hak hukum Anda.
           </p>
         </motion.div>
         <motion.div

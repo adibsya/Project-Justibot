@@ -64,7 +64,7 @@ const RecommendArticles = () => {
   };
 
   return (
-    <div id="recommendations" className="w-full max-w-6xl mx-auto px-6">
+    <div id="recommendations" className="w-full max-w-7xl mx-auto px-6 mt-20">
       <motion.h2
         className="text-3xl font-bold mb-8 text-onSurface"
         initial={{ opacity: 0, x: -100 }}
@@ -72,7 +72,7 @@ const RecommendArticles = () => {
         viewport={{ once: false, amount: 0.2 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        Rekomendasi Untuk Anda
+        Semua Artikel
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

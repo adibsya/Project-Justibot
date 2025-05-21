@@ -16,7 +16,7 @@ const Statistic = () => {
       .then(res => setArticlesCount(res.data.length))
       .catch(err => console.error('Gagal ambil articles:', err));
 
-    setNotificationsCount(34); // ganti ini kalau kamu punya endpoint
+    // setNotificationsCount(34); // ganti ini kalau kamu punya endpoint
   }, []);
 
   const cards = [
@@ -30,11 +30,11 @@ const Statistic = () => {
       label: 'Jumlah Artikel Hukum',
       value: `${articlesCount} Artikel`,
     },
-    {
-      icon: <FaBell size={24} />,
-      label: 'Jumlah Notifikasi Terkirim',
-      value: `${notificationsCount} Notifikasi`,
-    },
+    // {
+    //   icon: <FaBell size={24} />,
+    //   label: 'Jumlah Notifikasi Terkirim',
+    //   value: `${notificationsCount} Notifikasi`,
+    // },
   ];
 
   return (

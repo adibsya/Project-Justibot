@@ -95,10 +95,10 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to="/blog"
+                  to="/artikel"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
                 >
-                  <p>Blog</p>
+                  <p>Artikel</p>
                 </NavLink>
               </li>
             </ul>
