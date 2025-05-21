@@ -1,12 +1,12 @@
-import React from 'react'
-import TambahAdmin from '../../components/Admin/AddAdmin/TambahAdmin'
+import React from "react";
+import AddAdmin from "../../components/Admin/AddAdmin/AddAdmin";
 
-const AddAdmin = () => {
+const AddAdmins = () => {
   return (
     <div>
-        <TambahAdmin />
+      <AddAdmin />
     </div>
-  )
-}
+  );
+};
 
-export default AddAdmin
+export default AddAdmins;
