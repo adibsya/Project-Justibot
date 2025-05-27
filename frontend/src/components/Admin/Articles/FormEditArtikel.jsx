@@ -254,34 +254,27 @@ const FormEditArtikel = () => {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">Gambar</label>
-            <div className="flex items-center gap-4">
-              <div>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={(e) => setFile(e.target.files[0])}
-                  accept="image/*"
-                />
-                <button
-                  type="button"
-                  onClick={handleUploadClick}
-                  className="bg-[#964B00] text-white px-6 py-2 rounded-xl"
-                >
-                  Pilih Gambar
-                </button>
-                {file && (
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="Preview"
-                  className="mt-2 w-20 object-cover rounded-xl border border-gray-300"
-                />
-              )}
-              </div>
-              <div>{renderPreview()}</div>
+          <label className="block font-semibold mb-1">Gambar</label>
+          <div className="flex items-center gap-4">
+            <div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              <button
+                type="button"
+                onClick={handleUploadClick}
+                className="bg-[#964B00] text-white px-6 py-2 rounded-xl"
+              >
+                Pilih Gambar
+              </button>
             </div>
+            {renderPreview()}
           </div>
+        </div>
 
           <div>
             <label className="block font-semibold mb-1">Isi Artikel</label>
