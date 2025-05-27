@@ -3,6 +3,9 @@ import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { assets } from "../../../assets/assets";
 import { motion } from "framer-motion";
+import { BiBot } from "react-icons/bi";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { FaUserTie } from "react-icons/fa";
 
 const Features = () => {
   // Animation variants
@@ -41,7 +44,7 @@ const Features = () => {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.5 }}
       >
-        Features
+        Fitur Justibot
       </motion.h2>
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14"
@@ -54,22 +57,18 @@ const Features = () => {
           className="max-w-xs py-5 px-10 bg-surface shadow-lg"
           variants={itemVariants}
         >
-          <img
-            src={assets.feature_chatbot}
-            alt="chatbot"
-            className="w-[45px] mb-4"
-          />
+          <BiBot className="text-onSurface h-[45px] w-[45px] mb-4" />
 
           <h5 className="text-lg font-bold tracking-tight text-onSurface mb-2">
-            AI-Powered Chatbot
+            Chatbot Bertenaga AI
           </h5>
           <p className="font-light text-sm text-textSecondary mb-10">
-            Get instant answers to your legal questions with our AI-powered
-            chatbot. Available 24/7 to assist you.
+            Dapatkan jawaban instan untuk pertanyaan hukum Anda dengan chatbot
+            bertenaga AI kami. Tersedia 24/7 untuk membantu Anda.
           </p>
           <Link to="/chatbot">
             <Button className="bg-secondary text-onPrimary flex items-center">
-              Learn More
+              Selengkapnya
               <svg
                 className="ml-2 h-5 w-5"
                 fill="currentColor"
@@ -89,21 +88,17 @@ const Features = () => {
           className="max-w-xs py-5 px-10 bg-surface shadow-lg"
           variants={itemVariants}
         >
-          <img
-            src={assets.feature_document}
-            alt="document"
-            className="w-[45px] mb-4"
-          />
+          <IoDocumentTextOutline className="text-onSurface h-[45px] w-[45px] mb-4" />
           <h5 className="text-lg font-bold tracking-tight text-onSurface mb-2">
-            Document Assistance
+            Asisten Dokumen
           </h5>
           <p className="font-light text-sm text-textSecondary mb-10">
-            Receive guidance on legal documents, contracts, and forms. Our
-            service ensures your documents are in order.
+            Dapatkan panduan tentang dokumen hukum, kontrak, dan formulir.
+            Layanan kami memastikan dokumen Anda terverifikasi.
           </p>
           <Link to="/document">
             <Button className="bg-secondary text-onPrimary flex items-center">
-              Learn More
+              Selengkapnya
               <svg
                 className="ml-2 h-5 w-5"
                 fill="currentColor"
@@ -123,21 +118,17 @@ const Features = () => {
           className="max-w-xs py-5 px-10 bg-surface shadow-lg"
           variants={itemVariants}
         >
-          <img
-            src={assets.feature_lawyer}
-            alt="lawyer"
-            className="w-[45px] mb-4"
-          />
+          <FaUserTie className="text-onSurface h-[45px] w-[45px] mb-4" />
           <h5 className="text-lg font-bold tracking-tight text-onSurface mb-2">
-            Connect with Lawyers
+            Konsultasi Pengacara
           </h5>
           <p className="font-light text-sm text-textSecondary mb-10">
-            Connect with qualified lawyers for personalized legal advice and
-            representation. Get the help you need.
+            Terhubung dengan pengacara yang berkualifikasi untuk mendapatkan
+            nasihat dan perwakilan hukum yang dipersonalisasi.
           </p>
           <Link to="/lawyer">
             <Button className="bg-secondary text-onPrimary flex items-center">
-              Learn More
+              Selengkapnya
               <svg
                 className="ml-2 h-5 w-5"
                 fill="currentColor"

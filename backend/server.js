@@ -6,6 +6,12 @@ const authRoutes = require("./Routes/authRoutes");
 const articlesRoutes = require("./Routes/articlesRoutes");
 const lawyerRoutes = require("./Routes/lawyerRoutes");
 const chatbotRoutes = require("./Routes/chatbotRoutes");
+const adminRoutes = require("./Routes/adminRoutes");  
+const articlesFeedbackRoutes = require("./Routes/articlesFeedbackRoutes");
+const grafikArtikelRoutes = require("./Routes/grafikArtikelRoutes");
+const feedbackRoutes = require("./Routes/feedbackRoutes");
+const grafikPuasRoutes = require("./Routes/grafikPuasRoutes");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
@@ -14,8 +20,14 @@ console.log("Environment check on startup:");
 console.log("- NODE_ENV:", process.env.NODE_ENV);
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // GANTI sesuai URL frontend kamu
+    credentials: true, // HARUS true jika pakai cookie
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -28,6 +40,11 @@ app.use("/api", authRoutes);
 app.use("/api/articles", articlesRoutes);
 app.use("/api/lawyers", lawyerRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/articles-feedback", articlesFeedbackRoutes);
+app.use("/api/grafik-artikel", grafikArtikelRoutes);
+app.use("/api/grafik-puas", grafikPuasRoutes)
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 

@@ -12,14 +12,25 @@ const Home_News = () => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get("/api/articles/recommendations?page=1&limit=5");
-        setArticles(response.data.articles || []);
+        const allArticles = response.data.articles || [];
+  
+        const categoryMap = new Map();
+        allArticles.forEach((article) => {
+          if (!categoryMap.has(article.nama_kategori)) {
+            categoryMap.set(article.nama_kategori, article);
+          }
+        });
+  
+        const uniqueArticles = Array.from(categoryMap.values());
+        setArticles(uniqueArticles);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
     };
-
+  
     fetchArticles();
   }, []);
+  
 
   // Responsif terhadap ukuran layar
   useEffect(() => {
@@ -58,7 +69,7 @@ const Home_News = () => {
         <p>Loading articles or no articles available.</p>
       </div>
     );
-  }
+  };
 
   return (
     <div className="bg-onPrimary py-10 relative overflow-hidden">
@@ -66,17 +77,45 @@ const Home_News = () => {
 
       <div className="container mx-auto px-4 py-6 relative z-10">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Legal News & Updates</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Artikel Hukum</h2>
           {articles.length > visibleCards && (
             <div className="flex gap-2">
-              <button onClick={prevSlide} className="bg-primary hover:bg-primary-dark text-white p-2 rounded-full shadow-md transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <button
+                onClick={prevSlide}
+                className="bg-primary hover:bg-primary-dark text-white p-2 rounded-full shadow-md transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </button>
-              <button onClick={nextSlide} className="bg-primary hover:bg-primary-dark text-white p-2 rounded-full shadow-md transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <button
+                onClick={nextSlide}
+                className="bg-primary hover:bg-primary-dark text-white p-2 rounded-full shadow-md transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
             </div>
@@ -90,7 +129,10 @@ const Home_News = () => {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             {articles.map((item, index) => (
-              <div key={index} className="px-2 w-full md:w-1/2 lg:w-1/3 flex-shrink-0">
+              <div
+                key={index}
+                className="px-2 w-full md:w-1/2 lg:w-1/3 flex-shrink-0"
+              >
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-[400px] flex flex-col">
                   <div className="h-40 overflow-hidden">
                     <img
@@ -100,11 +142,26 @@ const Home_News = () => {
                     />
                   </div>
                   <div className="p-4 flex flex-col flex-grow">
-                    <p className="text-xs text-gray-500 mb-1">{item.date}</p>
-                    <h3 className="text-lg font-bold text-gray-800 mb-2 overflow-hidden line-clamp-2">{item.title}</h3>
-                    <p className="text-sm text-gray-600 overflow-hidden line-clamp-4 flex-grow">{item.content}</p>
-                    <Link to={`/artikel/${item.id}`} className="mt-3 text-sm text-primary font-medium hover:underline self-start">
-                      Read More
+                    <p className="text-xs text-gray-500 mb-1">
+                      {new Date(item.date).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                    <h3 className="text-lg font-bold text-gray-800 mb-2 overflow-hidden line-clamp-2">
+                      {item.title}
+                    </h3>
+                    <div className="text-sm text-gray-600 overflow-hidden line-clamp-4 flex-grow" 
+                    dangerouslySetInnerHTML={{
+                      __html: item.content || "<p>Tidak ada isi</p>",
+                    }}
+                    />
+                    <Link
+                      to={`/artikel/${item.id}`}
+                      className="mt-3 text-sm text-primary font-medium hover:underline self-start"
+                    >
+                      Lihat Selengkapnya
                     </Link>
                   </div>
                 </div>
@@ -124,7 +181,7 @@ const Home_News = () => {
                   }`}
                   onClick={() => setCurrentIndex(index)}
                 />
-              ) : null
+              ) : null,
             )}
           </div>
         )}

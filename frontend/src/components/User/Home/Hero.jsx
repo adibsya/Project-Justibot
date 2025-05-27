@@ -30,10 +30,10 @@ const Hero = () => {
     >
       <div className="relative z-10 flex flex-col items-center">
         <h1 className="max-w-3xl bg-gradient-to-br from-black to-gray-700 bg-clip-text text-center text-2xl font-medium leading-tight text-transparent sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight lg:text-6xl lg:leading-tight">
-          Justice On Your Screen
+          Keadilan di Layar Anda
         </h1>
-        <p className="my-6 max-w-xl text-center text-sm leading-relaxed sm:text-base sm:leading-relaxed md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed text-textPrimary">
-          An AI-powered chatbot designed to provide fast, accurate, and easily accessible legal consultations. Get legal information, document guidance, and initial legal assistance anytime, anywhere.
+        <p className="my-6 max-w-2xl text-center text-sm leading-relaxed sm:text-base sm:leading-relaxed md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed text-textPrimary">
+        Chatbot bertenaga AI yang dirancang untuk memberikan konsultasi hukum yang cepat, akurat, dan mudah diakses. Dapatkan informasi hukum, panduan dokumen, dan bantuan hukum awal kapan pun dan di mana pun.
         </p>
         <Link to="/chatbot">
           <motion.button
@@ -49,7 +49,7 @@ const Hero = () => {
             }}
             className="group relative flex w-fit items-center gap-1.5 rounded-full bg-secondary text-onPrimary px-4 py-2 transition-colors hover:bg-secondary/80"
           >
-            Get Started
+            Ayo Mulai
             <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
           </motion.button>
         </Link>

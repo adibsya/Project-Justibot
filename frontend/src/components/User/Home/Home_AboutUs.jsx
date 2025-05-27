@@ -14,24 +14,26 @@ const Home_AboutUs = () => {
           {/* Text content */}
           <div className="w-full md:w-1/2 space-y-4 text-justify">
             <h2 className="text-2xl md:text-3xl font-bold text-onSurface mb-4">
-              About Justibot
+              Tentang Justibot
             </h2>
             <p className="text-onSurface mb-4">
-              Justibot is an innovative AI-powered legal assistant designed to
-              make legal information and services accessible to everyone. Our
-              platform combines advanced technology with legal expertise to
-              provide reliable guidance on various legal matters.
+              Justibot adalah asisten hukum bertenaga AI inovatif yang dirancang
+              untuk membuat informasi dan layanan hukum dapat diakses oleh semua
+              orang. Platform kami menggabungkan teknologi canggih dengan
+              keahlian hukum untuk memberikan panduan yang dapat diandalkan
+              dalam berbagai masalah hukum.
             </p>
             <p className="text-onSurface">
-              Whether you need help understanding legal documents, guidance on
-              legal procedures, or connections to qualified attorneys, Justibot
-              is here to simplify your legal journey.
+              Apakah Anda memerlukan bantuan untuk memahami dokumen hukum,
+              panduan tentang prosedur hukum, atau koneksi ke pengacara yang
+              memenuhi syarat, Justibot ada di sini untuk menyederhanakan
+              perjalanan hukum Anda.
             </p>
             <button
               className="flex items-center hover:text-onSurface/90 text-onSurface py-2"
               onClick={() => navigate(`../about`)}
             >
-              Learn More
+              Lihat Selengkapnya
               <svg
                 className="ml-2 h-5 w-5"
                 fill="currentColor"

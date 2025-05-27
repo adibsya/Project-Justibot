@@ -6,6 +6,7 @@ import Short_heading from "../../components/User/Home/Short_heading";
 import Home_News from "../../components/User/Home/Home_News";
 import Home_AboutUs from "../../components/User/Home/Home_AboutUs";
 import Home_FAQ from "../../components/User/Home/Home_FAQ";
+import FeedbackSlider from "../../components/User/Home/FeedbackSlider";
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <Home_News />
       <Home_AboutUs />
       <Home_FAQ />
+      <FeedbackSlider />
     </div>
   );
 };
