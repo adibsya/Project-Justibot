@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { assets } from "../assets/assets";
+import axios from "axios";
 
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedbackSent, setFeedbackSent] = useState(false);
@@ -24,27 +26,48 @@ const Footer = () => {
     }
   };
 
-  const handleSubmitFeedback = (e) => {
+  const handleSubmitFeedback = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !feedback.trim() || !rating) return;
 
+    if (!isLoggedIn) {
+      alert("Silakan login terlebih dahulu sebelum mengirim feedback.");
+      return;
+    }
+  
+    if (!feedback.trim() || !rating) return;
+  
     setIsSubmitting(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFeedbackSent(true);
-      setEmail("");
+  
+    try {
+      const response = await axios.post(
+        "/api/feedback",
+        {
+          rating,
+          feedback
+        },
+        {
+          withCredentials: true // ⬅️ penting agar cookie JWT ikut terkirim
+        }
+      );
+  
+      // Reset state setelah berhasil kirim
+      setFeedback("");
       setRating(0);
       setHover(0);
-      setFeedback("");
-
-      // Reset success message after 3 seconds
+      setFeedbackSent(true);
+  
+      // Reset pesan sukses setelah 3 detik
       setTimeout(() => {
         setFeedbackSent(false);
       }, 3000);
-    }, 1000);
+    } catch (error) {
+      console.error("Gagal mengirim feedback:", error.response?.data || error.message);
+      // Kamu bisa set state error di sini kalau ingin tampilkan pesan ke user
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+  
 
   const currentYear = new Date().getFullYear();
 
@@ -175,8 +198,8 @@ const Footer = () => {
               </button>
             </li>
             <li>
-              <a
-                href="/terms"
+              <button
+                onClick={() => navigate("/syarat-dan-ketentuan")}
                 className="text-onSurface hover:text-primary transition-colors duration-200 flex items-center"
               >
                 <svg
@@ -194,11 +217,11 @@ const Footer = () => {
                   />
                 </svg>
                 Syarat & Ketentuan
-              </a>
+              </button>
             </li>
             <li>
-              <a
-                href="/privacy"
+              <button
+                onClick={() => navigate("/kebijakan-privasi")}
                 className="text-onSurface hover:text-primary transition-colors duration-200 flex items-center"
               >
                 <svg
@@ -216,7 +239,7 @@ const Footer = () => {
                   />
                 </svg>
                 Kebijakan Privasi
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -350,20 +373,20 @@ const Footer = () => {
                 })}
               </div>
             </div>
-            <div className="form-control">
+            {/* <div className="form-control">
               <input
                 type="email"
                 placeholder="Email Anda"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="text-onSurface/60 w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-            </div>
+            </div> */}
             <div className="form-control">
               <textarea
-                placeholder="Berikan masukan Anda"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                placeholder="Berikan masukan atau ide artikel Anda untuk Justibot"
+                className="text-onSurface/60 w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 rows="3"
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}

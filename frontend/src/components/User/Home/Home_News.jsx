@@ -11,17 +11,26 @@ const Home_News = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get(
-          "/api/articles/recommendations?page=1&limit=5",
-        );
-        setArticles(response.data.articles || []);
+        const response = await axios.get("/api/articles/recommendations?page=1&limit=5");
+        const allArticles = response.data.articles || [];
+  
+        const categoryMap = new Map();
+        allArticles.forEach((article) => {
+          if (!categoryMap.has(article.nama_kategori)) {
+            categoryMap.set(article.nama_kategori, article);
+          }
+        });
+  
+        const uniqueArticles = Array.from(categoryMap.values());
+        setArticles(uniqueArticles);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
     };
-
+  
     fetchArticles();
   }, []);
+  
 
   // Responsif terhadap ukuran layar
   useEffect(() => {
@@ -60,7 +69,7 @@ const Home_News = () => {
         <p>Loading articles or no articles available.</p>
       </div>
     );
-  }
+  };
 
   return (
     <div className="bg-onPrimary py-10 relative overflow-hidden">
@@ -133,13 +142,21 @@ const Home_News = () => {
                     />
                   </div>
                   <div className="p-4 flex flex-col flex-grow">
-                    <p className="text-xs text-gray-500 mb-1">{item.date}</p>
+                    <p className="text-xs text-gray-500 mb-1">
+                      {new Date(item.date).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
                     <h3 className="text-lg font-bold text-gray-800 mb-2 overflow-hidden line-clamp-2">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-gray-600 overflow-hidden line-clamp-4 flex-grow">
-                      {item.content}
-                    </p>
+                    <div className="text-sm text-gray-600 overflow-hidden line-clamp-4 flex-grow" 
+                    dangerouslySetInnerHTML={{
+                      __html: item.content || "<p>Tidak ada isi</p>",
+                    }}
+                    />
                     <Link
                       to={`/artikel/${item.id}`}
                       className="mt-3 text-sm text-primary font-medium hover:underline self-start"

@@ -1,9 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import axios from "axios";
+axios.defaults.withCredentials = true; // ⬅️ WAJIB untuk kirim cookie
+axios.defaults.baseURL = "http://localhost:5173";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
+import ScrollToTop from "./components/ScrollToTop";
 
 // User Pages
 import Home from "./pages/User/Home";
@@ -21,9 +25,13 @@ import Profile from "./components/User/Lawyer/Profile";
 import VerifySuccess from "./pages/User/VerifySuccess";
 import VerifyFailed from "./pages/User/VerifyFailed";
 import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
-import ArtikelEdukasiPage from "./pages/User/ArtikelEdukasiPage";
-import ArtikelIlmiahPage from "./pages/User/ArtikelIlmiahPage";
-import ArtikelOpiniPage from "./pages/User/ArtikelOpiniPage";
+import ArtikelPerdataPage from "./pages/User/ArtikelPerdataPage";
+import ArtikelBisnisEkonomiPage from "./pages/User/ArtikelBisnisEkonomiPage";
+import ArtikelLingkunganPage from "./pages/User/ArtikelLingkunganPage";
+import ArtikelPidanaPage from "./pages/User/ArtikelPidanaPage";
+import ArtikelIslamPage from "./pages/User/ArtikelIslamPage";
+import SyaratKetentuanPage from "./pages/User/SyaratKetentuanPage";
+import KebijakanPrivasiPage from "./pages/User/KebijakanPrivasiPage";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/DashboardData";
@@ -41,6 +49,8 @@ import editAdmin from "./pages/Admin/EditAdmin";
 
 const App = () => {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       {/* User Routes */}
       <Route element={<UserLayout />}>
@@ -55,13 +65,17 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPass />} />
         <Route path="/reset-password/:token" element={<ResetPass />} />
         <Route path="/artikel/:id" element={<Artikel />} />
-        <Route path="/lawyer/:id" element={<Profile />} />
+        <Route path="/lawyer/:nama" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
         <Route path="/perjanjian-kerja-sama" element={<PerjanjianKerjaSama />} />
-        <Route path="/artikel/artikel-edukasi" element={<ArtikelEdukasiPage />} />
-        <Route path="/artikel/artikel-ilmiah" element={<ArtikelIlmiahPage />} />
-        <Route path="/artikel/artikel-opini" element={<ArtikelOpiniPage />} />
+        <Route path="/artikel/artikel-pidana" element={<ArtikelPidanaPage />} />
+        <Route path="/artikel/artikel-perdata" element={<ArtikelPerdataPage />} />
+        <Route path="/artikel/artikel-lingkungan" element={<ArtikelLingkunganPage />} />
+        <Route path="/artikel/artikel-bisnis-dan-ekonomi" element={<ArtikelBisnisEkonomiPage />} />
+        <Route path="/artikel/artikel-islam" element={<ArtikelIslamPage />} />
+        <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
+        <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
       </Route>
 
       {/* Admin Routes */}
@@ -80,6 +94,7 @@ const App = () => {
         <Route path="admin/tambahadmin/edit/:id" element={<editAdmin />} />
       </Route>
     </Routes>
+    </>
   );
 };
 

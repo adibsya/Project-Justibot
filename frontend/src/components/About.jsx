@@ -15,7 +15,7 @@ const About = () => {
 
       <section className="max-w-7xl mx-auto px-6 py-10 rounded-xl mt-10">
         <h2 className="text-4xl font-bold text-[#612A22] mb-6 border-b-4 border-[#775F4E] inline-block pb-2">
-          About Us
+          Tentang Kami
         </h2>
         <p className="text-lg leading-relaxed text-justify mb-6">
           JustiBot adalah aplikasi profesional yang dirancang untuk memberikan

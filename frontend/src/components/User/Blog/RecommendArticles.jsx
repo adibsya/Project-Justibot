@@ -99,11 +99,17 @@ const RecommendArticles = () => {
                 <h3 className="text-onSurface text-lg font-semibold leading-tight hover:underline cursor-pointer line-clamp-2">
                   {article.title}
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">{article.date}</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  {new Date(article.date).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })};
+                </p>
               </div>
             </motion.div>
           </Link>
-        ))}
+        ))};
       </div>
 
       {/* Pagination */}

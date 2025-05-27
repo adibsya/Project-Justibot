@@ -1,5 +1,5 @@
 const express = require("express");
-const pool = require("../db"); // konfigurasi pool PostgreSQL
+const pool = require("../db");
 const multer = require("multer");
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -8,8 +8,23 @@ const router = express.Router();
 // ====================== GET ALL ARTICLES ======================
 router.get('/', async (req, res) => {
   const { category } = req.query;
+
   try {
-    const result = await pool.query('SELECT * FROM artikell ORDER BY created_at DESC');
+    let query = `
+      SELECT artikell.*, kategori_artikel.nama_kategori 
+      FROM artikell 
+      JOIN kategori_artikel ON artikell.kategori_id = kategori_artikel.id
+    `;
+    const values = [];
+
+    if (category) {
+      query += ' WHERE LOWER(kategori_artikel.nama_kategori) = LOWER($1)';
+      values.push(category);
+    }
+
+    query += ' ORDER BY artikell.created_at DESC';
+
+    const result = await pool.query(query, values);
 
     const articles = result.rows.map(article => {
       if (article.image_url && Buffer.isBuffer(article.image_url)) {
@@ -25,21 +40,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // ====================== GET RECOMMENDATIONS WITH PAGINATION ======================
 router.get('/recommendations', async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 6;
-  const offset = (page - 1) * limit;
-
   try {
     const dataQuery = await pool.query(
-      'SELECT * FROM artikell ORDER BY created_at DESC LIMIT $1 OFFSET $2',
-      [limit, offset]
+      `SELECT DISTINCT ON (a.kategori_id) a.*, k.nama_kategori
+       FROM artikell a
+       JOIN kategori_artikel k ON a.kategori_id = k.id
+       ORDER BY a.kategori_id, a.created_at DESC`
     );
-    const countQuery = await pool.query('SELECT COUNT(*) FROM artikell');
-
-    const total = parseInt(countQuery.rows[0].count, 10);
-    const totalPages = Math.ceil(total / limit);
 
     const articles = dataQuery.rows.map(article => {
       if (article.image_url && Buffer.isBuffer(article.image_url)) {
@@ -50,14 +60,15 @@ router.get('/recommendations', async (req, res) => {
 
     res.json({
       articles,
-      totalPages,
-      currentPage: page
+      totalPages: 1,
+      currentPage: 1,
     });
   } catch (error) {
     console.error('Error fetching recommendations:', error);
     res.status(500).json({ error: 'Gagal mengambil rekomendasi artikel' });
   }
 });
+
 
 // ====================== GET ALL CATEGORIES ======================
 router.get('/categories', async (req, res) => {

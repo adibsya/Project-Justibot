@@ -6,7 +6,7 @@ import { assets } from "../../../assets/assets";
 import axios from "axios";
 
 const Profile = () => {
-  const { id } = useParams();
+  const { nama } = useParams();
   const [lawyer, setLawyer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchLawyer = async () => {
       try {
-        const response = await axios.get(`/api/lawyers/${id}`);
+        const response = await axios.get(`/api/lawyers/${nama}`);
         setLawyer(response.data);
       } catch (err) {
         setError("Pengacara tidak ditemukan");
@@ -25,7 +25,7 @@ const Profile = () => {
     };
 
     fetchLawyer();
-  }, [id]);
+  }, [nama]);
 
   if (loading) {
     return (
@@ -70,9 +70,9 @@ const Profile = () => {
             </div>
 
             <div className="flex gap-8 justify-center">
-              {lawyer.nomor_wa && (
+              {lawyer.no_wa && (
                 <a
-                  href={`https://wa.me/${lawyer.nomor_wa}`}
+                  href={`https://wa.me/${lawyer.no_wa}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 text-secondary hover:text-primary transition duration-300"
@@ -80,9 +80,9 @@ const Profile = () => {
                   <FaWhatsapp size={40} />
                 </a>
               )}
-              {lawyer.instagram && (
+              {lawyer.nama_ig && (
                 <a
-                  href={`https://instagram.com/${lawyer.instagram}`}
+                  href={`https://instagram.com/${lawyer.nama_ig}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 text-secondary hover:text-primary transition duration-300"

@@ -61,22 +61,28 @@ const Artikel = () => {
             </Link>{" "}
             &gt; <span className="text-gray-700"> {article.title}</span>
           </p>
-          <h1 className="text-3xl font-bold mb-6">{article.title}</h1>
+          <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+          <p className="text-sm text-gray-500">
+                    {new Date(article.date).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
           {/* Gambar Artikel */}
           <img
             src={article.image_url}
             alt={article.title}
             className="max-w-[700px] w-full mx-auto rounded-lg p-10"
           />
-          <p
+          <div
             className="text-gray-700 leading-relaxed text-lg"
             style={{ whiteSpace: "pre-line" }}
-          >
-            {article.content}
-          </p>
-          <p className="text-sm text-gray-500 mt-4">
-            Created by Justibot
-          </p>
+            dangerouslySetInnerHTML={{
+              __html: article.content || "<p>Tidak ada isi</p>",
+            }}
+          />
+          <p className="text-sm text-gray-500 mt-4">Created by Justibot</p>
         </div>
 
         {/* Sidebar Rekomendasi */}
@@ -104,7 +110,13 @@ const Artikel = () => {
                   >
                     {article.title}
                   </Link>
-                  <p className="text-sm text-gray-500">{article.date}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(article.date).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
                 </div>
               </li>
             ))}

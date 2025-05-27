@@ -1,47 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
-
-const feedbacks = [
-  {
-    id: 1,
-    name: "John Doe",
-    rating: 5,
-    text: "Justibot sangat membantu saya dalam memahami masalah hukum dengan mudah!",
-    role: "Pengacara"
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    rating: 4,
-    text: "Interface yang user-friendly dan respon yang cepat. Sangat direkomendasikan!",
-    role: "Mahasiswa Hukum"
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    rating: 5,
-    text: "Dokumen hukum yang dihasilkan sangat akurat dan profesional.",
-    role: "Pengusaha"
-  },
-  {
-    id: 4,
-    name: "Ahmad Adib",
-    rating: 5,
-    text: "Interface yang user-friendly dan respon yang cepat. Sangat direkomendasikan!",
-    role: "Pengusaha"
-  },
-  {
-    id: 5,
-    name: "Daffa Ammar",
-    rating: 5,
-    text: "Dokumen hukum yang dihasilkan sangat akurat dan profesional.",
-    role: "Pengusaha"
-  }
-];
+import axios from 'axios';
 
 const FeedbackSlider = () => {
+  const [feedbacks, setFeedbacks] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await axios.get('/api/feedback');
+        setFeedbacks(response.data);
+      } catch (error) {
+        console.error('Gagal mengambil data feedback:', error);
+      }
+    };
+
+    fetchFeedbacks();
+  }, []);
 
   const nextSlide = () => {
     setStartIndex((prev) => (prev + 1) % feedbacks.length);
@@ -52,9 +29,19 @@ const FeedbackSlider = () => {
   };
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 5000);
-    return () => clearInterval(timer);
-  }, []);
+    if(feedbacks.length > 0){
+      const timer = setInterval(nextSlide, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [feedbacks]);
+
+  if(feedbacks.length === 0) {
+    return (
+      <div className='bg-primary w-full min-h-[400px] md:min-h-[600px] lg:min-h-[400px] pb-4 overflow-hidden text-onSurface flex justify-center items-center'>
+        <p className='text-white text-xl'>Loading feedback...</p>
+      </div>
+    );
+  }
 
   const visibleFeedbacks = [];
   for (let i = 0; i < 3; i++) {
@@ -112,7 +99,7 @@ const FeedbackSlider = () => {
                 </div>
 
                 <p className='text-gray-600 italic'>
-                  "{feedback.text}"
+                  "{feedback.feedback}"
                 </p>
               </div>
             </div>
