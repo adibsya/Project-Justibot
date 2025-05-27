@@ -112,3 +112,12 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.ql-indent-1 { padding-left: 2em; }
+.ql-indent-2 { padding-left: 4em; }
+.ql-indent-3 { padding-left: 6em; }
+.ql-indent-4 { padding-left: 8em; }
+
+.ql-align-center { text-align: center; }
+.ql-align-right { text-align: right; }
+.ql-align-justify { text-align: justify; }

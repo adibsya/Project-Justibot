@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, X, Edit2, Trash2 } from "lucide-react";
+import 'quill/dist/quill.snow.css';
 
 const Articles = () => {
   const navigate = useNavigate();
@@ -165,60 +166,69 @@ const Articles = () => {
         </ModalWrapper>
       )}
 
-      {/* Modal Detail Artikel */}
-      {isDetailModalOpen && selectedArticle && (
-        <ModalWrapper>
-          <div
-            className="bg-white rounded-2xl shadow-2xl overflow-hidden relative w-[90vw] max-w-xl max-h-[95vh] flex flex-col border border-gray-300"
-            style={{ maxHeight: "95vh" }}
-          >
-            {/* Tombol close */}
-            <button
-              onClick={() => setIsDetailModalOpen(false)}
-              className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 z-10"
-              aria-label="Close detail artikel"
-            >
-              <X className="w-6 h-6" />
-            </button>
+{/* Modal Detail Artikel */}
+{isDetailModalOpen && selectedArticle && (
+  <ModalWrapper>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+      <div
+        className="bg-white rounded-2xl shadow-2xl overflow-hidden relative w-[90vw] max-w-4xl max-h-[95vh] flex flex-col border border-gray-300"
+        style={{ maxHeight: "95vh" }}
+        role="dialog"
+        aria-modal="true"
+      >
+        {/* Tombol close */}
+        <button
+          onClick={() => setIsDetailModalOpen(false)}
+          className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 z-10"
+          aria-label="Close detail artikel"
+        >
+          <X className="w-6 h-6" />
+        </button>
 
-            {/* Gambar */}
-            {selectedArticle.image_url ? (
-              <div className="relative w-full h-80">
-                <img
-                  src={selectedArticle.image_url}
-                  alt={selectedArticle.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : (
-              <div className="w-full h-80 bg-gray-100 flex items-center justify-center text-gray-400 text-lg">
-                Tidak ada gambar
-              </div>
-            )}
-
-            {/* Konten Artikel */}
-            <div className="p-8 overflow-y-auto flex-1">
-              <h2 className="text-4xl font-bold text-[#652B19] mb-3">
-                {selectedArticle.title}
-              </h2>
-              <p className="text-sm text-gray-500 mb-6">
-                {new Date(selectedArticle.date).toLocaleDateString("id-ID", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}{" "}
-                • <span className="italic font-medium text-gray-700">By JustiBot</span>
-              </p>
-              <div
-                className="text-gray-800 leading-relaxed"
-                dangerouslySetInnerHTML={{
-                  __html: selectedArticle.content || "<p>Tidak ada isi artikel.</p>",
-                }}
-              />
-            </div>
+        {/* Gambar */}
+        {selectedArticle.image_url ? (
+          <div className="relative w-full h-80">
+            <img
+              src={selectedArticle.image_url}
+              alt={selectedArticle.title}
+              className="w-full h-full object-cover max-w-full"
+              style={{ maxWidth: "100%", height: "100%", objectFit: "cover" }}
+            />
           </div>
-        </ModalWrapper>
-      )}
+        ) : (
+          <div className="w-full h-80 bg-gray-100 flex items-center justify-center text-gray-400 text-lg">
+            Tidak ada gambar
+          </div>
+        )}
+
+        {/* Konten Artikel */}
+        <div
+          className="p-8 overflow-y-auto overflow-x-hidden flex-1"
+          style={{ wordBreak: "break-word" }}
+        >
+          <h2 className="text-4xl font-bold text-[#652B19] mb-3 break-words">
+            {selectedArticle.title}
+          </h2>
+          <p className="text-sm text-gray-500 mb-6">
+            {new Date(selectedArticle.date).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}{" "}
+            • <span className="italic font-medium text-gray-700">By JustiBot</span>
+          </p>
+          <div
+            className="text-gray-800 leading-relaxed text-justify prose max-w-full"
+            dangerouslySetInnerHTML={{
+              __html: selectedArticle.content || "<p>Tidak ada isi artikel.</p>",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  </ModalWrapper>
+)}
+
 
       {!isLoading && !error && (
         <div>
