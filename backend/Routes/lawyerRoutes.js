@@ -26,6 +26,30 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Ambil detail pengacara berdasarkan NAMA
+router.get("/:nama", async (req, res) => {
+  const { nama } = req.params;
+  try {
+    const result = await pool.query("SELECT * FROM lawyers WHERE nama = $1", [nama]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Pengacara tidak ditemukan" });
+    }
+
+    const lawyer = result.rows[0];
+
+    if (lawyer.foto_profil && Buffer.isBuffer(lawyer.foto_profil)) {
+      lawyer.foto_profil = lawyer.foto_profil.toString("utf-8");
+    }
+
+    res.json(lawyer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Gagal mengambil pengacara" });
+  }
+});
+
+
 // Ambil detail pengacara berdasarkan ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -48,7 +72,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Tambah pengacara
 // Tambah pengacara
 router.post("/", upload.single("foto_profil"), async (req, res) => {
   try {
@@ -73,7 +96,7 @@ router.post("/", upload.single("foto_profil"), async (req, res) => {
     // Cek duplikasi nama_ig
     const igCheck = await pool.query("SELECT id FROM lawyers WHERE nama_ig = $1", [nama_ig]);
     if (igCheck.rows.length > 0) {
-      return res.status(400).json({ error: "Nama Instagram sudah digunakan" });
+      return res.status(400).json({ error: "Nama nama_ig sudah digunakan" });
     }
 
     const deskripsiArray = deskripsi

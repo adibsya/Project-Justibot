@@ -40,7 +40,7 @@ const LawyersList = () => {
   return (
     <div className="w-full">
       <h1 className="text-center text-5xl font-bold pt-20 text-onSurface">
-        Pengacara Lainnya
+        Daftar Pengacara
       </h1>
 
       {lawyersData.length === 0 ? (
@@ -70,7 +70,7 @@ const LawyersList = () => {
                 <strong>Pengalaman:</strong> {lawyer.pengalaman_tahun} tahun
               </p>
 
-              <Link to={`/lawyer/${lawyer.id}`}>
+              <Link to={`/lawyer/${lawyer.nama}`}>
                 <button className="mt-4 text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]">
                   Cek Profil
                 </button>

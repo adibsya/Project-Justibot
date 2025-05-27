@@ -1,16 +1,22 @@
 import React from 'react';
+import axios from 'axios';
 import { FaBars, FaSignOutAlt } from 'react-icons/fa'; 
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate(); // Inisialisasi useNavigate
 
-  const handleLogout = () => {
-    // Hapus token atau data sesi yang relevan
-    localStorage.removeItem('authToken'); // Menghapus token jika disimpan di localStorage
+  const handleLogout = async () => {
+    try {
+      // Misal kamu punya endpoint logout (disarankan)
+      await axios.post("/api/admin/logout", {}, { withCredentials: true });
 
-    // Arahkan pengguna ke halaman Home setelah logout
-    navigate('/'); // Mengarahkan ke halaman Home
+      // Update UI setelah logout
+      window.dispatchEvent(new Event("authChange"));
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err.message);
+    }
   };
 
   return (

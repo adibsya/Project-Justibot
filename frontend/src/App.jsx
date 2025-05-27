@@ -1,16 +1,20 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import axios from "axios";
+axios.defaults.withCredentials = true; // ⬅️ WAJIB untuk kirim cookie
+axios.defaults.baseURL = "http://localhost:5173";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
+import ScrollToTop from "./components/ScrollToTop";
 
 // User Pages
 import Home from "./pages/User/Home";
 import Document from "./pages/User/Document";
 import Chatbot from "./pages/User/Chatbot";
 import Lawyer from "./pages/User/Lawyer";
-import About from "./components/About";
+import AboutUs from "./pages/User/AboutUs";
 import Blog from "./pages/User/Blog";
 import Login from "./pages/User/Login";
 import Register from "./pages/User/Register";
@@ -21,6 +25,13 @@ import Profile from "./components/User/Lawyer/Profile";
 import VerifySuccess from "./pages/User/VerifySuccess";
 import VerifyFailed from "./pages/User/VerifyFailed";
 import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
+import ArtikelPerdataPage from "./pages/User/ArtikelPerdataPage";
+import ArtikelBisnisEkonomiPage from "./pages/User/ArtikelBisnisEkonomiPage";
+import ArtikelLingkunganPage from "./pages/User/ArtikelLingkunganPage";
+import ArtikelPidanaPage from "./pages/User/ArtikelPidanaPage";
+import ArtikelIslamPage from "./pages/User/ArtikelIslamPage";
+import SyaratKetentuanPage from "./pages/User/SyaratKetentuanPage";
+import KebijakanPrivasiPage from "./pages/User/KebijakanPrivasiPage";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/DashboardData";
@@ -38,6 +49,8 @@ import editAdmin from "./pages/Admin/EditAdmin";
 
 const App = () => {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       {/* User Routes */}
       <Route element={<UserLayout />}>
@@ -45,20 +58,24 @@ const App = () => {
         <Route path="/document" element={<Document />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/lawyer" element={<Lawyer />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/blog" element={<Blog />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/artikel" element={<Blog />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPass />} />
         <Route path="/reset-password/:token" element={<ResetPass />} />
         <Route path="/artikel/:id" element={<Artikel />} />
-        <Route path="/lawyer/:id" element={<Profile />} />
+        <Route path="/lawyer/:nama" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
-        <Route
-          path="/perjanjian-kerja-sama"
-          element={<PerjanjianKerjaSama />}
-        />
+        <Route path="/perjanjian-kerja-sama" element={<PerjanjianKerjaSama />} />
+        <Route path="/artikel/artikel-pidana" element={<ArtikelPidanaPage />} />
+        <Route path="/artikel/artikel-perdata" element={<ArtikelPerdataPage />} />
+        <Route path="/artikel/artikel-lingkungan" element={<ArtikelLingkunganPage />} />
+        <Route path="/artikel/artikel-bisnis-dan-ekonomi" element={<ArtikelBisnisEkonomiPage />} />
+        <Route path="/artikel/artikel-islam" element={<ArtikelIslamPage />} />
+        <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
+        <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
       </Route>
 
       {/* Admin Routes */}
@@ -77,6 +94,7 @@ const App = () => {
         <Route path="admin/tambahadmin/edit/:id" element={<editAdmin />} />
       </Route>
     </Routes>
+    </>
   );
 };
 

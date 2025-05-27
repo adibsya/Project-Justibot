@@ -114,9 +114,9 @@ const FormResetPass = () => {
               alt="Success"
               className="mx-auto w-20 h-20"
             />
-            <h3 className="text-xl text-onSurface font-semibold mt-4">Password Reset Successful!</h3>
+            <h3 className="text-xl text-onSurface font-semibold mt-4">Reset Password Berhasil!</h3>
             <p className="text-gray-600 mt-2">
-              Your password has been updated. Please login with your new password.
+            Kata sandi Anda telah diperbarui. Silakan masuk dengan kata sandi baru Anda.
             </p>
             <button
               className="mt-4 px-6 py-2 bg-secondary text-white rounded-3xl hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]"

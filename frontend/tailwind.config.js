@@ -26,5 +26,6 @@ export const theme = {
 export const plugins = [
   require('flowbite/plugin'),
   require('daisyui'),
-  require('@tailwindcss/typography'), // ✅ tambahkan di sini!
+  require('@tailwindcss/typography'),
+  require('@tailwindcss/line-clamp'),
 ];

@@ -159,7 +159,7 @@ const DataLawyers = () => {
                 <td>
                   <div className="flex gap-2 justify-center">
                     <button
-                      onClick={() => handleEditLawyer(lawyer.id)}
+                      onClick={() => handleEditLawyer(lawyer.nama)}
                       title="Edit"
                       className="p-2 rounded hover:bg-[#652B19]/10 text-[#652B19]"
                     >
