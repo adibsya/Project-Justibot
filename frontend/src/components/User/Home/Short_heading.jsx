@@ -1,6 +1,10 @@
 import React, { useRef } from "react";
 import { assets } from "../../../assets/assets";
 import { motion, useInView } from "framer-motion";
+import { BiBot } from "react-icons/bi";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { FaUserTie } from "react-icons/fa";
+import { FaBalanceScale } from "react-icons/fa";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -20,7 +24,7 @@ const Short_heading = () => {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Short heading
+          Alur Penggunaan
         </motion.h2>
         <motion.p
           className="mb-10"
@@ -28,7 +32,7 @@ const Short_heading = () => {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Getting Started With Justibot: Get your Justice Service
+          Memulai Dengan Justibot, Dapatkan Layanan Keadilan Anda
         </motion.p>
         <div className="relative flex flex-col lg:flex-row items-center justify-between">
           <motion.div
@@ -38,18 +42,14 @@ const Short_heading = () => {
             animate={isInView ? "visible" : "hidden"}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <img
-              src={assets.feature_lawyer}
-              alt="lawyer"
-              className="w-[45px] mb-4"
-            />
+            <BiBot className="text-onSurface h-[45px] w-[45px] mb-4" />
             <h5 className="text-lg font-bold tracking-tight mb-2">
-              Accessing the Chatbot
+              Akses Chatbot
             </h5>
             <p className="font-light text-sm text-justify">
-              Visit the Justibot website and click on the chatbot icon in the
-              bottom right corner. You will be instantly connected with Justibot
-              for legal assistance.
+              Kunjungi situs web Justibot dan klik ikon chatbot di menu
+              navigasi. Anda akan langsung terhubung dengan Justibot untuk
+              mendapatkan bantuan hukum.
             </p>
           </motion.div>
           <div className="hidden lg:block mx-4">
@@ -75,18 +75,16 @@ const Short_heading = () => {
             animate={isInView ? "visible" : "hidden"}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <img
-              src={assets.feature_lawyer}
-              alt="lawyer"
-              className="w-[45px] mb-4"
+            <FaBalanceScale
+              className="text-onSurface h-[45px] w-[45px] mb-4"
             />
             <h5 className="text-lg font-bold tracking-tight mb-2">
-              Quick Legal Advice
+              Nasehat Hukum
             </h5>
             <p className="font-light text-sm text-justify">
-              Ask your legal questions directly through the chatbot. Justibot
-              will provide quick responses based on relevant and up-to-date
-              legal information.
+              Ajukan pertanyaan hukum Anda melalui chatbot. Justibot akan
+              memberikan tanggapan cepat berdasarkan informasi hukum yang
+              relevan.
             </p>
           </motion.div>
           <div className="hidden lg:block mx-4">
@@ -112,18 +110,14 @@ const Short_heading = () => {
             animate={isInView ? "visible" : "hidden"}
             transition={{ duration: 0.5, delay: 0.8 }}
           >
-            <img
-              src={assets.feature_lawyer}
-              alt="lawyer"
-              className="w-[45px] mb-4"
-            />
+            <IoDocumentTextOutline className="text-onSurface h-[45px] w-[45px] mb-4" />
             <h5 className="text-lg font-bold tracking-tight mb-2">
-              Creating Legal Documents
+              Unduh Dokumen Legal
             </h5>
             <p className="font-light text-sm text-justify">
-              Select the document creation feature. Fill out the form with the
-              requested information, and Justibot will generate the legal
-              document you need.
+              Pilih fitur unduh dokumen. Unduh formulir dengan informasi yang
+              Anda minta, dan Justibot akan menyediakan dokumen hukum yang Anda
+              butuhkan.
             </p>
           </motion.div>
           <div className="hidden lg:block mx-4">
@@ -149,18 +143,14 @@ const Short_heading = () => {
             animate={isInView ? "visible" : "hidden"}
             transition={{ duration: 0.5, delay: 1 }}
           >
-            <img
-              src={assets.feature_lawyer}
-              alt="lawyer"
-              className="w-[45px] mb-4"
-            />
+            <FaUserTie className="text-onSurface h-[45px] w-[45px] mb-4" />
             <h5 className="text-lg font-bold tracking-tight mb-2">
-              Lawyer Directory
+              Direktori Pengacara
             </h5>
             <p className="font-light text-sm text-justify">
-              Browse the directory of lawyers available on the website. You can
-              search for lawyers based on their specialization and location to
-              get further legal assistance.
+              Jelajahi direktori pengacara yang tersedia di navigasi untuk
+              mendapatkan bantuan hukum lebih lanjut berdasarkan spesialisasi
+              mereka.
             </p>
           </motion.div>
         </div>

@@ -27,6 +27,8 @@ import forgot2 from './forgot2.png';
 import berita from './berita.png';
 import profile from './profile.png';
 import logo_dokumen from './logo_dokumen.png';
+import bg_blog from './bg-blog.jpg';
+import idea from './idea.png';
 
 export const assets = {
   logo,
@@ -58,6 +60,8 @@ export const assets = {
   berita,
   profile,
   logo_dokumen,
+  bg_blog,
+  idea,
 };
 
 export default assets;

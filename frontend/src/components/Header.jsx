@@ -1,12 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import { assets } from "../assets/assets";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get("/api/me", { withCredentials: true });
+        setIsLoggedIn(true);
+        setUserData(res.data);
+      } catch (err) {
+        console.error("Auth check failed:", err.message);
+        setIsLoggedIn(false);
+        setUserData(null);
+      }
+    };
+
+    checkAuth();
+
+    const handleAuthChange = () => checkAuth();
+    window.addEventListener("authChange", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("authChange", handleAuthChange);
+    };
+  }, []);
+  
+  const handleProtectedRoute = (path) => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else {
+      navigate(path);
+    }
+  };  
+
+  const handleLogout = async () => {
+    try {
+      // Misal kamu punya endpoint logout (disarankan)
+      await axios.post("/api/logout", {}, { withCredentials: true });
+
+      // Update UI setelah logout
+      window.dispatchEvent(new Event("authChange"));
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err.message);
+    }
   };
 
   return (
@@ -61,6 +110,7 @@ const Header = () => {
 
           <div className="hidden md:flex items-center space-x-8">
             <ul className="flex items-center space-x-8 text-onPrimary">
+              {/* nav links */}
               <li>
                 <NavLink
                   to="/"
@@ -69,7 +119,7 @@ const Header = () => {
                   <p>Home</p>
                 </NavLink>
               </li>
-              <li>
+              <li onClick={() => handleProtectedRoute("/chatbot")}>
                 <NavLink
                   to="/chatbot"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
@@ -77,7 +127,7 @@ const Header = () => {
                   <p>Chatbot</p>
                 </NavLink>
               </li>
-              <li>
+              <li onClick={() => handleProtectedRoute("/document")}>
                 <NavLink
                   to="/document"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
@@ -85,7 +135,7 @@ const Header = () => {
                   <p>Document</p>
                 </NavLink>
               </li>
-              <li>
+              <li onClick={() => handleProtectedRoute("/lawyer")}>
                 <NavLink
                   to="/lawyer"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
@@ -95,26 +145,43 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to="/blog"
+                  to="/artikel"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
                 >
-                  <p>Blog</p>
+                  <p>Artikel</p>
                 </NavLink>
               </li>
             </ul>
-            <Link
-              to="/login"
-              className="flex justify-between ml-4 px-3 py-1.5 bg-surface text-onSurface rounded-full transition duration-300 ease-in-out hover:bg-gray-300 hover:scale-90"
-            >
-              <img
-                src={assets.user_icon}
-                className="w-4 mr-2"
-                alt="User Icon"
-              />
-              <p>Login / Signup</p>
-            </Link>
+
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="flex justify-between ml-4 px-3 py-1.5 bg-surface text-onSurface rounded-full transition duration-300 ease-in-out hover:bg-gray-300 hover:scale-90"
+              >
+                <img
+                  src={assets.user_icon}
+                  className="w-4 mr-2"
+                  alt="User Icon"
+                />
+                <p>Logout</p>
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="flex justify-between ml-4 px-3 py-1.5 bg-surface text-onSurface rounded-full transition duration-300 ease-in-out hover:bg-gray-300 hover:scale-90"
+              >
+                <img
+                  src={assets.user_icon}
+                  className="w-4 mr-2"
+                  alt="User Icon"
+                />
+                <p>Login / Signup</p>
+              </Link>
+            )}
           </div>
         </nav>
+
+        {/* mobile menu */}
         <div
           className={`${isMenuOpen ? "block" : "hidden"} md:hidden bg-background p-5 rounded-lg text-center z-50`}
         >
@@ -131,7 +198,7 @@ const Header = () => {
                 Home
               </NavLink>
             </li>
-            <li>
+            <li onClick={() => handleProtectedRoute("/chatbot")}>
               <NavLink
                 to="/chatbot"
                 onClick={toggleMenu}
@@ -143,7 +210,7 @@ const Header = () => {
                 Chatbot
               </NavLink>
             </li>
-            <li>
+            <li onClick={() => handleProtectedRoute("/document")}>
               <NavLink
                 to="/document"
                 onClick={toggleMenu}
@@ -155,7 +222,7 @@ const Header = () => {
                 Document
               </NavLink>
             </li>
-            <li>
+            <li onClick={() => handleProtectedRoute("/lawyer")}>
               <NavLink
                 to="/lawyer"
                 onClick={toggleMenu}
@@ -169,25 +236,39 @@ const Header = () => {
             </li>
             <li>
               <NavLink
-                to="/blog"
+                to="/artikel"
                 onClick={toggleMenu}
                 className={({ isActive }) =>
                   `block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300 
                   ${isActive ? "bg-primary rounded-lg" : ""}`
                 }
               >
-                Blog
+                Artikel
               </NavLink>
             </li>
-            <li>
-              <Link
-                to="/login"
-                onClick={toggleMenu}
-                className="block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300"
-              >
-                Login / Signup
-              </Link>
-            </li>
+            {isLoggedIn ? (
+              <li>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    toggleMenu();
+                  }}
+                  className="block w-full px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300"
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to="/login"
+                  onClick={toggleMenu}
+                  className="block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300"
+                >
+                  Login / Signup
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </header>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch, FiDownload, FiEye, FiFile } from "react-icons/fi";
@@ -770,5 +771,17 @@ const Document = () => {
     </main>
   );
 };
+=======
+import React from 'react';
+import DaftarDokumen from '../../components/User/Document/DaftarDokumen';
 
-export default Document;
+const Document = () => {
+  return (
+    <div>
+      <DaftarDokumen />
+    </div>
+  )
+}
+>>>>>>> bed091f0084c772eaca26c117192ef3d6a2b2b5c
+
+export default Document

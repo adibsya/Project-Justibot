@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Pencil, Trash2 } from 'lucide-react';
 import Pagination from './Pagination';
 
 const DataLawyers = () => {
@@ -118,14 +118,15 @@ const DataLawyers = () => {
             <tr className="text-sm text-gray-600 text-center">
               <th className="py-2">No</th>
               <th className="px-6">Foto</th>
-              <th className='w-44'>Nama</th>
-              <th className='w-32'>Lokasi</th>
-              <th className='w-36'>Spesialisasi</th>
-              <th className='w-24'>Pengalaman</th>
+              <th className="w-44">Nama</th>
+              <th className="w-32">Lokasi</th>
+              <th className="w-36">Spesialisasi</th>
+              <th className="w-24">Pengalaman</th>
               <th>Universitas</th>
+              <th>No. WA</th>
+              <th>Instagram</th>
               <th>Deskripsi</th>
               <th>Industri</th>
-              <th className='w-16'>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -145,8 +146,10 @@ const DataLawyers = () => {
                 <td>{lawyer.spesialisasi}</td>
                 <td>{lawyer.pengalaman_tahun} Tahun</td>
                 <td>{lawyer.asal_univ}</td>
+                <td>{lawyer.no_wa}</td>
+                <td>{lawyer.nama_ig}</td>
                 <td>
-                  <ul className="list-disc pl-4">
+                  <ul className="list-disc pl-4 text-left">
                     {lawyer.deskripsi?.map((item, i) => (
                       <li key={i}>{item}</li>
                     ))}
@@ -154,30 +157,24 @@ const DataLawyers = () => {
                 </td>
                 <td>{lawyer.industri}</td>
                 <td>
-                  <span
-                    className={`font-semibold ${
-                      lawyer.tersedia ? 'text-green-600' : 'text-red-500'
-                    }`}
-                  >
-                    {lawyer.tersedia ? 'Aktif' : 'Tidak Aktif'}
-                  </span>
-                </td>
-                <td>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 justify-center">
                     <button
-                      onClick={() => handleEditLawyer(lawyer.id)}
-                      className="text-blue-600 hover:underline"
+                      onClick={() => handleEditLawyer(lawyer.nama)}
+                      title="Edit"
+                      className="p-2 rounded hover:bg-[#652B19]/10 text-[#652B19]"
                     >
-                      Edit
+                      <Pencil size={18} />
                     </button>
                     <button
                       onClick={() => handleDeleteLawyer(lawyer.id)}
-                      className="text-red-600 hover:underline"
+                      title="Hapus"
+                      className="p-2 rounded hover:bg-gray-200 text-red-600"
                     >
-                      Hapus
+                      <Trash2 size={18} />
                     </button>
                   </div>
                 </td>
+
               </tr>
             ))}
           </tbody>
