@@ -20,7 +20,7 @@ import Artikel from "./components/User/Blog/Artikel";
 import Profile from "./components/User/Lawyer/Profile";
 import VerifySuccess from "./pages/User/VerifySuccess";
 import VerifyFailed from "./pages/User/VerifyFailed";
-import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
+// import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/DashboardData";
@@ -32,6 +32,7 @@ import FormTambahLawyer from "./pages/Admin/AddLawyers";
 import EditLawyers from "./pages/Admin/EditLawyers";
 import FormTambahArtikel from "./pages/Admin/AddArticles";
 import FormEditArtikel from "./pages/Admin/EditArticles";
+import DocumentManagement from "./pages/Admin/DocumentManagement";
 
 const App = () => {
   return (
@@ -52,10 +53,10 @@ const App = () => {
         <Route path="/lawyer/:id" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/verify-failed" element={<VerifyFailed />} />
-        <Route
+        {/* <Route
           path="/perjanjian-kerja-sama"
           element={<PerjanjianKerjaSama />}
-        />
+        /> */}
       </Route>
 
       {/* Admin Routes */}
@@ -69,6 +70,7 @@ const App = () => {
         <Route path="articles/tambah" element={<FormTambahArtikel />} />
         <Route path="/admin/articles/edit/:id" element={<FormEditArtikel />} />
         <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
+        <Route path="document-management" element={<DocumentManagement />} />
       </Route>
     </Routes>
   );

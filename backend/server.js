@@ -6,6 +6,7 @@ const authRoutes = require("./Routes/authRoutes");
 const articlesRoutes = require("./Routes/articlesRoutes");
 const lawyerRoutes = require("./Routes/lawyerRoutes");
 const chatbotRoutes = require("./Routes/chatbotRoutes");
+const documentManagementRoutes = require("./Routes/documentManagementRoutes");
 
 require("dotenv").config();
 
@@ -16,6 +17,12 @@ console.log("- NODE_ENV:", process.env.NODE_ENV);
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/documents", (req, res, next) => {
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -23,11 +30,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve document files
+app.use(
+  "/documents",
+  express.static(path.join(__dirname, "uploads/documents"))
+);
+
 // API Routes
 app.use("/api", authRoutes);
 app.use("/api/articles", articlesRoutes);
 app.use("/api/lawyers", lawyerRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/documents", documentManagementRoutes); // Changed from document-management to documents
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
