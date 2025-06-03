@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch, FiDownload, FiEye, FiFile } from "react-icons/fi";
@@ -474,7 +473,7 @@ const Document = () => {
                       <span className="w-1.5 h-5 bg-secondary rounded-sm mr-2"></span>
                       Deskripsi Dokumen
                     </h3>
-                    <div className="bg-muted/5 p-4 rounded-lg border border-muted/20 text-md">
+                    <div className="bg-muted/5 p-4 rounded-lg border border-muted/20 text-md text-onSurface">
                       <p>
                         Dokumen ini berisi{" "}
                         <span className="font-medium">
@@ -771,17 +770,5 @@ const Document = () => {
     </main>
   );
 };
-=======
-import React from 'react';
-import DaftarDokumen from '../../components/User/Document/DaftarDokumen';
 
-const Document = () => {
-  return (
-    <div>
-      <DaftarDokumen />
-    </div>
-  )
-}
->>>>>>> bed091f0084c772eaca26c117192ef3d6a2b2b5c
-
-export default Document
+export default Document;

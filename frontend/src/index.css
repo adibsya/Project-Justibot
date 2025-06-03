@@ -113,7 +113,6 @@
   scrollbar-width: none; /* Firefox */
 }
 
-<<<<<<< HEAD
 /* Custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
@@ -207,13 +206,25 @@
     min-height: 300px;
   }
 }
-=======
-.ql-indent-1 { padding-left: 2em; }
-.ql-indent-2 { padding-left: 4em; }
-.ql-indent-3 { padding-left: 6em; }
-.ql-indent-4 { padding-left: 8em; }
+.ql-indent-1 {
+  padding-left: 2em;
+}
+.ql-indent-2 {
+  padding-left: 4em;
+}
+.ql-indent-3 {
+  padding-left: 6em;
+}
+.ql-indent-4 {
+  padding-left: 8em;
+}
 
-.ql-align-center { text-align: center; }
-.ql-align-right { text-align: right; }
-.ql-align-justify { text-align: justify; }
->>>>>>> bed091f0084c772eaca26c117192ef3d6a2b2b5c
+.ql-align-center {
+  text-align: center;
+}
+.ql-align-right {
+  text-align: right;
+}
+.ql-align-justify {
+  text-align: justify;
+}
