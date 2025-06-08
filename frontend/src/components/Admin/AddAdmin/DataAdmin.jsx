@@ -20,12 +20,23 @@ const DataAdmins = () => {
   // Modifikasi di DataAdmin.jsx
   const fetchAdmins = async () => {
     try {
-      // Get data from API
-      const res = await fetch("http://localhost:3000/api/admin");
+      console.log("Memulai fetch admin data...");
+
+      // Get data from API dengan credentials
+      const res = await fetch("http://localhost:3000/api/admin", {
+        credentials: "include",
+      });
+
+      console.log("Response status:", res.status);
+
       if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Response error:", errorText);
         throw new Error("Gagal mengambil data admin dari server");
       }
+
       const apiData = await res.json();
+      console.log("Data admin berhasil diambil:", apiData.length, "item");
       setAdmins(apiData);
     } catch (err) {
       console.error("Gagal mengambil data admin:", err);

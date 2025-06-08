@@ -1,21 +1,25 @@
-const { Pool } = require("pg");
-require("dotenv").config();
+const { Pool } = require('pg');
+require('dotenv').config();
+
+// Ensure password is a string
+const password = String(process.env.DB_PASS);
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT || 5432,
+	user: process.env.DB_USER,
+	host: process.env.DB_HOST,
+	database: process.env.DB_NAME,
+	password: password, // Use the explicitly converted string
+	port: process.env.DB_PORT,
 });
 
-// Test connection
-pool.query("SELECT NOW()", (err, res) => {
-  if (err) {
-    console.error("Database connection error:", err);
-  } else {
-    console.log("Database connected successfully at:", res.rows[0].now);
-  }
+// Test the connection
+pool.connect((err, client, release) => {
+	if (err) {
+		console.error('Database connection error:', err.message);
+	} else {
+		console.log('Successfully connected to PostgreSQL database');
+		release();
+	}
 });
 
 module.exports = pool;
