@@ -28,6 +28,12 @@ const StatistikChatbot = () => {
   const [range, setRange] = useState("mingguan");
   const [dataKunjungan, setDataKunjungan] = useState([]);
   const [dataKepuasanPengguna, setDataKepuasanPengguna] = useState([]);
+  const [documentStats, setDocumentStats] = useState({
+    totalDocuments: 0,
+    categoryCounts: {},
+    totalViews: 0,
+    mostViewed: [],
+  });
 
   useEffect(() => {
     axios
@@ -39,15 +45,41 @@ const StatistikChatbot = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/grafik-artikel/statistik-kunjungan?range=${range}`);
+        const res = await axios.get(
+          `http://localhost:3000/api/grafik-artikel/statistik-kunjungan?range=${range}`,
+        );
         setDataKunjungan(res.data);
       } catch (err) {
         console.error("Gagal ambil data grafik:", err);
       }
     };
-  
+
     fetchData();
   }, [range]);
+
+  // Add new useEffect to fetch document statistics
+  useEffect(() => {
+    const fetchDocumentStats = async () => {
+      try {
+        const response = await axios.get("/api/documents/stats");
+        if (response.data.success) {
+          setDocumentStats(response.data.data);
+        }
+      } catch (err) {
+        console.error("Gagal mengambil statistik dokumen:", err);
+      }
+    };
+
+    fetchDocumentStats();
+  }, []);
+
+  // Format category data for pie chart
+  const documentCategoriesData = Object.entries(
+    documentStats.categoryCounts || {},
+  ).map(([category, count]) => ({
+    category,
+    value: count,
+  }));
 
   // Data untuk grafik lainnya
   const dataPertanyaanSering = [
@@ -335,6 +367,136 @@ const StatistikChatbot = () => {
                   />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bagian 3: Statistik Dokumen */}
+      <div className="mb-8 md:mb-12">
+        <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-[#122E40] border-b pb-2">
+          Statistik Dokumen
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8">
+          {/* Most Viewed Documents Chart */}
+          <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+            <div className="mb-3 md:mb-4">
+              <h2 className="text-lg md:text-xl font-bold text-[#122E40] mb-1">
+                Dokumen Terbanyak Dilihat
+              </h2>
+              <p className="text-xs md:text-sm text-gray-500">
+                Dokumen dengan jumlah kunjungan tertinggi
+              </p>
+            </div>
+            <div className="h-[280px] md:h-[350px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={documentStats.mostViewed || []}
+                  layout="vertical"
+                  margin={{ top: 10, right: 10, left: 50, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5DED5" />
+                  <XAxis type="number" stroke="#A69C7A" />
+                  <YAxis
+                    dataKey="title"
+                    type="category"
+                    stroke="#A69C7A"
+                    width={120}
+                    tick={{ fontSize: 10 }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#fff",
+                      border: "1px solid #E5DED5",
+                      borderRadius: 10,
+                    }}
+                  />
+                  <Bar
+                    dataKey="views"
+                    name="Jumlah Kunjungan"
+                    fill="#731D2C"
+                    radius={[0, 4, 4, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Document Categories Distribution Chart */}
+          <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+            <div className="mb-3 md:mb-4">
+              <h2 className="text-lg md:text-xl font-bold text-[#122E40] mb-1">
+                Distribusi Kategori Dokumen
+              </h2>
+              <p className="text-xs md:text-sm text-gray-500">
+                Perbandingan jumlah dokumen berdasarkan kategori
+              </p>
+            </div>
+            <div className="h-[280px] md:h-[350px] flex justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                  <Pie
+                    data={documentCategoriesData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    outerRadius="70%"
+                    fill="#8884d8"
+                    dataKey="value"
+                    nameKey="category"
+                    label={({ category, percent }) =>
+                      `${category} ${(percent * 100).toFixed(0)}%`
+                    }
+                  >
+                    {documentCategoriesData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={WARNA[index % WARNA.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name, props) => [
+                      `${value} dokumen`,
+                      props.payload.category,
+                    ]}
+                  />
+                  <Legend
+                    layout="horizontal"
+                    verticalAlign="bottom"
+                    align="center"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+
+        {/* Document Views Summary */}
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200">
+          <div className="flex flex-wrap justify-between">
+            <div className="text-center px-4 py-3 bg-blue-50 rounded-xl flex-1 mx-2">
+              <h3 className="text-xl font-bold text-[#122E40]">
+                {documentStats.totalDocuments}
+              </h3>
+              <p className="text-sm text-gray-500">Total Dokumen</p>
+            </div>
+            <div className="text-center px-4 py-3 bg-green-50 rounded-xl flex-1 mx-2">
+              <h3 className="text-xl font-bold text-[#122E40]">
+                {documentStats.totalViews?.toLocaleString()}
+              </h3>
+              <p className="text-sm text-gray-500">Total Kunjungan</p>
+            </div>
+            <div className="text-center px-4 py-3 bg-amber-50 rounded-xl flex-1 mx-2">
+              <h3 className="text-xl font-bold text-[#122E40]">
+                {documentStats.totalDocuments > 0
+                  ? Math.round(
+                      documentStats.totalViews / documentStats.totalDocuments,
+                    )
+                  : 0}
+              </h3>
+              <p className="text-sm text-gray-500">Rata-rata Kunjungan</p>
             </div>
           </div>
         </div>

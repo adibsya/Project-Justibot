@@ -68,7 +68,7 @@ const EditLawyer = () => {
     const newErrors = {};
     const { no_wa, nama_ig, pengalaman_tahun } = formData;
 
-    if (no_wa && !/^62[1-9][0-9]{7,10}$/.test(no_wa)) {
+    if (no_wa && !/^62\d{8,15}$/.test(no_wa)) {
       newErrors.no_wa = "Nomor WhatsApp tidak valid (harus format Indonesia (62)).";
     }
 
