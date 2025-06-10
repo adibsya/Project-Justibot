@@ -49,6 +49,24 @@ router.post("/logout", (req, res) => {
 
 router.use(authenticate, authorizeAdmin);
 
+// GET /api/admin/profile - Ambil data admin berdasarkan token
+router.get("/profile", async (req, res) => {
+  try {
+    const adminId = req.user.id; // sudah diisi dari middleware authenticate
+    const result = await pool.query(
+      "SELECT id, name, email FROM justibotadmins WHERE id = $1",
+      [adminId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Admin tidak ditemukan" });
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Gagal mengambil data profil admin" });
+  }
+});
+
 // Daftar admin
 router.get("/", async (req, res) => {
   try {
