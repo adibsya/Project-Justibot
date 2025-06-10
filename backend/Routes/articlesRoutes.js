@@ -6,7 +6,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
 
 // ====================== GET ALL ARTICLES ======================
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const { category } = req.query;
 
   try {
@@ -18,17 +18,19 @@ router.get('/', async (req, res) => {
     const values = [];
 
     if (category) {
-      query += ' WHERE LOWER(kategori_artikel.nama_kategori) = LOWER($1)';
+      query += " WHERE LOWER(kategori_artikel.nama_kategori) = LOWER($1)";
       values.push(category);
     }
 
-    query += ' ORDER BY artikell.created_at DESC';
+    query += " ORDER BY artikell.created_at DESC";
 
     const result = await pool.query(query, values);
 
-    const articles = result.rows.map(article => {
+    const articles = result.rows.map((article) => {
       if (article.image_url && Buffer.isBuffer(article.image_url)) {
-        article.image_url = `data:image/jpeg;base64,${article.image_url.toString('base64')}`;
+        article.image_url = `data:image/jpeg;base64,${article.image_url.toString(
+          "base64"
+        )}`;
       }
       return article;
     });
@@ -36,13 +38,12 @@ router.get('/', async (req, res) => {
     res.json(articles);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Gagal mengambil data artikel' });
+    res.status(500).json({ error: "Gagal mengambil data artikel" });
   }
 });
 
-
 // ====================== GET RECOMMENDATIONS WITH PAGINATION ======================
-router.get('/recommendations', async (req, res) => {
+router.get("/recommendations", async (req, res) => {
   try {
     const dataQuery = await pool.query(
       `SELECT DISTINCT ON (a.kategori_id) a.*, k.nama_kategori
@@ -51,9 +52,11 @@ router.get('/recommendations', async (req, res) => {
        ORDER BY a.kategori_id, a.created_at DESC`
     );
 
-    const articles = dataQuery.rows.map(article => {
+    const articles = dataQuery.rows.map((article) => {
       if (article.image_url && Buffer.isBuffer(article.image_url)) {
-        article.image_url = `data:image/jpeg;base64,${article.image_url.toString('base64')}`;
+        article.image_url = `data:image/jpeg;base64,${article.image_url.toString(
+          "base64"
+        )}`;
       }
       return article;
     });
@@ -64,29 +67,30 @@ router.get('/recommendations', async (req, res) => {
       currentPage: 1,
     });
   } catch (error) {
-    console.error('Error fetching recommendations:', error);
-    res.status(500).json({ error: 'Gagal mengambil rekomendasi artikel' });
+    console.error("Error fetching recommendations:", error);
+    res.status(500).json({ error: "Gagal mengambil rekomendasi artikel" });
   }
 });
 
-
 // ====================== GET ALL CATEGORIES ======================
-router.get('/categories', async (req, res) => {
+router.get("/categories", async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM kategori_artikel ORDER BY nama_kategori ASC');
+    const result = await pool.query(
+      "SELECT * FROM kategori_artikel ORDER BY nama_kategori ASC"
+    );
     res.json(result.rows);
   } catch (error) {
-    console.error('Gagal mengambil kategori:', error);
-    res.status(500).json({ error: 'Gagal mengambil kategori' });
+    console.error("Gagal mengambil kategori:", error);
+    res.status(500).json({ error: "Gagal mengambil kategori" });
   }
 });
 
 // ====================== CREATE ARTICLE ======================
-router.post('/', upload.single('image_url'), async (req, res) => {
+router.post("/", upload.single("image_url"), async (req, res) => {
   let { title, content, author, kategori_id } = req.body;
 
   if (!title || !content || !author || !kategori_id) {
-    return res.status(400).json({ error: 'Semua field harus diisi' });
+    return res.status(400).json({ error: "Semua field harus diisi" });
   }
 
   // Jangan hapus tag HTML supaya format tetap tersimpan
@@ -96,18 +100,18 @@ router.post('/', upload.single('image_url'), async (req, res) => {
 
   try {
     const result = await pool.query(
-      'INSERT INTO artikell (title, content, author, image_url, kategori_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      "INSERT INTO artikell (title, content, author, image_url, kategori_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [title, content, author, image_url, kategori_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Gagal menambahkan artikel' });
+    res.status(500).json({ error: "Gagal menambahkan artikel" });
   }
 });
 
 // ====================== CHECK DUPLICATE TITLE ======================
-router.get('/check-title', async (req, res) => {
+router.get("/check-title", async (req, res) => {
   const { judul } = req.query;
 
   if (!judul) {
@@ -116,19 +120,19 @@ router.get('/check-title', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT COUNT(*) FROM artikell WHERE LOWER(title) = LOWER($1)',
+      "SELECT COUNT(*) FROM artikell WHERE LOWER(title) = LOWER($1)",
       [judul]
     );
     const count = parseInt(result.rows[0].count, 10);
     res.json({ exists: count > 0 });
   } catch (error) {
-    console.error('Gagal cek judul artikel:', error);
-    res.status(500).json({ error: 'Gagal cek judul artikel' });
+    console.error("Gagal cek judul artikel:", error);
+    res.status(500).json({ error: "Gagal cek judul artikel" });
   }
 });
 
 // ====================== UPDATE ARTICLE ======================
-router.put('/:id', upload.single('image_url'), async (req, res) => {
+router.put("/:id", upload.single("image_url"), async (req, res) => {
   const { id } = req.params;
   let { title, content, author, kategori_id } = req.body;
   const image_url = req.file ? req.file.buffer : null;
@@ -162,58 +166,67 @@ router.put('/:id', upload.single('image_url'), async (req, res) => {
   }
 
   if (fieldsToUpdate.length === 0) {
-    return res.status(400).json({ error: 'Tidak ada data yang diperbarui' });
+    return res.status(400).json({ error: "Tidak ada data yang diperbarui" });
   }
 
-  const query = `UPDATE artikell SET ${fieldsToUpdate.join(', ')} WHERE id = $${index} RETURNING *`;
+  const query = `UPDATE artikell SET ${fieldsToUpdate.join(
+    ", "
+  )} WHERE id = $${index} RETURNING *`;
   values.push(id);
 
   try {
     const result = await pool.query(query, values);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Artikel tidak ditemukan' });
+      return res.status(404).json({ error: "Artikel tidak ditemukan" });
     }
     res.json(result.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Gagal memperbarui artikel' });
+    res.status(500).json({ error: "Gagal memperbarui artikel" });
   }
 });
 
 // ====================== DELETE ARTICLE ======================
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query('DELETE FROM artikell WHERE id = $1 RETURNING *', [id]);
+    const result = await pool.query(
+      "DELETE FROM artikell WHERE id = $1 RETURNING *",
+      [id]
+    );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Artikel tidak ditemukan' });
+      return res.status(404).json({ error: "Artikel tidak ditemukan" });
     }
-    res.json({ message: 'Artikel berhasil dihapus' });
+    res.json({ message: "Artikel berhasil dihapus" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Gagal menghapus artikel' });
+    res.status(500).json({ error: "Gagal menghapus artikel" });
   }
 });
 
 // ====================== GET ARTICLE DETAIL ======================
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM artikell WHERE id = $1', [id]);
+    const result = await pool.query("SELECT * FROM artikell WHERE id = $1", [
+      id,
+    ]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Artikel tidak ditemukan' });
+      return res.status(404).json({ error: "Artikel tidak ditemukan" });
     }
 
     const article = result.rows[0];
     if (article.image_url && Buffer.isBuffer(article.image_url)) {
-      article.image_url = `data:image/jpeg;base64,${article.image_url.toString('base64')}`;
+      article.image_url = `data:image/jpeg;base64,${article.image_url.toString(
+        "base64"
+      )}`;
     }
 
     res.json(article);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Gagal mengambil artikel' });
+    res.status(500).json({ error: "Gagal mengambil artikel" });
   }
 });
 

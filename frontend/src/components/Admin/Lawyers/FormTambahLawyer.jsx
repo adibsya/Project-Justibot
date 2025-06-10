@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FormTambahLawyer = () => {
+  const [duplicateError, setDuplicateError] = useState(""); // untuk menyimpan error dari backend
   const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
     nama: "",
@@ -112,9 +113,35 @@ const FormTambahLawyer = () => {
         navigate("/admin/lawyers");
       }, 2500);
     } catch (error) {
-      console.error("Error menambahkan pengacara:", error);
+      if (error.response) {
+        // Jika backend mengirim status 409 = data duplikat
+        if (error.response.status === 409) {
+          const { fields, message } = error.response.data;
+          const duplicateFieldErrors = {};
+        
+          if (fields.includes("no_wa")) {
+            duplicateFieldErrors.no_wa = "Nomor WhatsApp sudah digunakan.";
+          }
+          if (fields.includes("nama_ig")) {
+            duplicateFieldErrors.nama_ig = "Nama Instagram sudah digunakan.";
+          }
+        
+          setErrors((prev) => ({ ...prev, ...duplicateFieldErrors }));
+        
+        
+        } else {
+          console.error("Server error:", error.response.status, error.response.data);
+          alert("Terjadi kesalahan di server.");
+        }
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+        alert("Tidak bisa terhubung ke server. Pastikan backend berjalan.");
+      } else {
+        console.error("Error lainnya:", error.message);
+        alert("Terjadi kesalahan saat mengirim data.");
+      }
     }
-  };
+  }; // penutup fungsi handleTambahPengacara
 
   return (
     <div className="w-full h-[calc(100vh-80px)] overflow-y-auto p-6 relative">
@@ -127,6 +154,8 @@ const FormTambahLawyer = () => {
           </div>
         </div>
       )}
+
+      
 
       <div className="bg-white p-8 rounded-xl shadow border border-[#652B19] w-full max-w-none">
         <h2 className="text-2xl font-bold mb-6 border-b border-[#652B19] pb-2 text-[#2B1700]">
@@ -295,8 +324,13 @@ const FormTambahLawyer = () => {
             value={formData.nama_ig}
             onChange={handleInputChange}
             placeholder="Nama Instagram"
-            className="bg-[#f9f3f1] border border-[#d6b6aa] px-4 py-2 rounded-xl w-full text-[#2B1700]"
+            className={`bg-[#f9f3f1] border px-4 py-2 rounded-xl w-full text-[#2B1700] ${
+              errors.nama_ig ? "border-red-500" : "border-[#d6b6aa]"
+            }`}
           />
+          {errors.nama_ig && (
+            <p className="text-red-600 text-sm mt-1">{errors.nama_ig}</p>
+          )}
         </div>
 
         {/* Buttons */}

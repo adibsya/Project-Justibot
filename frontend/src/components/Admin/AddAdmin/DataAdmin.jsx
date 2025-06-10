@@ -17,64 +17,30 @@ const DataAdmins = () => {
     fetchAdmins();
   }, []);
 
+  // Modifikasi di DataAdmin.jsx
   const fetchAdmins = async () => {
     try {
-      // Get data from API
-      const res = await fetch("http://localhost:3000/api/admins");
+      console.log("Memulai fetch admin data...");
+
+      // Get data from API dengan credentials
+      const res = await fetch("http://localhost:3000/api/admin", {
+        credentials: "include",
+      });
+
+      console.log("Response status:", res.status);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Response error:", errorText);
+        throw new Error("Gagal mengambil data admin dari server");
+      }
+
       const apiData = await res.json();
-
-      // Get data from localStorage
-      const localData = JSON.parse(localStorage.getItem("localAdmins") || "[]");
-
-      // Combine both data sources
-      setAdmins([...apiData, ...localData]);
+      console.log("Data admin berhasil diambil:", apiData.length, "item");
+      setAdmins(apiData);
     } catch (err) {
       console.error("Gagal mengambil data admin:", err);
-
-      // If API fails, at least get local data
-      const localData = JSON.parse(localStorage.getItem("localAdmins") || "[]");
-      setAdmins(localData);
-    }
-  };
-
-  // Add this function to DataAdmins component
-  const syncWithBackend = async () => {
-    try {
-      // Get local admins
-      const localAdmins = JSON.parse(
-        localStorage.getItem("localAdmins") || "[]",
-      );
-
-      if (localAdmins.length === 0) {
-        alert("Tidak ada data lokal untuk disinkronkan");
-        return;
-      }
-
-      // Send each local admin to the backend
-      for (const admin of localAdmins) {
-        await fetch("http://localhost:3000/api/admins", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(admin),
-        });
-      }
-
-      // Clear local storage after successful sync
-      localStorage.removeItem("localAdmins");
-
-      // Refresh data
-      fetchAdmins();
-
-      // Show success message
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 2500);
-    } catch (err) {
-      console.error("Gagal sinkronisasi:", err);
-      alert("Gagal sinkronisasi dengan server");
+      alert("Gagal mengambil data dari server: " + err.message);
     }
   };
 
@@ -109,7 +75,7 @@ const DataAdmins = () => {
         localStorage.setItem("localAdmins", JSON.stringify(updatedAdmins));
       } else {
         // Delete from API
-        await fetch(`http://localhost:3000/api/admins/${adminToDelete}`, {
+        await fetch(`http://localhost:3000/api/admin/${adminToDelete}`, {
           method: "DELETE",
         });
       }
@@ -192,12 +158,6 @@ const DataAdmins = () => {
           className="px-4 py-2 border border-gray-300 rounded-full w-80 focus:outline-none"
         />
         <div className="flex gap-2">
-          <button
-            className="bg-green-600 text-white px-4 py-2 rounded"
-            onClick={syncWithBackend}
-          >
-            Sinkronisasi ke Server
-          </button>
           <button
             className="bg-[#652B19] text-white px-4 py-2 rounded"
             onClick={handleAddAdmin}

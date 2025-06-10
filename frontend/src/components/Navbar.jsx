@@ -70,7 +70,7 @@ const Navbar = ({ toggleSidebar }) => {
           id="profile-button"
           onClick={toggleProfileDropdown}
           className="relative focus:outline-none"
-          title="User Profile"
+          title={admin?.name || "User Profile"}
         >
           <div className="w-10 h-10 rounded-full bg-[#612A22] flex items-center justify-center shadow">
             <svg
@@ -86,18 +86,23 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
         </button>
 
-        {/* Dropdown Profile */}
         {showProfileDropdown && (
           <div
             ref={dropdownRef}
-            className="absolute right-4 top-[70px] w-64 bg-[#D9CEC5]/40 border border-gray-300
-                       rounded-2xl shadow-lg p-6 z-50 backdrop-blur-sm"
+            className="absolute right-4 top-[70px] min-w-[240px] w-fit
+                       bg-[#D9CEC5]/40 rounded-2xl border border-gray-300
+                       shadow-lg shadow-black/10 p-6 z-50 backdrop-blur-sm
+                       transform transition duration-200 ease-out"
           >
+            {/* FOTO + NAMA + EMAIL */}
             <div className="flex flex-col items-center space-y-4 mb-6">
-              <div className="w-20 h-20 rounded-full bg-[#612A22] flex items-center justify-center shadow">
+              <div
+                className="w-20 h-20 rounded-full border border-gray-300
+                           shadow-md flex items-center justify-center bg-[#612A22]"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-10 h-10 text-white"
+                  className="w-12 h-12 text-white"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -107,26 +112,64 @@ const Navbar = ({ toggleSidebar }) => {
                 </svg>
               </div>
 
-              <div className="text-center">
-                <p className="text-black font-semibold text-lg">
-                  {admin ? admin.name : "Loading..."}
+              <div className="w-full p-3 text-center">
+                <p
+                  className="font-semibold text-lg text-black whitespace-nowrap"
+                  title={admin?.name}
+                >
+                  {admin?.name || "Loading..."}
                 </p>
-                <p className="text-sm text-black opacity-70 truncate">
-                  {admin ? admin.email : ""}
+                <p
+                  className="text-sm text-black opacity-70 whitespace-nowrap"
+                  title={admin?.email}
+                >
+                  {admin?.email || ""}
                 </p>
               </div>
             </div>
 
             <hr className="border-gray-400 mb-6" />
 
+            {/* BUTTON DETAIL PROFILE */}
+            <button
+              onClick={() => {
+                setShowProfileDropdown(false);
+                navigate("/admin/profile");
+              }}
+              className="w-full flex items-center justify-center gap-2
+                         bg-white hover:bg-gray-100 transition-colors duration-300
+                         text-[#612A22] font-semibold py-3 rounded-xl shadow-md mb-3
+                         focus:outline-none focus:ring-2 focus:ring-[#612A22]"
+              type="button"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5.121 17.804A11.955 11.955 0 0112 15c2.019 0 3.917.5 5.579 1.387M3 10a9 9 0 1118 0 9 9 0 01-18 0z"
+                />
+              </svg>
+              Detail Profile
+            </button>
+
+            {/* BUTTON LOGOUT */}
             <button
               onClick={() => {
                 setShowLogoutConfirm(true);
                 setShowProfileDropdown(false);
               }}
               className="w-full flex items-center justify-center gap-2
-                         bg-[#612A22] hover:bg-[#612A22]/80 text-white
-                         font-semibold py-3 rounded-xl shadow-md transition"
+                         bg-[#612A22] hover:bg-[#612A22]/80 transition-colors duration-300
+                         text-white font-semibold py-3 rounded-xl shadow-md
+                         focus:outline-none focus:ring-2 focus:ring-red-500"
+              type="button"
             >
               <FaSignOutAlt className="w-5 h-5" />
               Logout

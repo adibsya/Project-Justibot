@@ -36,9 +36,7 @@ const EditAdmin = () => {
           setIsLocalAdmin(true);
         } else {
           // Fetch from API
-          const response = await fetch(
-            `http://localhost:3000/api/admins/${id}`,
-          );
+          const response = await fetch(`http://localhost:3000/api/admin/${id}`);
           if (!response.ok) throw new Error("Failed to fetch admin data");
 
           const apiAdmin = await response.json();
@@ -62,6 +60,7 @@ const EditAdmin = () => {
   }, [id, navigate]);
 
   // Handle form submission
+  // Modifikasi di EditAdmin.jsx
   const handleUpdateAdmin = async () => {
     try {
       // Basic validation
@@ -70,34 +69,28 @@ const EditAdmin = () => {
         return;
       }
 
-      if (isLocalAdmin) {
-        // Update in localStorage
-        const localAdmins = JSON.parse(
-          localStorage.getItem("localAdmins") || "[]",
-        );
-        const updatedAdmins = localAdmins.map((admin) =>
-          admin.id === id
-            ? {
-                ...admin,
-                name: formData.name,
-                email: formData.email,
-                password: formData.password || admin.password,
-              }
-            : admin,
-        );
+      // Create request body (only include password if it was changed)
+      const requestBody = {
+        name: formData.name,
+        email: formData.email,
+      };
 
-        localStorage.setItem("localAdmins", JSON.stringify(updatedAdmins));
-      } else {
-        // Update via API
-        const response = await fetch(`http://localhost:3000/api/admins/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+      if (formData.password) {
+        requestBody.password = formData.password;
+      }
 
-        if (!response.ok) throw new Error("Failed to update admin");
+      // Update via API
+      const response = await fetch(`http://localhost:3000/api/admin/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update admin");
       }
 
       // Show success message
@@ -108,7 +101,7 @@ const EditAdmin = () => {
       }, 2500);
     } catch (error) {
       console.error("Error updating admin:", error);
-      alert("Gagal mengupdate data admin");
+      alert("Gagal mengupdate data admin: " + error.message);
     }
   };
 
