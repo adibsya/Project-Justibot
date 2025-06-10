@@ -116,7 +116,7 @@ const Header = () => {
                   to="/"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
                 >
-                  <p>Home</p>
+                  <p>Beranda</p>
                 </NavLink>
               </li>
               <li onClick={() => handleProtectedRoute("/chatbot")}>
@@ -132,7 +132,7 @@ const Header = () => {
                   to="/document"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
                 >
-                  <p>Document</p>
+                  <p>Dokumen</p>
                 </NavLink>
               </li>
               <li onClick={() => handleProtectedRoute("/lawyer")}>
@@ -140,7 +140,7 @@ const Header = () => {
                   to="/lawyer"
                   className="transition duration-300 ease-in-out hover:text-gray-300 relative after:block after:h-0.5 after:bg-onPrimary after:w-0 after:transition-all after:duration-300 hover:after:w-full"
                 >
-                  <p>Lawyer</p>
+                  <p>Pengacara</p>
                 </NavLink>
               </li>
               <li>
@@ -163,7 +163,7 @@ const Header = () => {
                   className="w-4 mr-2"
                   alt="User Icon"
                 />
-                <p>Logout</p>
+                <p>Keluar</p>
               </button>
             ) : (
               <Link
@@ -175,7 +175,7 @@ const Header = () => {
                   className="w-4 mr-2"
                   alt="User Icon"
                 />
-                <p>Login / Signup</p>
+                <p>Masuk / Daftar</p>
               </Link>
             )}
           </div>
@@ -195,7 +195,7 @@ const Header = () => {
                   ${isActive ? "bg-primary rounded-lg" : ""}`
                 }
               >
-                Home
+                Beranda
               </NavLink>
             </li>
             <li onClick={() => handleProtectedRoute("/chatbot")}>
@@ -219,7 +219,7 @@ const Header = () => {
                   ${isActive ? "bg-primary rounded-lg" : ""}`
                 }
               >
-                Document
+                Dokumen
               </NavLink>
             </li>
             <li onClick={() => handleProtectedRoute("/lawyer")}>
@@ -231,7 +231,7 @@ const Header = () => {
                   ${isActive ? "bg-primary rounded-lg" : ""}`
                 }
               >
-                Lawyer
+                Pengacara
               </NavLink>
             </li>
             <li>
@@ -255,7 +255,7 @@ const Header = () => {
                   }}
                   className="block w-full px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300"
                 >
-                  Logout
+                  Keluar
                 </button>
               </li>
             ) : (
@@ -265,7 +265,7 @@ const Header = () => {
                   onClick={toggleMenu}
                   className="block px-4 py-2 text-onSurface transition duration-300 ease-in-out hover:text-gray-300"
                 >
-                  Login / Signup
+                  Masuk / Daftar
                 </Link>
               </li>
             )}

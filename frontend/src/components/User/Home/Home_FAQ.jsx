@@ -43,63 +43,85 @@ const Home_FAQ = () => {
             <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
               <input type="radio" name="my-accordion-3" defaultChecked />
               <div className="collapse-title font-semibold">
-              Bagaimana cara membuat akun?
+                Bagaimana cara membuat akun Justibot?
               </div>
               <div className="collapse-content text-sm">
-              Klik tombol “Daftar” di pojok kanan atas dan ikuti proses pendaftaran.
+                Silakan Anda klik tombol Login / Sign Up di pojok kanan atas.
+                Anda akan diminta untuk mengisi formulir pendaftaran dengan
+                informasi seperti nama, alamat email, dan kata sandi. Setelah
+                mengisi formulir, Anda perlu memverifikasi alamat email Anda
+                melalui tautan yang kami kirimkan.
               </div>
             </div>
 
             <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
               <input type="radio" name="my-accordion-3" />
               <div className="collapse-title font-semibold">
-              Saya lupa kata sandi saya. Apa yang harus saya lakukan?
+                Saya lupa kata sandi saya. Apa yang harus saya lakukan?
               </div>
               <div className="collapse-content text-sm">
-              Klik “Lupa Kata Sandi” pada halaman login dan ikuti instruksi yang dikirimkan ke email Anda.
-              </div>
-            </div>
-
-            <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
-              <input type="radio" name="my-accordion-3" />
-              <div className="collapse-title font-semibold">
-              Bagaimana cara memperbarui informasi profil saya?
-              </div>
-              <div className="collapse-content text-sm">
-              Buka pengaturan “Akun Saya” dan pilih “Edit Profil” untuk membuat perubahan.
+                Klik “Lupa Kata Sandi” pada halaman login, dan anda akan diminta
+                untuk memasukkan alamat email anda yang terdaftar. Kami akan
+                mengirimkan instruksi melalui email tentang cara mengatur ulang
+                kata sandi Anda. Pastikan untuk memeriksa folder spam atau junk
+                mail Anda jika Anda tidak melihat email tersebut di kotak masuk.
               </div>
             </div>
 
             <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
               <input type="radio" name="my-accordion-3" defaultChecked />
               <div className="collapse-title font-semibold">
-                How do I create an account?
+                Apakah saya perlu membuat akun untuk menggunakan website ini?
               </div>
               <div className="collapse-content text-sm">
-                Click the "Sign Up" button in the top right corner and follow
-                the registration process.
+                Ya, Anda perlu membuat akun untuk mengakses fitur-fitur lengkap
+                di Justibot, termasuk mengunduh dokumen hukum, chatbot, dan juga
+                daftar pengacara.
               </div>
             </div>
 
             <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
               <input type="radio" name="my-accordion-3" />
               <div className="collapse-title font-semibold">
-                I forgot my password. What should I do?
+                Saya tidak menerima email verifikasi/reset kata sandi. Apa yang
+                harus saya lakukan?
               </div>
               <div className="collapse-content text-sm">
-                Click on "Forgot Password" on the login page and follow the
-                instructions sent to your email.
+                Jika Anda tidak menerima email verifikasi atau reset kata sandi,
+                harap periksa folder spam atau junk mail Anda terlebih dahulu.
+                Pastikan juga Anda memasukkan alamat email yang benar saat
+                mendaftar atau meminta reset kata sandi. Jika Anda masih tidak
+                menerima email setelah beberapa menit, coba minta email
+                verifikasi/reset kata sandi dikirim ulang. Jika masalah terus
+                berlanjut, silakan hubungi tim dukungan kami untuk bantuan lebih
+                lanjut.
               </div>
             </div>
 
             <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
               <input type="radio" name="my-accordion-3" />
               <div className="collapse-title font-semibold">
-                How do I update my profile information?
+                Bagaimana saya bisa mendapatkan dokumen hukum yang saya
+                butuhkan?
               </div>
               <div className="collapse-content text-sm">
-                Go to "My Account" settings and select "Edit Profile" to make
-                changes.
+                Anda dapat melakukan proses login terlebih dahulu, kemudian Anda
+                bisa mencari dokumen hukum yang Anda perlukan di navigasi
+                Dokumen.
+              </div>
+            </div>
+
+            <div className="collapse collapse-plus bg-base-100 border border-base-300 rounded-lg">
+              <input type="radio" name="my-accordion-3" />
+              <div className="collapse-title font-semibold">
+                Bagaimana cara menghubungi pengacara melalui website ini?
+              </div>
+              <div className="collapse-content text-sm">
+                Anda dapat mengunjungi halaman Pengacara, di sana Anda
+                akan menemukan daftar pengacara yang terdaftar di Justibot. 
+                Klik pada profil pengacara yang Anda minati untuk melihat
+                informasi kontak mereka. Anda dapat menghubungi mereka melalui
+                whatsapp atau sosial media yang tertera di profil mereka.
               </div>
             </div>
           </div>

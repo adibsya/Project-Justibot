@@ -22,6 +22,7 @@ import ForgotPass from "./pages/User/ForgotPassword";
 import ResetPass from "./pages/User/ResetPassword";
 import Artikel from "./components/User/Blog/Artikel";
 import Profile from "./components/User/Lawyer/Profile";
+import UserProfile from "./pages/User/UserProfilePage";
 import VerifySuccess from "./pages/User/VerifySuccess";
 import VerifyFailed from "./pages/User/VerifyFailed";
 import PerjanjianKerjaSama from "./components/User/Document/PerjanjianKerjaSama";
@@ -45,7 +46,8 @@ import FormTambahArtikel from "./pages/Admin/AddArticles";
 import FormEditArtikel from "./pages/Admin/EditArticles";
 import DataAdmin from "./pages/Admin/DataAdmin";
 import TambahAdmin from "./pages/Admin/AddAdmin";
-import editAdmin from "./pages/Admin/EditAdmin";
+import EditAdmin from "./pages/Admin/EditAdmin";
+import AdminProfile from "./pages/Admin/AdminProfilePage";
 
 const App = () => {
   return (
@@ -64,6 +66,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPass />} />
         <Route path="/reset-password/:token" element={<ResetPass />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="/artikel/:id" element={<Artikel />} />
         <Route path="/lawyer/:nama" element={<Profile />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
@@ -91,7 +94,8 @@ const App = () => {
         <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
         <Route path="TambahAdmin" element={<TambahAdmin />} />
         <Route path="DataAdmin" element={<DataAdmin />} />
-        <Route path="admin/tambahadmin/edit/:id" element={<editAdmin />} />
+        <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
+        <Route path="profile" element={<AdminProfile />} />
       </Route>
     </Routes>
     </>

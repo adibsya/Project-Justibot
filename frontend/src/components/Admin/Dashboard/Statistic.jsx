@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FaUserCircle, FaChartLine, FaBell } from 'react-icons/fa';
+import { FaUserCircle, FaChartLine, FaUserTie } from 'react-icons/fa';
 import axios from 'axios';
 
 const Statistic = () => {
   const [lawyersCount, setLawyersCount] = useState(0);
   const [articlesCount, setArticlesCount] = useState(0);
-  const [notificationsCount, setNotificationsCount] = useState(0); // Dummy
+  const [usersCount, setUsersCount] = useState(0);
 
   useEffect(() => {
     axios.get('/api/lawyers')
@@ -16,12 +16,14 @@ const Statistic = () => {
       .then(res => setArticlesCount(res.data.length))
       .catch(err => console.error('Gagal ambil articles:', err));
 
-    // setNotificationsCount(34); // ganti ini kalau kamu punya endpoint
+      axios.get('/api/total-users')
+      .then(res => setUsersCount(res.data.total))
+      .catch(err => console.error('Gagal ambil users:', err));
   }, []);
 
   const cards = [
     {
-      icon: <FaUserCircle size={24} />,
+      icon: <FaUserTie size={24} />,
       label: 'Jumlah Pengacara Terdaftar',
       value: `${lawyersCount} Orang`,
     },
@@ -30,11 +32,11 @@ const Statistic = () => {
       label: 'Jumlah Artikel Hukum',
       value: `${articlesCount} Artikel`,
     },
-    // {
-    //   icon: <FaBell size={24} />,
-    //   label: 'Jumlah Notifikasi Terkirim',
-    //   value: `${notificationsCount} Notifikasi`,
-    // },
+    {
+      icon: <FaUserCircle size={24} />,
+      label: 'Jumlah Pengguna Terdaftar',
+      value: `${usersCount} Pengguna`,
+    },
   ];
 
   return (
@@ -43,7 +45,7 @@ const Statistic = () => {
         <h2 className="text-2xl font-bold text-[#122E40] mb-1">Statistics</h2>
       </div>
 
-      <div className="flex flex-col-1 justify-between md:flex-cols-2 xl:flex-cols-4 gap-6">
+      <div className="flex flex-col-1 justify-around md:flex-cols-2 xl:flex-cols-4 gap-6">
         {cards.map((item, index) => (
           <div
             key={index}

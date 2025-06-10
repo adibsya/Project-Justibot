@@ -62,7 +62,10 @@ router.post("/login", async (req, res) => {
     );
 
     if (admin.rowCount > 0) {
-      const validPassword = await bcrypt.compare(password, admin.rows[0].password);
+      const validPassword = await bcrypt.compare(
+        password,
+        admin.rows[0].password
+      );
       if (!validPassword) {
         return res.status(401).json({ message: "Password salah." });
       }
@@ -79,11 +82,17 @@ router.post("/login", async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 1000, // 1 jam
-        sameSite: "lax"
+        sameSite: "lax",
       });
 
       const { password: _, ...adminData } = admin.rows[0];
-      return res.status(200).json({ message: "Login admin berhasil.", user: adminData, redirect: "/admin/dashboard" });
+      return res
+        .status(200)
+        .json({
+          message: "Login admin berhasil.",
+          user: adminData,
+          redirect: "/admin/dashboard",
+        });
     }
 
     // Kalau bukan admin, cek user biasa
@@ -92,7 +101,11 @@ router.post("/login", async (req, res) => {
       [email]
     );
     if (user.rowCount === 0) {
-      return res.status(401).json({ message: "User tidak ditemukan. Silakan registrasi terlebih dahulu." });
+      return res
+        .status(401)
+        .json({
+          message: "User tidak ditemukan. Silakan registrasi terlebih dahulu.",
+        });
     }
 
     const validPassword = await bcrypt.compare(password, user.rows[0].password);
@@ -108,27 +121,52 @@ router.post("/login", async (req, res) => {
 
     // Buat token user
     const token = jwt.sign(
-      { id: user.rows[0].id, name: user.rows[0].name, email: user.rows[0].email, role: 'user' },
+      {
+        id: user.rows[0].id,
+        name: user.rows[0].name,
+        email: user.rows[0].email,
+        role: "user",
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
+    );
+
+    await pool.query(
+      `INSERT INTO user_sessions(user_id) VALUES($1)`,
+      [user.rows[0].id]
     );
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 1000,
-      sameSite: "lax"
+      sameSite: "lax",
     });
 
     const { password: _, ...userData } = user.rows[0];
-    res.status(200).json({ message: "Login berhasil.", user: userData, redirect: "/" });
-
+    res
+      .status(200)
+      .json({ message: "Login berhasil.", user: userData, redirect: "/" });
   } catch (error) {
     console.error("Error saat login:", error);
     res.status(500).json({ error: "Terjadi kesalahan saat login." });
   }
 });
 
+// Total User
+router.get("/total-users", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT COUNT(*) AS total FROM justibotUsers`
+    );
+    res.status(200).json({ total: parseInt(result.rows[0].total, 10) });
+  } catch (error) {
+    console.error("Error saat ambil total user:", error);
+    res
+      .status(500)
+      .json({ error: "Terjadi kesalahan saat mengambil total user." });
+  }
+});
 
 // Forgot Password
 router.post("/forgot-password", async (req, res) => {
@@ -151,7 +189,7 @@ router.post("/forgot-password", async (req, res) => {
       [email, resetToken, expiresAt]
     );
 
-    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
     await sendResetPasswordEmail(email, resetLink);
 
     res.status(200).json({

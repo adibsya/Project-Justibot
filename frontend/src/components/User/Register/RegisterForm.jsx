@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import assets from "../../../assets/assets";
 import axios from "axios";
 
 const RegisterForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -36,6 +38,8 @@ const RegisterForm = () => {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const response = await axios.post("http://localhost:3000/api/register", {
         name: formData.username,
@@ -46,6 +50,8 @@ const RegisterForm = () => {
       setIsModalOpen(true);
     } catch (error) {
       setError(error.response?.data?.message || "Registrasi gagal. Coba lagi.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,9 +64,15 @@ const RegisterForm = () => {
         backgroundPosition: "center",
       }}
     >
+      {/* Loading Spinner */}
+            {isLoading && (
+              <div className="fixed top-14 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+                <ThreeDots height={80} width={80} radius="9" color="#612A22" ariaLabel="loading" visible />
+              </div>
+            )}
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[600px] h-auto p-6 sm:p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg">
         <h2 className="text-onSurface text-3xl sm:text-4xl md:text-5xl font-bold text-start mb-6 sm:mb-[70px]">
-          Create a JustiBot account here!
+          Buat akun JustiBot Anda di sini!
         </h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
@@ -155,18 +167,18 @@ const RegisterForm = () => {
               type="submit"
               className="w-full sm:w-[250px] py-2 px-4 bg-secondary hover:bg-secondary/80 text-white font-medium rounded-3xl transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]"
             >
-              Create Account
+              Daftar
             </button>
           </div>
           <hr className="border-gray-400" />
           <div className="text-center mt-4">
             <h4 className="text-gray-600">
-              Already have an account?{" "}
+              Sudah memiliki akun?{" "}
               <Link
                 to="/login"
                 className="text-secondary underline hover:text-secondary/80 transition-colors duration-200"
               >
-                Click here!
+                Klik di sini!
               </Link>
             </h4>
           </div>

@@ -44,7 +44,9 @@ const LawyersList = () => {
       </h1>
 
       {lawyersData.length === 0 ? (
-        <p className="text-center text-gray-500 mt-10">Belum ada data pengacara.</p>
+        <p className="text-center text-gray-500 mt-10">
+          Belum ada data pengacara.
+        </p>
       ) : (
         <motion.div
           className="flex flex-wrap justify-center gap-8 mt-16 px-4"
@@ -58,7 +60,9 @@ const LawyersList = () => {
               key={lawyer.id}
               className="bg-background rounded-lg shadow-lg p-6 w-[400px]"
             >
-              <h2 className="text-xl font-bold text-onSurface">{lawyer.nama}</h2>
+              <h2 className="text-xl font-bold text-onSurface">
+                {lawyer.nama}
+              </h2>
               <p className="text-gray-600 mt-2">
                 <strong>Bidang Keahlian:</strong> {lawyer.spesialisasi}
               </p>
@@ -70,15 +74,32 @@ const LawyersList = () => {
                 <strong>Pengalaman:</strong> {lawyer.pengalaman_tahun} tahun
               </p>
 
-              <Link to={`/lawyer/${lawyer.nama}`}>
-                <button className="mt-4 text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]">
-                  Cek Profil
-                </button>
-              </Link>
+              <button
+  className="mt-4 text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]"
+  onClick={async () => {
+    try {
+      const response = await axios.post(`/api/grafik-lawyer/kunjungan/${lawyer.id}`);
+      console.log("Response kunjungan:", response.data);
+
+      if (response.data.success) {
+        // redirect ke halaman profil pengacara
+        window.location.href = `/lawyer/${lawyer.nama}`;
+      } else {
+        alert("Gagal mencatat kunjungan.");
+      }
+    } catch (err) {
+      console.error("Gagal mencatat kunjungan:", err);
+      alert("Terjadi kesalahan saat mencatat kunjungan.");
+    }
+  }}
+>
+  Cek Profil
+</button>
+
             </div>
-          ))}
+          ))};
         </motion.div>
-      )}
+      )};
 
       {visibleLawyers < lawyersData.length && (
         <div className="flex justify-center py-8">

@@ -22,7 +22,7 @@ const EditAdmin = () => {
 
         // First check if this is a local admin
         const localAdmins = JSON.parse(
-          localStorage.getItem("localAdmins") || "[]",
+          localStorage.getItem("localAdmins") || "[]"
         );
         const localAdmin = localAdmins.find((admin) => admin.id === id);
 
@@ -31,27 +31,35 @@ const EditAdmin = () => {
           setFormData({
             name: localAdmin.name,
             email: localAdmin.email,
-            password: localAdmin.password || "", // Password might not be stored
+            password: localAdmin.password || "",
           });
           setIsLocalAdmin(true);
         } else {
-          // Fetch from API
-          const response = await fetch(
-            `http://localhost:3000/api/admins/${id}`,
-          );
-          if (!response.ok) throw new Error("Failed to fetch admin data");
+          // Fetch from API with credentials
+          const response = await fetch(`http://localhost:3000/api/admin/${id}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to fetch admin data");
+          }
 
           const apiAdmin = await response.json();
           setFormData({
             name: apiAdmin.name,
             email: apiAdmin.email,
-            password: "", // For security, don't pre-fill password from API
+            password: "",
           });
           setIsLocalAdmin(false);
         }
       } catch (error) {
         console.error("Error fetching admin data:", error);
-        alert("Gagal mengambil data admin");
+        alert("Gagal mengambil data admin: " + error.message);
         navigate("/admin/dataadmin/");
       } finally {
         setIsLoading(false);
@@ -61,7 +69,6 @@ const EditAdmin = () => {
     fetchAdminData();
   }, [id, navigate]);
 
-  // Handle form submission
   const handleUpdateAdmin = async () => {
     try {
       // Basic validation
@@ -70,34 +77,36 @@ const EditAdmin = () => {
         return;
       }
 
-      if (isLocalAdmin) {
-        // Update in localStorage
-        const localAdmins = JSON.parse(
-          localStorage.getItem("localAdmins") || "[]",
-        );
-        const updatedAdmins = localAdmins.map((admin) =>
-          admin.id === id
-            ? {
-                ...admin,
-                name: formData.name,
-                email: formData.email,
-                password: formData.password || admin.password,
-              }
-            : admin,
-        );
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        alert("Format email tidak valid");
+        return;
+      }
 
-        localStorage.setItem("localAdmins", JSON.stringify(updatedAdmins));
-      } else {
-        // Update via API
-        const response = await fetch(`http://localhost:3000/api/admins/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+      // Create request body
+      const requestBody = {
+        name: formData.name,
+        email: formData.email,
+      };
 
-        if (!response.ok) throw new Error("Failed to update admin");
+      if (formData.password) {
+        requestBody.password = formData.password;
+      }
+
+      // Update via API
+      const response = await fetch(`http://localhost:3000/api/admin/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: 'include',
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update admin");
       }
 
       // Show success message
@@ -108,7 +117,7 @@ const EditAdmin = () => {
       }, 2500);
     } catch (error) {
       console.error("Error updating admin:", error);
-      alert("Gagal mengupdate data admin");
+      alert("Gagal mengupdate data admin: " + error.message);
     }
   };
 

@@ -9,7 +9,7 @@ const Lawyer = () => {
     <div className="min-h-screen bg-onPrimary">
       <LawyerDir />
       <Iklan />
-      <BenefitCard />
+      {/* <BenefitCard /> */}
       <LawyersList />
     </div>
   );

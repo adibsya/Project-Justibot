@@ -49,7 +49,6 @@ router.get("/:nama", async (req, res) => {
   }
 });
 
-
 // Ambil detail pengacara berdasarkan ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -169,7 +168,7 @@ router.patch("/:id", upload.single("foto_profil"), async (req, res) => {
         nama_ig = $9,
         foto_profil = COALESCE($10, foto_profil),
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $11
+      WHERE nama = $11
     `;
 
     const values = [

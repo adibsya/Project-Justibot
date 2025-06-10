@@ -11,6 +11,10 @@ const articlesFeedbackRoutes = require("./Routes/articlesFeedbackRoutes");
 const grafikArtikelRoutes = require("./Routes/grafikArtikelRoutes");
 const feedbackRoutes = require("./Routes/feedbackRoutes");
 const grafikPuasRoutes = require("./Routes/grafikPuasRoutes");
+const grafikLawyerRoutes = require("./Routes/grafikLawyerRoutes");
+const userProfileRoutes = require("./Routes/UserProfileRoutes");
+const grafikChatbotRoutes = require("./Routes/grafikChatbotRoutes");
+const grafikUserSessionsRoutes = require("./Routes/grafikUserSessionsRoutes");
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
@@ -44,7 +48,11 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/articles-feedback", articlesFeedbackRoutes);
 app.use("/api/grafik-artikel", grafikArtikelRoutes);
-app.use("/api/grafik-puas", grafikPuasRoutes)
+app.use("/api/grafik-puas", grafikPuasRoutes);
+app.use("/api/grafik-lawyer", grafikLawyerRoutes);
+app.use("/api/grafik-chatbot", grafikChatbotRoutes);
+app.use("/api/grafik-user-sessions", grafikUserSessionsRoutes);
+app.use("/api/users", userProfileRoutes);
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 

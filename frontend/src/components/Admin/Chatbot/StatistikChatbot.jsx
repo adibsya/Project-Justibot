@@ -28,10 +28,31 @@ const StatistikChatbot = () => {
   const [range, setRange] = useState("mingguan");
   const [dataKunjungan, setDataKunjungan] = useState([]);
   const [dataKepuasanPengguna, setDataKepuasanPengguna] = useState([]);
+  const [dataKunjunganLawyer, setDataKunjunganLawyer] = useState([]);
+  const [dataTopikPopuler, setDataTopikPopuler] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/grafik-lawyer/statistik-kunjungan");
+        if (res.data.success) {
+          const transformed = res.data.data.map((item) => ({
+            nama: item.nama,
+            nilai: item.total_kunjungan,
+          }));
+          setDataKunjunganLawyer(transformed);
+        }
+      } catch (error) {
+        console.error("Gagal ambil data kunjungan:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/grafik-puas/statistik-puas?range=bulanan")
+      .get("/api/grafik-puas/statistik-puas?range=bulanan")
       .then((res) => setDataKepuasanPengguna(res.data))
       .catch((err) => console.error("Gagal fetch data:", err));
   }, []);
@@ -39,52 +60,31 @@ const StatistikChatbot = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/grafik-artikel/statistik-kunjungan?range=${range}`);
+        const res = await axios.get(
+          `/api/grafik-artikel/statistik-kunjungan?range=${range}`,
+        );
         setDataKunjungan(res.data);
       } catch (err) {
         console.error("Gagal ambil data grafik:", err);
       }
     };
-  
+
     fetchData();
   }, [range]);
 
-  // Data untuk grafik lainnya
-  const dataPertanyaanSering = [
-    { pertanyaan: "Cara mengajukan perceraian?", jumlah: 140 },
-    { pertanyaan: "Persyaratan hukum untuk bisnis", jumlah: 110 },
-    { pertanyaan: "Hukum hak asuh anak", jumlah: 90 },
-    { pertanyaan: "Pembagian harta saat perceraian", jumlah: 85 },
-    { pertanyaan: "Hak pemutusan hubungan kerja", jumlah: 70 },
-  ];
-
-  const dataPengacaraSering = [
-    { nama: "Ahmad Dhani", nilai: 35 },
-    { nama: "Budi Santoso", nilai: 25 },
-    { nama: "Cindy Wijaya", nilai: 20 },
-    { nama: "David Susanto", nilai: 15 },
-    { nama: "Eva Muliani", nilai: 5 },
-  ];
-
-  const dataWaktuRespons = [
-    { jam: "00:00", waktuRespons: 2.5 },
-    { jam: "03:00", waktuRespons: 2.1 },
-    { jam: "06:00", waktuRespons: 3.2 },
-    { jam: "09:00", waktuRespons: 4.8 },
-    { jam: "12:00", waktuRespons: 5.2 },
-    { jam: "15:00", waktuRespons: 4.3 },
-    { jam: "18:00", waktuRespons: 3.8 },
-    { jam: "21:00", waktuRespons: 2.9 },
-  ];
-
-  const dataTopikPopuler = [
-    { topik: "Perceraian", jumlah: 320 },
-    { topik: "Hak Asuh Anak", jumlah: 280 },
-    { topik: "Hukum Bisnis", jumlah: 240 },
-    { topik: "Ketenagakerjaan", jumlah: 210 },
-    { topik: "Properti", jumlah: 190 },
-    { topik: "Pidana", jumlah: 150 },
-  ];
+  useEffect(() => {
+    async function fetchTopik() {
+      try {
+        const response = await fetch("/api/grafik-chatbot");
+        if (!response.ok) throw new Error("Gagal mengambil data topik");
+        const data = await response.json();
+        setDataTopikPopuler(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchTopik();
+  }, []);
 
   const dataPerformansiChatbot = [
     { kategori: "Akurasi Jawaban", nilai: 87 },
@@ -249,47 +249,42 @@ const StatistikChatbot = () => {
           Metrik Interaksi Pengguna
         </h2>
 
-        {/* Grid untuk Waktu Respon dan Topik Populer */}
+        {/* Grid untuk Pengacara yang sering dihubungi dan Topik Populer */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8">
-          {/* Grafik Waktu Respon */}
+          {/* Grafik Pengacara yang sering dihubungi */}
           <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-lg md:text-xl font-bold text-[#122E40] mb-3 md:mb-4">
               Pengacara yang Sering Dihubungi
             </h2>
-            <div className="h-[280px] md:h-[350px] flex justify-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                  <Pie
-                    data={dataPengacaraSering}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={true}
-                    outerRadius="70%"
-                    fill="#8884d8"
-                    dataKey="nilai"
-                    nameKey="nama"
-                    label={({ nama, percent }) =>
-                      `${nama} ${(percent * 100).toFixed(0)}%`
-                    }
+
+            {dataKunjunganLawyer.length === 0 ? (
+              <p className="text-center text-gray-500">Sedang memuat data...</p>
+            ) : (
+              <div className="h-[280px] md:h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={dataKunjunganLawyer}
+                    margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
                   >
-                    {dataPengacaraSering.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={WARNA[index % WARNA.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    formatter={(value) => [`${value} kontak`, "Jumlah"]}
-                  />
-                  <Legend
-                    layout="horizontal"
-                    verticalAlign="bottom"
-                    align="center"
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+                    <XAxis type="number" />
+                    <YAxis type="category" dataKey="nama" />
+                    <Tooltip
+                      formatter={(value) => [`${value} kunjungan`, "Jumlah"]}
+                    />
+                    <Legend />
+                    <Bar dataKey="nilai" fill="#612A22" name="Jumlah Kunjungan">
+                      {dataKunjunganLawyer.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={WARNA[index % WARNA.length]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
 
           {/* Grafik Topik Populer */}
@@ -314,8 +309,8 @@ const StatistikChatbot = () => {
                     stroke="#A69C7A"
                     tick={{ fontSize: 9, dy: 5 }}
                     height={50}
-                    angle={-45}
-                    textAnchor="end"
+                    angle={0}
+                    textAnchor="middle"
                     interval={0}
                   />
                   <YAxis stroke="#A69C7A" tick={{ fontSize: 10 }} width={30} />

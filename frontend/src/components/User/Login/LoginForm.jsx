@@ -59,7 +59,7 @@ const LoginForm = () => {
     >
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[600px] h-auto p-6 sm:p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg">
         <h2 className="text-onSurface text-3xl sm:text-4xl md:text-5xl font-bold text-start mb-6 sm:mb-[70px]">
-          Sign in to JustiBot account here!
+          Masuk ke Akun Justibot di sini !
         </h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
@@ -110,7 +110,7 @@ const LoginForm = () => {
               to="/forgot-password"
               className="text-secondary underline hover:text-secondary/80 transition-colors duration-200"
             >
-              Forgot Password?
+              Lupa Kata Sandi?
             </Link>
           </div>
 
@@ -122,18 +122,18 @@ const LoginForm = () => {
               type="submit"
               className="w-full sm:w-[250px] py-2 px-4 bg-secondary hover:bg-secondary/80 text-white font-medium rounded-3xl transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02]"
             >
-              Sign In
+              Masuk
             </button>
           </div>
           <hr className="border-gray-400" />
           <div className="text-center mt-4">
             <h4 className="text-gray-600">
-              Don't have any account?{" "}
+              Belum punya akun?{" "}
               <Link
                 to="/register"
                 className="text-secondary underline hover:text-secondary/80 transition-colors duration-200"
               >
-                Click here!
+                Klik di sini!
               </Link>
             </h4>
           </div>

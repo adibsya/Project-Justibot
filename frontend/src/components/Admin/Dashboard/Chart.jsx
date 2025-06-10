@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -9,52 +9,24 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-
-const weeklyData = [
-  { date: "Senin", sessions: 120 },
-  { date: "Selasa", sessions: 200 },
-  { date: "Rabu", sessions: 150 },
-  { date: "Kamis", sessions: 170 },
-  { date: "Jumat", sessions: 220 },
-  { date: "Sabtu", sessions: 180 },
-  { date: "Minggu", sessions: 250 },
-];
-
-const monthlyData = [
-  { date: "Minggu 1", sessions: 820 },
-  { date: "Minggu 2", sessions: 950 },
-  { date: "Minggu 3", sessions: 780 },
-  { date: "Minggu 4", sessions: 1020 },
-];
-
-const yearlyData = [
-  { date: "Jan", sessions: 3200 },
-  { date: "Feb", sessions: 2950 },
-  { date: "Mar", sessions: 3100 },
-  { date: "Apr", sessions: 2800 },
-  { date: "Mei", sessions: 3500 },
-  { date: "Jun", sessions: 3300 },
-  { date: "Jul", sessions: 3600 },
-  { date: "Agu", sessions: 3900 },
-  { date: "Sep", sessions: 3700 },
-  { date: "Okt", sessions: 4000 },
-  { date: "Nov", sessions: 3850 },
-  { date: "Des", sessions: 4200 },
-];
+import axios from "axios";
 
 const Chart = () => {
   const [range, setRange] = useState("mingguan");
+  const [data, setData] = useState([]);
 
-  const getData = () => {
-    switch (range) {
-      case "bulanan":
-        return monthlyData;
-      case "tahunan":
-        return yearlyData;
-      default:
-        return weeklyData;
-    }
-  };
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      try {
+        const res = await axios.get(`/api/grafik-user-sessions?range=${range}`);
+        setData(res.data);
+      } catch (err) {
+        console.error("Gagal mengambil data sesi:", err);
+      }
+    };
+
+    fetchSessionData();
+  }, [range]);
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
@@ -83,11 +55,15 @@ const Chart = () => {
 
       <ResponsiveContainer width="100%" height={320}>
         <LineChart
-          data={getData()}
+          data={data}
           margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5DED5" />
-          <XAxis dataKey="date" stroke="#A69C7A" tick={{ fontSize: 12 }} />
+          <XAxis
+            dataKey="tanggal" // ganti dari 'date' ke 'tanggal' sesuai backend
+            stroke="#A69C7A"
+            tick={{ fontSize: 12 }}
+          />
           <YAxis stroke="#A69C7A" tick={{ fontSize: 12 }} />
           <Tooltip
             contentStyle={{
