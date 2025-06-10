@@ -13,7 +13,7 @@ const BisnisEkonomiCategoryArticles = () => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get(
-          "/api/articles?category=Bisnis dan Ekonomi",
+          "/api/articles?category=Hukum Bisnis dan Ekonomi",
         );
         setArticles(response.data);
       } catch (error) {

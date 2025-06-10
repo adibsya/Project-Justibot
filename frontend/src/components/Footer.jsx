@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { assets } from "../assets/assets";
@@ -7,13 +7,43 @@ import axios from "axios";
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const [email, setEmail] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [authState, setAuthState] = useState({
+    isLoggedIn: false,
+    checked: false,
+    loading: false
+  });
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        setAuthState(prev => ({...prev, loading: true}));
+        const response = await axios.get("/api/auth/status", { 
+          withCredentials: true 
+        });
+        setAuthState({
+          isLoggedIn: response.data.loggedIn,
+          checked: true,
+          loading: false
+        });
+      } catch (error) {
+        console.error("Error checking auth status:", error);
+        setAuthState({
+          isLoggedIn: false,
+          checked: true,
+          loading: false
+        });
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
 
   const handleFAQClick = () => {
     if (location.pathname === "/") {
@@ -26,48 +56,60 @@ const Footer = () => {
     }
   };
 
-  const handleSubmitFeedback = async (e) => {
-    e.preventDefault();
-
-    if (!isLoggedIn) {
-      alert("Silakan login terlebih dahulu sebelum mengirim feedback.");
+  const submitFeedback = async () => {
+    if (!feedback.trim() || !rating) {
+      setError("Harap isi feedback dan berikan rating");
       return;
     }
-  
-    if (!feedback.trim() || !rating) return;
-  
+
     setIsSubmitting(true);
-  
+    setError(null);
+
     try {
-      const response = await axios.post(
+      await axios.post(
         "/api/feedback",
-        {
-          rating,
-          feedback
-        },
-        {
-          withCredentials: true // ⬅️ penting agar cookie JWT ikut terkirim
-        }
+        { rating, feedback },
+        { withCredentials: true }
       );
-  
-      // Reset state setelah berhasil kirim
+      
       setFeedback("");
       setRating(0);
       setHover(0);
       setFeedbackSent(true);
-  
-      // Reset pesan sukses setelah 3 detik
-      setTimeout(() => {
-        setFeedbackSent(false);
-      }, 3000);
+      
+      setTimeout(() => setFeedbackSent(false), 3000);
     } catch (error) {
-      console.error("Gagal mengirim feedback:", error.response?.data || error.message);
-      // Kamu bisa set state error di sini kalau ingin tampilkan pesan ke user
+      console.error("Gagal mengirim feedback:", error);
+      setError(error.response?.data?.message || "Gagal mengirim feedback");
+      
+      if (error.response?.status === 401) {
+        setAuthState({
+          isLoggedIn: false,
+          checked: true,
+          loading: false
+        });
+        setShowLoginPopup(true);
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+
+    if (authState.loading || !authState.checked) {
+      setError("Sedang memverifikasi status login...");
+      return;
+    }
+
+    if (!authState.isLoggedIn) {
+      setShowLoginPopup(true);
+      return;
+    }
+
+    await submitFeedback();
+  };
 
   const currentYear = new Date().getFullYear();
 
@@ -77,10 +119,7 @@ const Footer = () => {
       <footer className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 py-12 text-onSurface">
         {/* Company Info Section */}
         <div className="footer-company space-y-6">
-          <a
-            href="/"
-            className="block w-32 transition-transform hover:scale-105"
-          >
+          <a href="/" className="block w-32 transition-transform hover:scale-105">
             <img
               src={assets.logo_black}
               alt="Logo JustiBot"
@@ -94,7 +133,6 @@ const Footer = () => {
             Providing reliable legal tech solutions since 1992
           </p>
 
-          {/* Social Media Icons */}
           <div className="flex space-x-4 mt-6">
             <a
               href="https://www.instagram.com/adibsyaa_"
@@ -109,7 +147,7 @@ const Footer = () => {
                 viewBox="0 0 24 24"
                 className="fill-current"
               >
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zM12 16c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
               </svg>
             </a>
             <a
@@ -125,7 +163,7 @@ const Footer = () => {
                 viewBox="0 0 24 24"
                 className="fill-current"
               >
-                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
               </svg>
             </a>
             <a
@@ -141,7 +179,7 @@ const Footer = () => {
                 viewBox="0 0 24 24"
                 className="fill-current"
               >
-                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
               </svg>
             </a>
           </div>
@@ -343,14 +381,11 @@ const Footer = () => {
 
         {/* Feedback Form Section */}
         <div className="footer-feedback">
-          <h6 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">
-            Feedback
-          </h6>
+          <h6 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">Feedback</h6>
           <form onSubmit={handleSubmitFeedback} className="space-y-4">
+            {/* Rating stars */}
             <div className="form-control mb-4">
-              <label className="block text-sm font-medium mb-2 text-onSurface">
-                Rating
-              </label>
+              <label className="block text-sm font-medium mb-2 text-onSurface">Rating</label>
               <div className="flex gap-1">
                 {[...Array(5)].map((_, index) => {
                   const ratingValue = index + 1;
@@ -359,13 +394,12 @@ const Footer = () => {
                       type="button"
                       key={index}
                       className={`text-2xl transition-colors duration-200 ${
-                        ratingValue <= (hover || rating)
-                          ? "text-yellow-400"
-                          : "text-gray-300"
+                        ratingValue <= (hover || rating) ? "text-yellow-400" : "text-gray-300"
                       }`}
                       onClick={() => setRating(ratingValue)}
                       onMouseEnter={() => setHover(ratingValue)}
                       onMouseLeave={() => setHover(rating)}
+                      aria-label={`${ratingValue} star`}
                     >
                       <AiFillStar />
                     </button>
@@ -373,16 +407,7 @@ const Footer = () => {
                 })}
               </div>
             </div>
-            {/* <div className="form-control">
-              <input
-                type="email"
-                placeholder="Email Anda"
-                className="text-onSurface/60 w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div> */}
+
             <div className="form-control">
               <textarea
                 placeholder="Berikan masukan atau ide artikel Anda untuk Justibot"
@@ -393,13 +418,21 @@ const Footer = () => {
                 required
               ></textarea>
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm">{error}</div>
+            )}
+
             <button
               type="submit"
-              className={`w-full py-3 px-6 rounded-md bg-primary text-white font-medium transition-all hover:bg-opacity-90 ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
-              disabled={isSubmitting}
+              className={`w-full py-3 px-6 rounded-md bg-primary text-white font-medium transition-all hover:bg-opacity-90 ${
+                isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+              disabled={isSubmitting || authState.loading}
             >
               {isSubmitting ? "Mengirim..." : "Kirim Feedback"}
             </button>
+
             {feedbackSent && (
               <div className="text-green-600 text-sm flex items-center mt-2">
                 <svg
@@ -409,12 +442,7 @@ const Footer = () => {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 Terima kasih atas masukan Anda!
               </div>
@@ -422,6 +450,33 @@ const Footer = () => {
           </form>
         </div>
       </footer>
+
+      {/* Login Popup */}
+      {showLoginPopup && authState.checked && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+            <h3 className="text-lg font-semibold mb-4">Harap Login</h3>
+            <p className="mb-4">Anda harus login terlebih dahulu untuk memberikan feedback.</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowLoginPopup(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Batal
+              </button>
+              <button
+                onClick={() => {
+                  setShowLoginPopup(false);
+                  navigate("/login", { state: { from: location.pathname } });
+                }}
+                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Copyright Footer */}
       <div className="bg-secondary text-onPrimary py-4">
