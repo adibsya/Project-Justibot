@@ -294,20 +294,19 @@ router.get("/me", authenticate, async (req, res) => {
 });
 
 // Cek status login
-// router.get("/auth/status", (req, res) => {
-//   try {
-//     const token = req.cookies.token;
-//     if (!token) {
-//       return res.status(401).json({ loggedIn: false });
-//     }
+router.get("/auth/status", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(200).json({ loggedIn: false });
+    }
 
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     // Bisa kirim info user yang dibutuhkan juga
-//     return res.status(200).json({ loggedIn: true, user: { id: decoded.id, email: decoded.email } });
-//   } catch (error) {
-//     return res.status(401).json({ loggedIn: false });
-//   }
-// });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return res.status(200).json({ loggedIn: true, user: { id: decoded.id, email: decoded.email, role: decoded.role } });
+  } catch (error) {
+    return res.status(200).json({ loggedIn: false });
+  }
+});
 
 // Logout
 router.post("/logout", (req, res) => {

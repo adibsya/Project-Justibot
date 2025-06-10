@@ -74,8 +74,8 @@ const DataAdmins = () => {
         );
         localStorage.setItem("localAdmins", JSON.stringify(updatedAdmins));
       } else {
-        // Delete from API with credentials
-        const response = await fetch(`http://localhost:3000/api/admin/${adminToDelete}`, {
+        // Delete from API
+        await fetch(`http://localhost:3000/api/admin/${adminToDelete}`, {
           method: "DELETE",
           credentials: "include", // Add this line
           headers: {

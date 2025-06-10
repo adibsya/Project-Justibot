@@ -35,19 +35,9 @@ const EditAdmin = () => {
           });
           setIsLocalAdmin(true);
         } else {
-          // Fetch from API with credentials
-          const response = await fetch(`http://localhost:3000/api/admin/${id}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Failed to fetch admin data");
-          }
+          // Fetch from API
+          const response = await fetch(`http://localhost:3000/api/admin/${id}`);
+          if (!response.ok) throw new Error("Failed to fetch admin data");
 
           const apiAdmin = await response.json();
           setFormData({
@@ -69,6 +59,8 @@ const EditAdmin = () => {
     fetchAdminData();
   }, [id, navigate]);
 
+  // Handle form submission
+  // Modifikasi di EditAdmin.jsx
   const handleUpdateAdmin = async () => {
     try {
       // Basic validation
@@ -77,14 +69,7 @@ const EditAdmin = () => {
         return;
       }
 
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        alert("Format email tidak valid");
-        return;
-      }
-
-      // Create request body
+      // Create request body (only include password if it was changed)
       const requestBody = {
         name: formData.name,
         email: formData.email,
@@ -100,7 +85,6 @@ const EditAdmin = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: 'include',
         body: JSON.stringify(requestBody),
       });
 
