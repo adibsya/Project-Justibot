@@ -12,10 +12,34 @@ const ChatbotHandler = () => {
   const renderFormattedText = (text) => {
     if (!text) return "";
 
+    // Clean up common math/LaTeX notation that might appear in the output
+    let cleanedText = text
+      // Clean up LaTeX-style math expressions
+      .replace(/\\\(.*?\\\)/g, (match) => {
+        return match
+          .replace(/\\\(|\\\)/g, "")
+          .replace(/\\frac\{(.*?)\}\{(.*?)\}/g, "$1/$2");
+      })
+      .replace(/\\frac\{(.*?)\}\{(.*?)\}/g, "$1/$2")
+      .replace(/\\times/g, "×")
+      .replace(/\\text\{(.*?)\}/g, "$1")
+      // Clean up asterisks that are meant to be visible (not for formatting)
+      .replace(/\*\*([0-9]+\/[0-9]+|[0-9]+:[0-9]+)\*\*/g, "$1")
+      .replace(/\*\*([0-9]+)\s*bagian\*\*/g, "$1 bagian");
+
     // Helper function to format text with bold and italic
     const formatText = (text) => {
-      // First, split by bold markers
-      const boldParts = text.split(/\*\*(.*?)\*\*/);
+      // Handle code inline formatting with backticks
+      let formattedText = text.replace(/`([^`]+)`/g, (match, code) => {
+        return (
+          <code className="bg-gray-100 px-1 py-0.5 rounded text-pink-600 font-mono text-sm">
+            {code}
+          </code>
+        );
+      });
+
+      // Handle bold formatting - only apply formatting when it's actual formatting, not math
+      const boldParts = formattedText.split(/\*\*(.*?)\*\*/);
 
       return boldParts.map((part, index) => {
         // Every odd index is bold text
@@ -40,46 +64,117 @@ const ChatbotHandler = () => {
       });
     };
 
-    // Memisahkan teks menjadi paragraf
-    const paragraphs = text.split("\n\n");
+    // Split text into paragraphs more reliably
+    const paragraphs = cleanedText.split(/\n\s*\n/);
 
     return (
       <div className="whitespace-pre-line">
         {paragraphs.map((paragraph, index) => {
+          // Trim paragraph to remove extra whitespace
+          const trimmedParagraph = paragraph.trim();
+
           // Format headings
-          if (paragraph.startsWith("###")) {
+          if (trimmedParagraph.startsWith("###")) {
             return (
               <h3 key={index} className="text-lg font-bold mt-3 mb-2">
-                {paragraph.replace(/^###\s*/, "")}
+                {formatText(trimmedParagraph.replace(/^###\s*/, ""))}
               </h3>
             );
           }
 
-          if (paragraph.startsWith("##")) {
+          if (trimmedParagraph.startsWith("##")) {
             return (
               <h2 key={index} className="text-xl font-bold mt-4 mb-2">
-                {paragraph.replace(/^##\s*/, "")}
+                {formatText(trimmedParagraph.replace(/^##\s*/, ""))}
               </h2>
             );
           }
 
-          if (paragraph.startsWith("#")) {
+          if (trimmedParagraph.startsWith("#")) {
             return (
               <h1 key={index} className="text-2xl font-bold mt-4 mb-3">
-                {paragraph.replace(/^#\s*/, "")}
+                {formatText(trimmedParagraph.replace(/^#\s*/, ""))}
               </h1>
             );
           }
 
-          // Format lists
-          if (paragraph.includes("\n- ") || paragraph.includes("\n* ")) {
-            const listItems = paragraph.split(/\n[*-]\s/).filter(Boolean);
-            const title = listItems[0];
-            const items = listItems.slice(1);
+          // Format bullet lists
+          if (
+            trimmedParagraph.match(/^[•●■◆]\s/) ||
+            trimmedParagraph.includes("\n• ") ||
+            trimmedParagraph.includes("\n● ")
+          ) {
+            // Split paragraph into list items
+            const parts = trimmedParagraph.split("\n");
+            const title = parts[0].match(/^[•●■◆]\s/) ? "" : parts[0];
+
+            // Get list items
+            const items = parts
+              .slice(title ? 1 : 0)
+              .filter((item) => item.trim())
+              .map((item) => item.replace(/^[•●■◆]\s/, ""));
 
             return (
               <div key={index} className="mb-3">
-                <p className="mb-1">{formatText(title)}</p>
+                {title && <p className="mb-1">{formatText(title)}</p>}
+                <ul className="list-disc pl-5 space-y-1">
+                  {items.map((item, i) => (
+                    <li key={i}>{formatText(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+
+          // Format numbered lists
+          if (
+            trimmedParagraph.match(/^\d+\.\s/) ||
+            trimmedParagraph.includes("\n1. ")
+          ) {
+            // Split paragraph into list items
+            const parts = trimmedParagraph.split("\n");
+            const title = parts[0].match(/^\d+\.\s/) ? "" : parts[0];
+
+            // Get list items
+            const items = parts
+              .slice(title ? 1 : 0)
+              .filter((item) => item.trim())
+              .map((item) => item.replace(/^\d+\.\s/, ""));
+
+            return (
+              <div key={index} className="mb-3">
+                {title && <p className="mb-1">{formatText(title)}</p>}
+                <ol className="list-decimal pl-5 space-y-1">
+                  {items.map((item, i) => (
+                    <li key={i}>{formatText(item)}</li>
+                  ))}
+                </ol>
+              </div>
+            );
+          }
+
+          // Format hyphen/asterisk lists
+          if (
+            trimmedParagraph.match(/^[*-]\s/) ||
+            trimmedParagraph.includes("\n- ") ||
+            trimmedParagraph.includes("\n* ")
+          ) {
+            // Split paragraph into list items
+            const parts = trimmedParagraph.split("\n");
+            const title =
+              parts[0].startsWith("- ") || parts[0].startsWith("* ")
+                ? ""
+                : parts[0];
+
+            // Get list items
+            const items = parts
+              .slice(title ? 1 : 0)
+              .filter((item) => item.trim())
+              .map((item) => item.replace(/^[*-]\s/, ""));
+
+            return (
+              <div key={index} className="mb-3">
+                {title && <p className="mb-1">{formatText(title)}</p>}
                 <ul className="list-disc pl-5 space-y-1">
                   {items.map((item, i) => (
                     <li key={i}>{formatText(item)}</li>
@@ -92,7 +187,7 @@ const ChatbotHandler = () => {
           // Default paragraph formatting
           return (
             <p key={index} className="mb-3">
-              {formatText(paragraph)}
+              {formatText(trimmedParagraph)}
             </p>
           );
         })}

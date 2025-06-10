@@ -25,60 +25,37 @@ const AddAdmin = () => {
     setShowPassword(!showPassword);
   };
 
-  // Update the handleTambahAdmin function to include validation
-  const handleTambahAdmin = () => {
+  const handleTambahAdmin = async () => {
     try {
-      // Validate form data
+      // Validasi form data
       if (!formData.name || !formData.email || !formData.password) {
         alert("Semua field harus diisi!");
         return;
       }
 
-      // Get existing local admins from localStorage
-      const existingAdmins = JSON.parse(
-        localStorage.getItem("localAdmins") || "[]",
-      );
+      // Kirim data ke backend
+      const response = await fetch("http://localhost:3000/api/admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Generate sequential ID (admin1, admin2, admin3, etc.)
-      const generateSequentialId = () => {
-        if (existingAdmins.length === 0) {
-          return "admin1"; // First admin
-        }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Gagal menambahkan admin");
+      }
 
-        // Extract numbers from existing IDs
-        const idNumbers = existingAdmins.map((admin) => {
-          const match = admin.id.match(/admin(\d+)/);
-          return match ? parseInt(match[1], 10) : 0;
-        });
-
-        // Find the highest ID number
-        const maxIdNumber = Math.max(...idNumbers);
-
-        // Return the next ID in sequence
-        return `admin${maxIdNumber + 1}`;
-      };
-
-      // Create new admin with sequential ID
-      const newAdmin = {
-        id: generateSequentialId(),
-        ...formData,
-      };
-
-      // Add new admin to the list
-      const updatedAdmins = [...existingAdmins, newAdmin];
-
-      // Save back to localStorage
-      localStorage.setItem("localAdmins", JSON.stringify(updatedAdmins));
-
-      // Show success message
+      // Tampilkan pesan sukses
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        navigate("/admin/dataadmin"); // Make sure this matches your route exactly
+        navigate("/admin/dataadmin");
       }, 2500);
     } catch (error) {
       console.error("Error saat menambahkan admin:", error);
-      alert("Terjadi kesalahan. Silakan coba lagi.");
+      alert(error.message || "Terjadi kesalahan. Silakan coba lagi.");
     }
   };
 

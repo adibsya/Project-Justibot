@@ -6,7 +6,8 @@ const authRoutes = require("./Routes/authRoutes");
 const articlesRoutes = require("./Routes/articlesRoutes");
 const lawyerRoutes = require("./Routes/lawyerRoutes");
 const chatbotRoutes = require("./Routes/chatbotRoutes");
-const adminRoutes = require("./Routes/adminRoutes");  
+const documentManagementRoutes = require("./Routes/documentManagementRoutes");
+const adminRoutes = require("./Routes/adminRoutes");
 const articlesFeedbackRoutes = require("./Routes/articlesFeedbackRoutes");
 const grafikArtikelRoutes = require("./Routes/grafikArtikelRoutes");
 const feedbackRoutes = require("./Routes/feedbackRoutes");
@@ -27,6 +28,12 @@ app.use(
   })
 );
 app.use(express.json());
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/documents", (req, res, next) => {
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 app.use(cookieParser());
 
 // Request logging middleware
@@ -35,16 +42,23 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve document files
+app.use(
+  "/documents",
+  express.static(path.join(__dirname, "uploads/documents"))
+);
+
 // API Routes
 app.use("/api", authRoutes);
 app.use("/api/articles", articlesRoutes);
 app.use("/api/lawyers", lawyerRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/documents", documentManagementRoutes); // Changed from document-management to documents
 app.use("/api/admin", adminRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/articles-feedback", articlesFeedbackRoutes);
 app.use("/api/grafik-artikel", grafikArtikelRoutes);
-app.use("/api/grafik-puas", grafikPuasRoutes)
+app.use("/api/grafik-puas", grafikPuasRoutes);
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
