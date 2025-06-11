@@ -49,6 +49,7 @@ import DataAdmin from "./pages/Admin/DataAdmin";
 import TambahAdmin from "./pages/Admin/AddAdmin";
 import EditAdmin from "./pages/Admin/EditAdmin";
 import AdminProfile from "./pages/Admin/AdminProfilePage";
+import FormPendaftaranKantor from "./components/User/Lawyer/FormPendaftaranKantor";
 
 const App = () => {
   return (
@@ -71,6 +72,7 @@ const App = () => {
           <Route path="/lawyer/:nama" element={<Profile />} />
           <Route path="/verify-success" element={<VerifySuccess />} />
           <Route path="/verify-failed" element={<VerifyFailed />} />
+          <Route path="/FormPendaftaranKantor" element={<FormPendaftaranKantor />} />
           {/* <Route
           path="/perjanjian-kerja-sama"
           element={<PerjanjianKerjaSama />}
