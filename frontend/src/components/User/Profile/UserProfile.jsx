@@ -200,20 +200,23 @@ const UserProfile = () => {
                     icon: <FiUser />,
                     key: "name",
                     type: "text",
+                    editable: true,
                   },
                   {
                     label: "Email",
                     icon: <FiMail />,
                     key: "email",
                     type: "email",
+                    editable: false,
                   },
                   {
                     label: "Nomor Telepon",
                     icon: <FiPhone />,
                     key: "phone",
                     type: "tel",
+                    editable: true,
                   },
-                ].map(({ label, icon, key, type }) => (
+                ].map(({ label, icon, key, type, editable }) => (
                   <div key={key} className="flex flex-col gap-2">
                     <label className="flex items-center gap-2 text-gray-600">
                       {icon} {label}
@@ -225,7 +228,10 @@ const UserProfile = () => {
                         onChange={(e) =>
                           setUserData({ ...userData, [key]: e.target.value })
                         }
-                        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+                        disabled={!editable}
+                        className={`w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary ${
+                          !editable ? "bg-gray-100 text-onSurface/50 border-transparent cursor-not-allowed" : ""
+                        }`}
                       />
                     ) : (
                       <p className="text-lg">{userData[key]}</p>

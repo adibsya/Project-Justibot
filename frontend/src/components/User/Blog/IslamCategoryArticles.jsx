@@ -160,7 +160,7 @@ const IslamCategoryArticles = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("/api/articles?category=Hukum Islam");
+        const response = await axios.get("/api/articles?category=Islam");
         setArticles(response.data);
       } catch (error) {
         console.error("Gagal mengambil data artikel:", error);

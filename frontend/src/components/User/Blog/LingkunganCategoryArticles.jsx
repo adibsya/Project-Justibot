@@ -12,7 +12,7 @@ const LingkunganCategoryArticles = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("/api/articles?category=Hukum Lingkungan");
+        const response = await axios.get("/api/articles?category=Lingkungan");
         setArticles(response.data);
       } catch (error) {
         console.error("Gagal mengambil data artikel:", error);
