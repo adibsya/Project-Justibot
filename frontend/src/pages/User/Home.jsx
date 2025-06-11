@@ -7,12 +7,14 @@ import Home_News from "../../components/User/Home/Home_News";
 import Home_AboutUs from "../../components/User/Home/Home_AboutUs";
 import Home_FAQ from "../../components/User/Home/Home_FAQ";
 import FeedbackSlider from "../../components/User/Home/FeedbackSlider";
+import LawyerPromo from "../../components/User/Home/LawyerPromo";
 
 const Home = () => {
   return (
     <div className="min-h-screen">
       <Hero />
       <Tagline />
+      <LawyerPromo />
       <Features />
       <Short_heading />
       <Home_News />
