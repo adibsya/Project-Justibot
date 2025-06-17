@@ -20,7 +20,7 @@ router.get("/profile", authenticate, async (req, res) => {
   }
 });
 
-// PUT /api/users/profile
+// PATCH /api/users/profile
 router.patch('/profile', authenticate, async (req, res) => {
     const userId = req.user.id;
     const fields = [];

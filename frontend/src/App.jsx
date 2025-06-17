@@ -33,6 +33,7 @@ import ArtikelPidanaPage from "./pages/User/ArtikelPidanaPage";
 import ArtikelIslamPage from "./pages/User/ArtikelIslamPage";
 import SyaratKetentuanPage from "./pages/User/SyaratKetentuanPage";
 import KebijakanPrivasiPage from "./pages/User/KebijakanPrivasiPage";
+import DaftarKantorPage from "./pages/User/daftarKantorPage";
 
 // Admin Pages
 import DashboardAdmin from "./pages/Admin/DashboardData";
@@ -69,6 +70,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPass />} />
+          <Route path="/daftar-kantor" element={<DaftarKantorPage />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/reset-password/:token" element={<ResetPass />} />
           <Route path="/artikel/:id" element={<Artikel />} />
           <Route path="/lawyer/:nama" element={<Profile />} />
@@ -124,10 +127,16 @@ const App = () => {
           <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
           <Route path="document-management" element={<DocumentManagement />} />
           <Route path="TambahAdmin" element={<TambahAdmin />} />
+<<<<<<< HEAD
           <Route path="DataAdmin" element={<DataAdmin />} />
           <Route path="admin/tambahadmin/edit/:id" element={<editAdmin />} />
           <Route path="profile" element={<AdminProfile />} />
           <Route path="approve-pengacara" element={<ApprovePengacara />} />
+=======
+        <Route path="DataAdmin" element={<DataAdmin />} />
+        <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
+        <Route path="profile" element={<AdminProfile />} />
+>>>>>>> f4628cc40f844ccaca5aaf2f26e26a48e10e99d8
         </Route>
       </Routes>
     </>
