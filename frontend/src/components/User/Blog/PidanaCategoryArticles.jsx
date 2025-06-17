@@ -12,7 +12,7 @@ const PidanaCategoryArticles = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("/api/articles?category=Hukum Pidana");
+        const response = await axios.get("/api/articles?category=Pidana");
         setArticles(response.data);
       } catch (error) {
         console.error("Gagal mengambil data artikel:", error);

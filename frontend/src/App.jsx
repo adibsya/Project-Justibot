@@ -50,6 +50,8 @@ import TambahAdmin from "./pages/Admin/AddAdmin";
 import EditAdmin from "./pages/Admin/EditAdmin";
 import AdminProfile from "./pages/Admin/AdminProfilePage";
 import FormPendaftaranKantor from "./components/User/Lawyer/FormPendaftaranKantor";
+import FormPendaftaranLawyer from "./components/User/Lawyer/FormPendaftaranLawyer";
+import ApprovePengacara from "./pages/Admin/ApprovePengacara";
 
 const App = () => {
   return (
@@ -73,6 +75,7 @@ const App = () => {
           <Route path="/verify-success" element={<VerifySuccess />} />
           <Route path="/verify-failed" element={<VerifyFailed />} />
           <Route path="/FormPendaftaranKantor" element={<FormPendaftaranKantor />} />
+          <Route path="/FormPendaftaranLawyer" element={<FormPendaftaranLawyer />} />
           {/* <Route
           path="/perjanjian-kerja-sama"
           element={<PerjanjianKerjaSama />}
@@ -123,6 +126,8 @@ const App = () => {
           <Route path="TambahAdmin" element={<TambahAdmin />} />
           <Route path="DataAdmin" element={<DataAdmin />} />
           <Route path="admin/tambahadmin/edit/:id" element={<editAdmin />} />
+          <Route path="profile" element={<AdminProfile />} />
+          <Route path="approve-pengacara" element={<ApprovePengacara />} />
         </Route>
       </Routes>
     </>
