@@ -11,6 +11,7 @@ const adminRoutes = require("./Routes/adminRoutes");
 const articlesFeedbackRoutes = require("./Routes/articlesFeedbackRoutes");
 const grafikArtikelRoutes = require("./Routes/grafikArtikelRoutes");
 const feedbackRoutes = require("./Routes/feedbackRoutes");
+const formKantorRoutes = require("./Routes/formKantorRoutes");
 const grafikPuasRoutes = require("./Routes/grafikPuasRoutes");
 const grafikLawyerRoutes = require("./Routes/grafikLawyerRoutes");
 const userProfileRoutes = require("./Routes/UserProfileRoutes");
@@ -27,11 +28,12 @@ console.log("- NODE_ENV:", process.env.NODE_ENV);
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", // GANTI sesuai URL frontend kamu
-    credentials: true, // HARUS true jika pakai cookie
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/documents", (req, res, next) => {
   res.setHeader("Content-Type", "application/pdf");
@@ -61,6 +63,7 @@ app.use("/api/documents", documentManagementRoutes); // Changed from document-ma
 app.use("/api/admin", adminRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/articles-feedback", articlesFeedbackRoutes);
+app.use("/api/form-pendaftaran-kantor", formKantorRoutes);
 app.use("/api/grafik-artikel", grafikArtikelRoutes);
 app.use("/api/grafik-puas", grafikPuasRoutes);
 app.use("/api/grafik-lawyer", grafikLawyerRoutes);
@@ -71,6 +74,7 @@ app.use("/api/users", userProfileRoutes);
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.get("*", (req, res) => {
+  
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 

@@ -13,7 +13,11 @@ router.get("/profile", authenticate, async (req, res) => {
       "SELECT id, name, email, no_hp, alamat, foto_profil FROM justibotusers WHERE id = $1",
       [userId]
     );
-    res.json(result.rows[0]);
+    const user = result.rows[0];
+    if (user.foto_profil) {
+      user.foto_profil = `data:image/jpeg;base64,${user.foto_profil.toString('base64')}`;
+    }
+    res.json(user);
   } catch (error) {
     console.error("Gagal mengambil profil:", error);
     res.status(500).json({ message: "Gagal mengambil profil pengguna." });
@@ -44,10 +48,11 @@ router.patch('/profile', authenticate, async (req, res) => {
       values.push(req.body.alamat);
     }
     if (req.body.foto_profil) {
-        const bufferFoto = Buffer.from(req.body.foto_profil, 'base64');
+        // Hapus prefix data URL jika ada
+        const base64Data = req.body.foto_profil.replace(/^data:image\/\w+;base64,/, '');
+        const bufferFoto = Buffer.from(base64Data, 'base64');
         fields.push(`foto_profil = $${index++}`);
         values.push(bufferFoto);
-        
     }
   
     if (fields.length === 0) {

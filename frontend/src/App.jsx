@@ -50,7 +50,8 @@ import DataAdmin from "./pages/Admin/DataAdmin";
 import TambahAdmin from "./pages/Admin/AddAdmin";
 import EditAdmin from "./pages/Admin/EditAdmin";
 import AdminProfile from "./pages/Admin/AdminProfilePage";
-import FormPendaftaranKantor from "./components/User/Lawyer/FormPendaftaranKantor";
+import FormKantorPage from "./pages/User/FormKantorPage";
+import KantorApproval from "./pages/Admin/ApproveKantor";
 
 const App = () => {
   return (
@@ -75,11 +76,7 @@ const App = () => {
           <Route path="/lawyer/:nama" element={<Profile />} />
           <Route path="/verify-success" element={<VerifySuccess />} />
           <Route path="/verify-failed" element={<VerifyFailed />} />
-          <Route path="/FormPendaftaranKantor" element={<FormPendaftaranKantor />} />
-          {/* <Route
-          path="/perjanjian-kerja-sama"
-          element={<PerjanjianKerjaSama />}
-        /> */}
+          <Route path="/FormPendaftaranKantor" element={<FormKantorPage />} />
           <Route
             path="/perjanjian-kerja-sama"
             element={<PerjanjianKerjaSama />}
@@ -124,9 +121,10 @@ const App = () => {
           <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
           <Route path="document-management" element={<DocumentManagement />} />
           <Route path="TambahAdmin" element={<TambahAdmin />} />
-        <Route path="DataAdmin" element={<DataAdmin />} />
-        <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
-        <Route path="profile" element={<AdminProfile />} />
+          <Route path="DataAdmin" element={<DataAdmin />} />
+          <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
+          <Route path="profile" element={<AdminProfile />} />
+          <Route path="kantor-approval" element={<KantorApproval />} />
         </Route>
       </Routes>
     </>

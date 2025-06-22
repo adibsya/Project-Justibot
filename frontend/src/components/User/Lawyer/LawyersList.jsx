@@ -96,14 +96,6 @@ const LawyersList = () => {
           ))}
         </select>
       </div>
-
-      {/* Register Button */}
-      <button
-        onClick={() => navigate("/")}
-        className="px-6 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/80 transition-all duration-200 ease-in-out min-w-[120px] flex items-center justify-center gap-2"
-      >
-        <span>Daftar</span>
-      </button>
     </div>
   );
 
@@ -148,7 +140,7 @@ const LawyersList = () => {
               </p>
               <hr className="my-2 border-black" />
               <p className="text-gray-600">
-                <strong>Lulusan:</strong> {lawyer.asal_univ}
+                <strong>Kantor:</strong> {lawyer.asal_univ}
               </p>
               <p className="text-gray-600">
                 <strong>Pengalaman:</strong> {lawyer.pengalaman_tahun} tahun

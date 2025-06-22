@@ -93,6 +93,19 @@ const Sidebar = ({ isOpen }) => {
             Statistik Chatbot
           </li>
         </Link>
+
+        <Link to="/admin/kantor-approval">
+          <li
+            className={`p-3 rounded mb-2 ${
+              location.pathname === "/admin/kantor-approval"
+                ? "bg-[#612A22] text-white"
+                : "bg-white text-[#612A22]"
+            } hover:bg-[#77443a] hover:text-white cursor-pointer`}
+            onClick={() => handleClick("kantorhukum")}
+          >
+            Daftar Kantor Hukum
+          </li>
+        </Link>
       </ul>
     </div>
   );

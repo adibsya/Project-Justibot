@@ -1,5 +1,5 @@
 import React from 'react'
-import DaftarKantor from '../../components/User/LokasiKantor/DaftarKantor'
+import DaftarKantor from '../../components/User/DaftarKantorLawyer/DaftarKantor'
 
 const DaftarKantorPage = () => {
   return (

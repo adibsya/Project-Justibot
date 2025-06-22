@@ -48,7 +48,7 @@ const UserProfile = () => {
           email: res.data.email,
           phone: res.data.no_hp,
           address: res.data.alamat,
-          profileImage: assets.logo_black,
+          profileImage: res.data.foto_profil || assets.defaultProfileImage,
         });
       } catch (err) {
         console.error("Gagal mengambil profil:", err);
@@ -59,18 +59,23 @@ const UserProfile = () => {
   }, []);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > 5000000) { // 5MB limit
+      alert("Ukuran file terlalu besar. Maksimal 5MB");
+      return;
+    }
+    
     const reader = new FileReader();
     reader.onloadend = () => {
-      setUserData((prev) => ({
+      setUserData(prev => ({
         ...prev,
-        profileImage: reader.result,
+        profileImage: reader.result
       }));
     };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
+    reader.readAsDataURL(file);
+  }
+};
 
   const handleSubmit = async () => {
     try {
