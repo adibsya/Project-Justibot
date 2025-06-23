@@ -7,6 +7,7 @@ axios.defaults.baseURL = "http://localhost:5173";
 // Layouts
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
+import PengacaraLayout from "./layouts/PengacaraLayout";
 import ScrollToTop from "./components/ScrollToTop";
 
 // User Pages
@@ -54,6 +55,14 @@ import FormKantorPage from "./pages/User/FormKantorPage";
 import KantorApproval from "./pages/Admin/ApproveKantor";
 import FormPendaftaranLawyer from "./components/User/Lawyer/FormPendaftaranLawyer";
 import ApprovePengacara from "./pages/Admin/ApprovePengacara";
+
+// Pengacara Pages
+import DashboardPengacara from "./pages/Pengacara/Dashboard";
+import ArticlesData from "./pages/Pengacara/ArticlesData";
+import FormTambahArtikelPengacara from "./pages/Pengacara/AddArticles";
+import FormEditArtikelPengacara from "./pages/Pengacara/EditArticles";
+import DataDiriPengacara from "./pages/Pengacara/DataDiriPengacara";
+import DokumentasiPengacara from "./pages/Pengacara/PengacaraDocumentation";
 
 const App = () => {
   return (
@@ -125,10 +134,29 @@ const App = () => {
           <Route path="document-management" element={<DocumentManagement />} />
           <Route path="TambahAdmin" element={<TambahAdmin />} />
           <Route path="kantor-approval" element={<KantorApproval />} />
-        <Route path="DataAdmin" element={<DataAdmin />} />
-        <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
-        <Route path="profile" element={<AdminProfile />} />
-        <Route path="approve-pengacara" element={<ApprovePengacara />} />
+          <Route path="DataAdmin" element={<DataAdmin />} />
+          <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
+          <Route path="profile" element={<AdminProfile />} />
+          <Route path="approve-pengacara" element={<ApprovePengacara />} />
+        </Route>
+
+        {/* Pengacara Routes */}
+        <Route path="/pengacara" element={<PengacaraLayout />}>
+          <Route path="dashboard" element={<DashboardPengacara />} />
+          <Route path="articles" element={<ArticlesData />} />
+          <Route
+            path="articles/tambah"
+            element={<FormTambahArtikelPengacara />}
+          />
+          <Route
+            path="articles/edit/:id"
+            element={<FormEditArtikelPengacara />}
+          />
+          <Route path="data-diri" element={<DataDiriPengacara />} />
+          <Route
+            path="documentation"
+            element={<DokumentasiPengacara />}
+          />
         </Route>
       </Routes>
     </>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/SidebarPengacara';
 import Navbar from '../components/Navbar';
 import Footer from '../components/AdminFooter'
 import { Outlet } from 'react-router-dom';
 
-const AdminLayout = () => {
+const PengacaraLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -25,4 +25,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default PengacaraLayout;
