@@ -464,7 +464,7 @@ const Footer = () => {
       {/* Login Popup */}
       {showLoginPopup && authState.checked && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-onSurface">
             <h3 className="text-lg font-semibold mb-4">Harap Login</h3>
             <p className="mb-4">Anda harus login terlebih dahulu untuk memberikan feedback.</p>
             <div className="flex justify-end gap-4">
@@ -479,7 +479,7 @@ const Footer = () => {
                   setShowLoginPopup(false);
                   navigate("/login", { state: { from: location.pathname } });
                 }}
-                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80"
               >
                 Login
               </button>

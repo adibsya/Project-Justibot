@@ -246,10 +246,10 @@ const Header = () => {
         {/* ---------- DESKTOP LINKS & PROFILE ---------- */}
         <div className="hidden md:flex items-center space-x-8">
           <ul className="flex items-center space-x-8 text-onPrimary">
-            <li><NavLink to="/">Home</NavLink></li>
+            <li><NavLink to="/">Beranda</NavLink></li>
             <li onClick={() => handleProtectedRoute("/chatbot")}><NavLink to="/chatbot">Chatbot</NavLink></li>
-            <li onClick={() => handleProtectedRoute("/document")}><NavLink to="/document">Document</NavLink></li>
-            <li onClick={() => handleProtectedRoute("/lawyer")}><NavLink to="/lawyer">Lawyer</NavLink></li>
+            <li onClick={() => handleProtectedRoute("/document")}><NavLink to="/document">Dokumen Hukum</NavLink></li>
+            <li onClick={() => handleProtectedRoute("/lawyer")}><NavLink to="/lawyer">Daftar Pengacara</NavLink></li>
             <li><NavLink to="/artikel">Artikel</NavLink></li>
           </ul>
 
@@ -271,7 +271,7 @@ const Header = () => {
           ) : (
             <Link to="/login" className="flex items-center px-3 py-1.5 bg-surface text-onSurface rounded-full hover:bg-gray-300">
               <img src={assets.user_icon} className="w-4 mr-2" alt="User Icon" />
-              <p>Login / Signup</p>
+              <p>Masuk / Daftar</p>
             </Link>
           )}
         </div>
@@ -280,37 +280,18 @@ const Header = () => {
       {/* ---------- MOBILE MENU ---------- */}
       {isMenuOpen && (
         <div className="md:hidden bg-secondary text-onPrimary px-4 pt-4 pb-6 space-y-4">
-          <ul className="flex flex-col space-y-4">
-            <li><NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink></li>
+          <ul className="flex items-center flex-col space-y-4">
+            <li><NavLink to="/" onClick={() => setIsMenuOpen(false)}>Beranda</NavLink></li>
             <li onClick={() => { handleProtectedRoute("/chatbot"); setIsMenuOpen(false); }}><NavLink to="/chatbot">Chatbot</NavLink></li>
-            <li onClick={() => { handleProtectedRoute("/document"); setIsMenuOpen(false); }}><NavLink to="/document">Document</NavLink></li>
-            <li onClick={() => { handleProtectedRoute("/lawyer"); setIsMenuOpen(false); }}><NavLink to="/lawyer">Lawyer</NavLink></li>
+            <li onClick={() => { handleProtectedRoute("/document"); setIsMenuOpen(false); }}><NavLink to="/document">Dokumen Hukum</NavLink></li>
+            <li onClick={() => { handleProtectedRoute("/lawyer"); setIsMenuOpen(false); }}><NavLink to="/lawyer">Daftar Pengacara</NavLink></li>
             <li><NavLink to="/artikel" onClick={() => setIsMenuOpen(false)}>Artikel</NavLink></li>
           </ul>
           {isLoggedIn ? (
-            <div className="pt-4">
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  navigate("/profile");
-                }}
-                className="w-full bg-white text-[#612A22] py-2 px-4 rounded-lg shadow hover:bg-gray-100"
-              >
-                Profil Saya
-              </button>
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setShowLogoutConfirm(true);
-                }}
-                className="w-full mt-2 bg-[#612A22] text-white py-2 px-4 rounded-lg shadow hover:bg-[#612A22]/80"
-              >
-                Logout
-              </button>
-            </div>
+            <></>
           ) : (
             <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block text-center mt-4 bg-surface text-onSurface px-4 py-2 rounded-full hover:bg-gray-300">
-              Login / Signup
+              Masuk / Daftar
             </Link>
           )}
         </div>
@@ -350,7 +331,7 @@ const Header = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A11.955 11.955 0 0112 15c2.019 0 3.917.5 5.579 1.387M3 10a9 9 0 1118 0 9 9 0 01-18 0z" />
             </svg>
-            Detail Profile
+            Detail Profil
           </button>
 
           <button
@@ -363,7 +344,7 @@ const Header = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
             </svg>
-            Logout
+            Keluar
           </button>
         </div>
       )}
