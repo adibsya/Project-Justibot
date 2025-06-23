@@ -1,191 +1,247 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Pencil, Trash2 } from 'lucide-react';
-import Pagination from './Pagination';
+import { Eye, Check, Pencil } from 'lucide-react';
 
-const DataLawyers = () => {
-  const [search, setSearch] = useState('');
+export default function DataLawyers() {
   const [lawyers, setLawyers] = useState([]);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [lawyerToDelete, setLawyerToDelete] = useState(null);
-  const navigate = useNavigate();
+  const [rejectModal, setRejectModal] = useState({ open: false, id: null, type: '', reason: '' });
+  const [successModal, setSuccessModal] = useState({ open: false, message: '' });
+  const [confirmModal, setConfirmModal] = useState({ open: false, id: null, type: '', action: null });
+  const [activeTab, setActiveTab] = useState('verified');
+  const [currentPages, setCurrentPages] = useState({ verified: 1, pendaftaran: 1, edit: 1 });
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    fetchLawyers();
+    fetch('http://localhost:3000/api/lawyers')
+      .then((res) => res.json())
+      .then((data) => {
+        const enriched = data.map((l, i) => ({
+          ...l,
+          nama_kantor: i === 0 ? 'Kantor Hukum Pilar Keadilan' : i === 1 ? 'Kantor Hukum Marlina' : 'Kantor Hukum Wicaksono',
+          status: i === 1 ? 'pending' : 'verified',
+          status_edit: i === 0 ? 'pending' : null,
+        }));
+        setLawyers(enriched);
+      });
   }, []);
 
-  const fetchLawyers = async () => {
-    try {
-      const res = await fetch('http://localhost:3000/api/lawyers');
-      const data = await res.json();
-      setLawyers(data);
-    } catch (err) {
-      console.error('Gagal mengambil data pengacara:', err);
+  const approveLawyer = (id) => {
+    setLawyers((prev) => prev.map((l) => (l.id === id ? { ...l, status: 'verified' } : l)));
+    setSuccessModal({ open: true, message: 'Pengacara berhasil diverifikasi.' });
+    setTimeout(() => setSuccessModal({ open: false, message: '' }), 2500);
+  };
+
+  const approveEdit = (id) => {
+    setLawyers((prev) => prev.map((l) => (l.id === id ? { ...l, status_edit: null } : l)));
+    setSuccessModal({ open: true, message: 'Edit pengacara berhasil disetujui.' });
+    setTimeout(() => setSuccessModal({ open: false, message: '' }), 2500);
+  };
+
+  const rejectAction = () => {
+    const { id, type } = rejectModal;
+    if (type === 'pendaftaran') {
+      setLawyers((prev) => prev.filter((l) => l.id !== id));
+    } else if (type === 'edit') {
+      setLawyers((prev) => prev.map((l) => (l.id === id ? { ...l, status_edit: null } : l)));
+    }
+    setRejectModal({ open: false, id: null, type: '', reason: '' });
+    setSuccessModal({ open: true, message: 'Pengajuan ditolak.' });
+    setTimeout(() => setSuccessModal({ open: false, message: '' }), 2500);
+  };
+
+  const openConfirmModal = (id, type, action) => {
+    setConfirmModal({ open: true, id, type, action });
+  };
+
+  const confirmAction = () => {
+    const { id, type, action } = confirmModal;
+    setConfirmModal({ open: false, id: null, type: '', action: null });
+    if (action === 'approve') {
+      type === 'edit' ? approveEdit(id) : approveLawyer(id);
+    } else {
+      handleOpenReject(id, type);
     }
   };
 
-  const handleAddLawyer = () => {
-    navigate('/admin/lawyers/tambah');
+  const handleOpenReject = (id, type) => {
+    setRejectModal({ open: true, id, type, reason: '' });
   };
 
-  const handleEditLawyer = (id) => {
-    navigate(`/admin/lawyers/edit/${id}`);
+  const getPaginatedData = (data, tab) => {
+    const startIndex = (currentPages[tab] - 1) * itemsPerPage;
+    return data.slice(startIndex, startIndex + itemsPerPage);
   };
 
-  const handleDeleteLawyer = (id) => {
-    setLawyerToDelete(id);
-    setIsDeleteModalOpen(true);
-  };
+  const verified = lawyers.filter((l) => l.status === 'verified');
+  const pending = lawyers.filter((l) => l.status === 'pending');
+  const editRequest = lawyers.filter((l) => l.status === 'verified' && l.status_edit === 'pending');
 
-  const confirmDelete = async () => {
-    try {
-      await fetch(`http://localhost:3000/api/lawyers/${lawyerToDelete}`, {
-        method: 'DELETE',
-      });
-      fetchLawyers(); // Refresh data setelah delete
-      setIsDeleteModalOpen(false);
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-        navigate('/admin/lawyers');
-      }, 2500);
-    } catch (err) {
-      console.error('Gagal menghapus pengacara:', err);
-    }
-  };
+  const totalPages = (data) => Math.ceil(data.length / itemsPerPage);
 
-  const cancelDelete = () => {
-    setIsDeleteModalOpen(false);
-  };
-
-  const filteredLawyers = lawyers.filter((lawyer) =>
-    lawyer.nama.toLowerCase().includes(search.toLowerCase())
+  const ModalWrapper = ({ children }) => (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 text-base">
+      <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md animate-fadeIn text-center">
+        {children}
+      </div>
+    </div>
   );
 
-  return (
-    <div className="p-6">
-      {showSuccess && (
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-green-500 flex flex-col items-center animate-bounceIn">
-            <CheckCircle className="text-green-600 w-12 h-12 mb-2 animate-pingOnce" />
-            <p className="text-green-700 text-lg font-semibold">Data berhasil dihapus!</p>
-          </div>
-        </div>
-      )}
-
-      {isDeleteModalOpen && (
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-red-500 flex flex-col items-center">
-            <p className="text-lg font-semibold text-red-600">Apakah Anda yakin ingin menghapus data ini?</p>
-            <div className="flex gap-4 mt-4">
-              <button
-                onClick={confirmDelete}
-                className="bg-[#652B19] text-white px-6 py-2 rounded-xl hover:bg-[#652B19]/80"
-              >
-                Ya
-              </button>
-              <button
-                onClick={cancelDelete}
-                className="bg-gray-400 text-white px-6 py-2 rounded-xl hover:bg-gray-500"
-              >
-                Tidak
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="flex justify-between items-center mb-4">
-        <input
-          type="text"
-          placeholder="Search nama pengacara"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-full w-80 focus:outline-none"
-        />
-        <button
-          className="bg-[#652B19] text-white px-4 py-2 rounded"
-          onClick={handleAddLawyer}
-        >
-          Tambah Pengacara
-        </button>
-      </div>
-
-      <div className="bg-[#F2F2F2] p-4 rounded-xl overflow-x-auto">
-        <table className="w-full text-center">
+  const Table = ({ title, data, type }) => (
+    <div className="mb-10">
+      <h2 className="text-2xl font-bold mb-4 text-[#302620] border-b pb-2">{title}</h2>
+      <div className="overflow-x-auto rounded-2xl shadow-lg">
+        <table className="w-full bg-white text-[#302620] rounded-2xl overflow-hidden">
           <thead>
-            <tr className="text-sm text-gray-600 text-center">
-              <th className="py-2">No</th>
-              <th className="px-6">Foto</th>
-              <th className="w-44">Nama</th>
-              <th className="w-32">Lokasi</th>
-              <th className="w-36">Spesialisasi</th>
-              <th className="w-24">Pengalaman</th>
-              <th>Universitas</th>
-              <th>No. WA</th>
-              <th>Instagram</th>
-              <th>Deskripsi</th>
-              <th>Industri</th>
-              <th>Aksi</th>
+            <tr className="bg-[#B9A899] text-left text-sm">
+              <th className="p-3 font-semibold">Foto</th>
+              <th className="p-3 font-semibold">Nama</th>
+              <th className="p-3 font-semibold">Nama Kantor</th>
+              <th className="p-3 font-semibold">Status</th>
+              <th className="p-3 font-semibold">Preview</th>
+              {(type === 'pendaftaran' || type === 'edit') && <th className="p-3 font-semibold">Aksi</th>}
             </tr>
           </thead>
           <tbody>
-            {filteredLawyers.map((lawyer, index) => (
-              <tr key={lawyer.id} className="border-t text-sm">
-                <td className="py-2">{index + 1}</td>
-                <td>
-                  <img
-                    src={lawyer.foto_profil}
-                    alt="Profil"
-                    className="w-10 h-10 ml-4 rounded-full object-cover"
-                  />
+            {getPaginatedData(data, type).map((lawyer, index) => (
+              <tr key={lawyer.id} className="border-t border-[#B9A899] text-sm hover:bg-[#F4F0EC]">
+                <td className="p-3">
+                  <img src={lawyer.foto_profil} alt="foto" className="w-10 h-10 rounded-full object-cover" />
                 </td>
-                <td>{lawyer.nama}</td>
-                <td>{lawyer.lokasi}</td>
-                <td>{lawyer.spesialisasi}</td>
-                <td>{lawyer.pengalaman_tahun} Tahun</td>
-                <td>{lawyer.asal_univ}</td>
-                <td>{lawyer.no_wa}</td>
-                <td>{lawyer.nama_ig}</td>
-                <td>
-                  <ul className="list-disc pl-4 text-left">
-                    {lawyer.deskripsi?.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
+                <td className="p-3">{lawyer.nama}</td>
+                <td className="p-3">{lawyer.nama_kantor}</td> {/* Dummy data for Nama Kantor */}
+                <td className="p-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    lawyer.status === 'verified' ? 'bg-[#1E4E59] text-white' : 'bg-[#D9CEC5] text-[#302620]'}`}>
+                    {lawyer.status}
+                  </span>
                 </td>
-                <td>{lawyer.industri}</td>
-                <td>
-                  <div className="flex gap-2 justify-center">
+                <td className="p-3">
+                  <button className="text-[#122E40] flex items-center gap-1 font-medium hover:underline">
+                    <Eye size={16} /> Lihat
+                  </button>
+                </td>
+                {(type === 'pendaftaran' || type === 'edit') && (
+                  <td className="p-3 space-x-2">
                     <button
-                      onClick={() => handleEditLawyer(lawyer.nama)}
-                      title="Edit"
-                      className="p-2 rounded hover:bg-[#652B19]/10 text-[#652B19]"
+                      className="bg-[#1E4E59] text-white px-3 py-1 rounded hover:bg-[#163946]"
+                      onClick={() => openConfirmModal(lawyer.id, type, 'approve')}
                     >
-                      <Pencil size={18} />
+                      Setujui{type === 'edit' ? ' Edit' : ''}
                     </button>
                     <button
-                      onClick={() => handleDeleteLawyer(lawyer.id)}
-                      title="Hapus"
-                      className="p-2 rounded hover:bg-gray-200 text-red-600"
+                      className="bg-[#731D2C] text-white px-3 py-1 rounded hover:bg-[#5a1420]"
+                      onClick={() => openConfirmModal(lawyer.id, type, 'reject')}
                     >
-                      <Trash2 size={18} />
+                      Tolak{type === 'edit' ? ' Edit' : ''}
                     </button>
-                  </div>
-                </td>
-
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="mt-6 flex justify-center">
-        <Pagination totalPages={4} currentPage={1} />
+        <div className="flex gap-2 justify-center mt-4">
+          {Array.from({ length: totalPages(data) }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPages((prev) => ({ ...prev, [type]: index + 1 }))}
+              className={`px-3 py-1 rounded-full transition-colors duration-200 ${
+                currentPages[type] === index + 1 ? 'bg-[#652B19] text-white' : 'bg-gray-200 text-[#302620] hover:bg-[#D9CEC5]'}`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
-};
 
-export default DataLawyers;
+  return (
+    <div className="p-4 md:p-6 space-y-10 bg-white min-h-screen text-base">
+      <div className="flex flex-wrap gap-4 mb-4">
+        <button
+          className={`flex items-center gap-1 px-4 py-2 rounded shadow ${
+            activeTab === 'verified' ? 'bg-white text-[#652B19] font-bold' : 'bg-gray-200 text-gray-600'}`}
+          onClick={() => setActiveTab('verified')}
+        >
+          <Check size={16} /> Terverifikasi
+        </button>
+        <button
+          className={`flex items-center gap-1 px-4 py-2 rounded shadow ${
+            activeTab === 'pendaftaran' ? 'bg-white text-[#652B19] font-bold' : 'bg-gray-200 text-gray-600'}`}
+          onClick={() => setActiveTab('pendaftaran')}
+        >
+          <span className="text-yellow-500">🟡</span> Verifikasi Pendaftaran
+        </button>
+        <button
+          className={`flex items-center gap-1 px-4 py-2 rounded shadow ${
+            activeTab === 'edit' ? 'bg-white text-[#652B19] font-bold' : 'bg-gray-200 text-gray-600'}`}
+          onClick={() => setActiveTab('edit')}
+        >
+          <Pencil size={16} className="text-red-500" /> Permintaan Edit
+        </button>
+      </div>
+
+      {activeTab === 'verified' && <Table title="Pengacara Terverifikasi" data={verified} type="verified" />}
+      {activeTab === 'pendaftaran' && <Table title="Verifikasi Pendaftaran" data={pending} type="pendaftaran" />}
+      {activeTab === 'edit' && <Table title="Permintaan Edit Pengacara" data={editRequest} type="edit" />}
+
+      {successModal.open && (
+        <div className="fixed inset-0 flex justify-center items-center z-50">
+          <div className="bg-[#1E4E59] text-white px-6 py-4 rounded-xl shadow-xl text-lg font-semibold">
+            {successModal.message}
+          </div>
+        </div>
+      )}
+
+      {confirmModal.open && (
+        <ModalWrapper>
+          <h3 className="font-semibold text-xl mb-2 text-[#302620]">Konfirmasi Aksi</h3>
+          <p className="mb-4 text-base">Apakah Anda yakin ingin {confirmModal.action === 'approve' ? 'menyetujui' : 'menolak'} {confirmModal.type === 'pendaftaran' ? 'pendaftaran' : 'permintaan edit'} ini?</p>
+          <div className="flex justify-center gap-3">
+            <button
+              onClick={() => setConfirmModal({ open: false, id: null, type: '', action: null })}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            >
+              Batal
+            </button>
+            <button
+              onClick={confirmAction}
+              className="px-4 py-2 bg-[#652B19] text-white rounded hover:bg-[#4b1e13]"
+            >
+              Ya, Lanjutkan
+            </button>
+          </div>
+        </ModalWrapper>
+      )}
+
+      {rejectModal.open && (
+        <ModalWrapper>
+          <h3 className="font-semibold text-xl mb-2 text-red-600">Tolak {rejectModal.type === 'pendaftaran' ? 'Pendaftaran' : 'Permintaan Edit'}</h3>
+          <textarea
+            value={rejectModal.reason}
+            onChange={(e) => setRejectModal((prev) => ({ ...prev, reason: e.target.value }))}
+            placeholder="Tuliskan alasan penolakan..."
+            className="w-full border rounded p-3 h-32 mb-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#652B19] focus:border-transparent text-base"
+            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', transition: 'border-color 0.2s ease' }}
+            spellCheck={false}
+            autoFocus
+          />
+          <div className="flex justify-center gap-3">
+            <button
+              onClick={() => setRejectModal({ open: false, id: null, type: '', reason: '' })}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            >
+              Batal
+            </button>
+            <button
+              onClick={rejectAction}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Kirim Penolakan
+            </button>
+          </div>
+        </ModalWrapper>
+      )}
+    </div>
+  );
+}

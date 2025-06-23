@@ -164,10 +164,10 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showProfileDropdown]);
 
-  const handleProtectedRoute = (path) => {
-    if (!isLoggedIn) navigate("/login");
-    else navigate(path);
-  };
+  // const handleProtectedRoute = (path) => {
+  //   if (!isLoggedIn) navigate("/login");
+  //   else navigate(path);
+  // };
 
   const handleLogout = async () => {
     try {

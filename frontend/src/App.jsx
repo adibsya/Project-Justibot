@@ -127,16 +127,10 @@ const App = () => {
           <Route path="StatistikChatbot" element={<ChatbotAdmin />} />
           <Route path="document-management" element={<DocumentManagement />} />
           <Route path="TambahAdmin" element={<TambahAdmin />} />
-<<<<<<< HEAD
           <Route path="DataAdmin" element={<DataAdmin />} />
           <Route path="admin/tambahadmin/edit/:id" element={<editAdmin />} />
           <Route path="profile" element={<AdminProfile />} />
           <Route path="approve-pengacara" element={<ApprovePengacara />} />
-=======
-        <Route path="DataAdmin" element={<DataAdmin />} />
-        <Route path="dataadmin/edit/:id" element={<EditAdmin />} />
-        <Route path="profile" element={<AdminProfile />} />
->>>>>>> f4628cc40f844ccaca5aaf2f26e26a48e10e99d8
         </Route>
       </Routes>
     </>
