@@ -1,6 +1,6 @@
-import { MapPin, GraduationCap, Briefcase } from "lucide-react";
+import { MapPin, Building , Briefcase } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { assets } from "../../../assets/assets";
 import axios from "axios";
@@ -15,7 +15,14 @@ const Profile = () => {
     const fetchLawyer = async () => {
       try {
         const response = await axios.get(`/api/lawyers/${nama}`);
-        setLawyer(response.data);
+              // Hardcode di sini:
+      const dataWithDefaults = {
+        ...response.data,
+        email: response.data.email || "contoh@email.com",
+        nama_kantor: response.data.nama_kantor || "Kantor Hukum Pilar Keadilan"
+      };
+      setLawyer(dataWithDefaults);
+        // setLawyer(response.data);
       } catch (err) {
         setError("Pengacara tidak ditemukan");
         console.error(err);
@@ -66,7 +73,7 @@ const Profile = () => {
               pengalaman
             </div>
             <div className="flex items-center justify-center text-gray-600 text-lg gap-2">
-              <GraduationCap size={20} /> {lawyer.asal_univ || "Tidak tersedia"}
+              <Building size={20} /> {lawyer.nama_kantor || "Tidak tersedia"}
             </div>
 
             <div className="flex gap-8 justify-center">
@@ -80,14 +87,12 @@ const Profile = () => {
                   <FaWhatsapp size={40} />
                 </a>
               )}
-              {lawyer.nama_ig && (
+              {lawyer.email && (
                 <a
-                  href={`https://instagram.com/${lawyer.nama_ig}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`mailto:${lawyer.email}`}
                   className="mt-2 text-secondary hover:text-primary transition duration-300"
                 >
-                  <FaInstagram size={40} />
+                  <FaEnvelope size={40} />
                 </a>
               )}
             </div>
@@ -116,14 +121,6 @@ const Profile = () => {
           ) : (
             <p className="text-gray-500 mt-2">Deskripsi tidak tersedia.</p>
           )}
-        </div>
-
-        {/* Bagian Industri */}
-        <div className="border-t pt-6">
-          <h2 className="text-3xl font-semibold">Bidang Industri</h2>
-          <p className="text-gray-700 text-lg mt-2">
-            {lawyer.industri || "Tidak tersedia"}
-          </p>
         </div>
       </div>
     </div>
