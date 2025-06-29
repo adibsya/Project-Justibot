@@ -4,13 +4,13 @@ Website ini dirancang sebagai platform konsultasi hukum berbasis AI yang memberi
 # Team Members
 ## Magang Tim 1
 
-| Nama Mahasiswa              | Universitas                     |
-|-----------------------------|---------------------------------|
-| Rachmananta Ibnu Fajar      | UPN Veteran Jawa Timur          |
-| Ahmad Adib Syaifulloh       | UPN Veteran Jawa Timur          |
-| Daffa Ammar Mahendra        | UPN Veteran Jawa Timur          |
-| Tasya Dwiyanti              | Universitas Trunojoyo Madura    |
-| Nur Rohma Widiya Ningsih    | Universitas Trunojoyo Madura    |
+| Nama Mahasiswa              | Universitas                     | NIM          |
+|-----------------------------|---------------------------------|------------- |
+| Rachmananta Ibnu Fajar      | UPN Veteran Jawa Timur          | 22081010175  |
+| Ahmad Adib Syaifulloh       | UPN Veteran Jawa Timur          | 22081010125  |
+| Daffa Ammar Mahendra        | UPN Veteran Jawa Timur          | 22081010189  |
+| Tasya Dwiyanti              | Universitas Trunojoyo Madura    | 220411100022 |
+| Nur Rohma Widiya Ningsih    | Universitas Trunojoyo Madura    | 220411100063 |
 
 <!--
 # Project Document: 
