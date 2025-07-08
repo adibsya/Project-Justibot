@@ -15,12 +15,12 @@ function deteksiTopik(pesan) {
     Pernikahan: ["nikah", "cerai", "perceraian", "pernikahan"],
     Pidana: ["pasal", "pencurian", "penipuan", "pidana"],
     Warisan: ["waris", "ahli waris", "harta warisan"],
-    HAK: ["hak cipta", "paten", "merek dagang", "haki"]
+    HAK: ["hak cipta", "paten", "merek dagang", "haki"],
   };
 
   const hasil = [];
   for (const [topik, kataList] of Object.entries(topikKeywords)) {
-    if (kataList.some(kata => pesan.toLowerCase().includes(kata))) {
+    if (kataList.some((kata) => pesan.toLowerCase().includes(kata))) {
       hasil.push(topik);
     }
   }
@@ -67,7 +67,7 @@ router.post("/", async (req, res) => {
           {
             role: "system",
             content:
-              "Anda adalah asisten hukum pintar yang membantu masyarakat memahami hukum di Indonesia. Anda harus memberikan jawaban yang akurat dan relevan berdasarkan hukum yang berlaku di Indonesia. Jika Anda tidak tahu jawabannya, katakan 'Saya tidak tahu' dan jangan memberikan informasi yang salah. Berikan disclaimer di awal chat bahwa chatbot ini di khususkan untuk memberikan informasi hukum dan bukan sebagai pengganti nasihat hukum profesional. Anda tidak boleh memberikan saran hukum yang spesifik atau pribadi. Jika ada pertanyaan yang bersifat pribadi atau spesifik, sarankan untuk berkonsultasi dengan pengacara atau profesional hukum yang berlisensi. disclaimer hanya disebutkan saat chat pertama, dan untuk chat selanjutnya tidak perlu disclaimer",
+              "Anda adalah asisten hukum pintar yang membantu masyarakat memahami hukum di Indonesia. Anda harus memberikan jawaban yang akurat dan relevan berdasarkan hukum yang berlaku di Indonesia. Jika Anda tidak tahu jawabannya, katakan 'Saya tidak tahu' dan jangan memberikan informasi yang salah. Berikan disclaimer (satu kalimat) di awal chat bahwa chatbot ini di khususkan untuk memberikan informasi hukum dan bukan sebagai pengganti nasihat hukum profesional. Anda tidak boleh memberikan saran hukum yang spesifik atau pribadi. Jika ada pertanyaan yang bersifat pribadi atau spesifik, sarankan untuk berkonsultasi dengan pengacara atau profesional hukum yang berlisensi. disclaimer hanya disebutkan saat chat pertama, dan untuk chat selanjutnya tidak perlu disclaimer",
           },
           { role: "user", content: message },
         ],
@@ -88,7 +88,10 @@ router.post("/", async (req, res) => {
     console.log("CHATBOT response received successfully");
     res.json({ response: botResponse });
   } catch (error) {
-    console.error("CHATBOT Error:", error.response?.data || error.message || error);
+    console.error(
+      "CHATBOT Error:",
+      error.response?.data || error.message || error
+    );
 
     let userMessage = "Maaf, terjadi kesalahan pada sistem. Silakan coba lagi.";
     let statusCode = 500;
@@ -100,7 +103,8 @@ router.post("/", async (req, res) => {
           statusCode = 503;
           break;
         case 403:
-          userMessage = "Layanan tidak tersedia sementara. Silakan coba lagi nanti.";
+          userMessage =
+            "Layanan tidak tersedia sementara. Silakan coba lagi nanti.";
           statusCode = 503;
           break;
         case 429:
